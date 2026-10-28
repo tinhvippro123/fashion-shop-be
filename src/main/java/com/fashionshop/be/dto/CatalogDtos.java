@@ -1,0 +1,232 @@
+package com.fashionshop.be.dto;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+public class CatalogDtos {
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategorySimpleDto {
+        private Long id;
+        private String name;
+        private String slug;
+        private CategorySimpleDto parent;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategoryDto {
+        private String id;
+        private Long numericId;
+        private Long parentId;
+        private String parentName;
+        private String name;
+        private String slug;
+        private String description;
+        private long productCount;
+        private String status;
+        private boolean isActive;
+        private List<CategoryDto> children;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategoryUpsertRequest {
+        @NotBlank(message = "Tên danh mục không được để trống")
+        private String name;
+        private String slug;
+        private String description;
+        private Long parentId;
+        private Boolean isActive;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ColorDto {
+        private Long id;
+        private String name;
+        private String hexCode;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SizeDto {
+        private Long id;
+        private String name;
+        private int sortOrder;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductImageDto {
+        private Long id;
+        private String imageUrl;
+        private int displayOrder;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VariantDto {
+        private Long id;
+        private String sku;
+        private BigDecimal price;
+        private BigDecimal costPrice;
+        private int stock;
+        private SizeDto size;
+        private String colorName;
+        private String hexCode;
+        private Long productId;
+        private String productName;
+        private String imageUrl;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductColorDto {
+        private Long id;
+        private boolean isActive;
+        private ColorDto color;
+        private List<ProductImageDto> images;
+        private List<VariantDto> variants;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminOptionDto {
+        private String name;
+        private List<String> values;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminVariantPayloadDto {
+        private Long id;
+        private String sku;
+        private BigDecimal price;
+        private BigDecimal costPrice;
+        private int stock;
+        private Map<String, String> options;
+        private String image;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductResponseDto {
+        private Long id;
+        private String name;
+        private String slug;
+        private String sku;
+        private String brand;
+        private BigDecimal basePrice;
+        private BigDecimal effectivePrice;
+        private String formattedPrice;
+        private int discountPercent;
+        private String description;
+        private boolean isNew;
+        private boolean isBestSeller;
+        private boolean isActive;
+        private int totalStock;
+        private int sold;
+        private double rating;
+        private long reviewCount;
+        private CategorySimpleDto category;
+        private List<ProductColorDto> productColors;
+        private List<String> images;
+        private List<AdminOptionDto> options;
+        private List<AdminVariantPayloadDto> adminVariants;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminProductUpsertRequest {
+        @NotBlank(message = "Tên sản phẩm không được để trống")
+        private String name;
+        private String description;
+        @NotNull(message = "Giá bán không được để trống")
+        private BigDecimal price;
+        private Integer discountPercent;
+        private Boolean isNew;
+        private Boolean isBestSeller;
+        private String sku;
+        private Integer stock;
+        @NotBlank(message = "Danh mục không được để trống")
+        private String category;
+        private String brand;
+        private List<String> images;
+        private List<AdminOptionDto> options;
+        private List<AdminVariantPayloadDto> variants;
+        private String status;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OptionSuggestionsDto {
+        private List<String> names;
+        private Map<String, List<String>> values;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewDto {
+        private String id;
+        private Long numericId;
+        private String productId;
+        private String productName;
+        private String customerName;
+        private String customerPhone;
+        private int rating;
+        private String comment;
+        private String reply;
+        private boolean isHidden;
+        private String createdAt;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateReviewRequest {
+        @Min(value = 1, message = "Số sao tối thiểu là 1")
+        @Max(value = 5, message = "Số sao tối đa là 5")
+        private int rating;
+
+        @NotBlank(message = "Nội dung đánh giá không được để trống")
+        private String comment;
+    }
+}

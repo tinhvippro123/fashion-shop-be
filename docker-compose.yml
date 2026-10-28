@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fashion-shop-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fashion_shop
+      POSTGRES_USER: fashion_user
+      POSTGRES_PASSWORD: fashion_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - fashion_pgdata:/var/lib/postgresql/data
+
+volumes:
+  fashion_pgdata:

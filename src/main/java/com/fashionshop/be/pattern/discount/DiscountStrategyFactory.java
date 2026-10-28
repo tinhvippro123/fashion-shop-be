@@ -1,0 +1,28 @@
+package com.fashionshop.be.pattern.discount;
+
+import com.fashionshop.be.domain.enums.DiscountType;
+import com.fashionshop.be.exception.BusinessException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+/**
+ * Factory Pattern:
+ * Selects and returns the appropriate DiscountStrategy implementation based on DiscountType.
+ */
+@Component
+@RequiredArgsConstructor
+public class DiscountStrategyFactory {
+
+    private final PercentageDiscountStrategy percentageDiscountStrategy;
+    private final FixedAmountDiscountStrategy fixedAmountDiscountStrategy;
+
+    public DiscountStrategy getStrategy(DiscountType discountType) {
+        if (discountType == null) {
+            throw new BusinessException("Loại khuyến mãi không được để trống");
+        }
+        return switch (discountType) {
+            case PERCENTAGE -> percentageDiscountStrategy;
+            case FIXED_AMOUNT -> fixedAmountDiscountStrategy;
+        };
+    }
+}
