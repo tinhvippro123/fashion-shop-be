@@ -17,3 +17,4 @@ public class FixedAmountDiscountStrategy implements DiscountStrategy {
         return value.max(BigDecimal.ZERO).min(orderSubtotal);
     }
 }
+

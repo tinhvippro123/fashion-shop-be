@@ -116,3 +116,4 @@ class OopDomainAndPatternTest {
         assertThrows(BusinessException.class, () -> order.transitionTo(OrderStatus.CANCELLED, "Đổi ý"));
     }
 }
+

@@ -26,3 +26,4 @@ public class PercentageDiscountStrategy implements DiscountStrategy {
         return rawDiscount.min(orderSubtotal);
     }
 }
+

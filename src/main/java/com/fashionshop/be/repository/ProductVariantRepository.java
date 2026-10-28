@@ -11,3 +11,4 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     boolean existsBySkuIgnoreCase(String sku);
     List<ProductVariant> findByStockLessThanEqualOrderByStockAsc(int threshold);
 }
+

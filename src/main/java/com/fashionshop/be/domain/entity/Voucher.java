@@ -112,3 +112,4 @@ public class Voucher extends BaseEntity {
         this.status = VoucherStatus.CANCELLED;
     }
 }
+

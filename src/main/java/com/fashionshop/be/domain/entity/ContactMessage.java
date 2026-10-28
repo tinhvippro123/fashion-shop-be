@@ -44,3 +44,4 @@ public class ContactMessage extends BaseEntity {
     @Column(name = "admin_reply", columnDefinition = "TEXT")
     private String adminReply;
 }
+

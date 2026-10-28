@@ -25,3 +25,4 @@ public class Color extends BaseEntity {
     @Builder.Default
     private String hexCode = "#221f20";
 }
+

@@ -6,3 +6,4 @@ public enum VoucherStatus {
     EXPIRED,
     CANCELLED
 }
+

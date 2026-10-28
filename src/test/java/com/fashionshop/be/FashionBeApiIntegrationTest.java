@@ -131,3 +131,4 @@ class FashionBeApiIntegrationTest {
         SecurityContextHolder.clearContext();
     }
 }
+

@@ -10,3 +10,4 @@ public interface ColorRepository extends JpaRepository<Color, Long> {
     Optional<Color> findByNameIgnoreCase(String name);
     List<Color> findAllByOrderByIdAsc();
 }
+

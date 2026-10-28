@@ -77,3 +77,4 @@ public class AccountController {
         return ApiResponse.ok(msg, Map.of("favorited", favorited));
     }
 }
+

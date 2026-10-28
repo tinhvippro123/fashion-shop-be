@@ -10,3 +10,4 @@ public interface SizeRepository extends JpaRepository<Size, Long> {
     Optional<Size> findByNameIgnoreCase(String name);
     List<Size> findAllByOrderBySortOrderAscIdAsc();
 }
+

@@ -59,3 +59,4 @@ public class ProductColor extends BaseEntity {
         this.variants.add(variant);
     }
 }
+

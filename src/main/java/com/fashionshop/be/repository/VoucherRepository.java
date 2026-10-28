@@ -13,3 +13,4 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     List<Voucher> findByStatusOrderByCreatedAtDesc(VoucherStatus status);
     List<Voucher> findAllByOrderByCreatedAtDesc();
 }
+

@@ -25,3 +25,4 @@ public class Size extends BaseEntity {
     @Builder.Default
     private int sortOrder = 0;
 }
+

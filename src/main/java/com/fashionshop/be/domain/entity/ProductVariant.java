@@ -87,3 +87,4 @@ public class ProductVariant extends BaseEntity {
         this.stock += quantity;
     }
 }
+

@@ -42,3 +42,4 @@ public class Review extends BaseEntity {
     @Builder.Default
     private boolean isVisible = true;
 }
+

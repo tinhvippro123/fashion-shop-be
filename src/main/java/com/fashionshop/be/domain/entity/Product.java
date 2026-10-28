@@ -97,3 +97,4 @@ public class Product extends BaseEntity {
                 .sum();
     }
 }
+

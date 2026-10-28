@@ -27,3 +27,4 @@ class OrderStatusStateTest {
         assertFalse(OrderStatus.PENDING.canTransitionTo(OrderStatus.COMPLETED));
     }
 }
+

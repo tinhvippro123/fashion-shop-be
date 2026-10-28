@@ -13,3 +13,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByRoleOrderByCreatedAtDesc(Role role);
     long countByRole(Role role);
 }
+

@@ -23,3 +23,4 @@ public class ContactController {
                 adminManagementService.submitPublicContact(request));
     }
 }
+

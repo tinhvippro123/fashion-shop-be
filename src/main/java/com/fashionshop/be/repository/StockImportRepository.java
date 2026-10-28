@@ -10,3 +10,4 @@ public interface StockImportRepository extends JpaRepository<StockImport, Long> 
     Optional<StockImport> findByImportCode(String importCode);
     List<StockImport> findAllByOrderByCreatedAtDesc();
 }
+

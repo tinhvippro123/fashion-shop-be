@@ -50,3 +50,4 @@ public class UserAddress extends BaseEntity {
     @Builder.Default
     private boolean isDefault = false;
 }
+

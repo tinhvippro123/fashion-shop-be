@@ -58,3 +58,4 @@ public class StockImport extends BaseEntity {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
+
