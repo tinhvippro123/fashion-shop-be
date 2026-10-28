@@ -1,5 +1,6 @@
 package com.fashionshop.be.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -52,6 +53,7 @@ public class AuthDtos {
         private String phone;
         private String avatar;
         private String role;
+        @JsonProperty("isAdmin")
         private boolean isAdmin;
         private String status;
     }
@@ -100,6 +102,7 @@ public class AuthDtos {
         private String ward;
         private String streetAddress;
         private String fullAddress;
+        @JsonProperty("isDefault")
         private boolean isDefault;
     }
 
@@ -118,6 +121,7 @@ public class AuthDtos {
         private String ward;
         private String streetAddress;
         private String fullAddress;
+        @JsonProperty("isDefault")
         private boolean isDefault;
     }
 }

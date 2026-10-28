@@ -1,5 +1,6 @@
 package com.fashionshop.be.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -85,6 +86,7 @@ public class AdminDtos {
     @AllArgsConstructor
     public static class CustomerAddressItemDto {
         private Long id;
+        @JsonProperty("isDefault")
         private boolean isDefault;
         private String address;
         private String phone;

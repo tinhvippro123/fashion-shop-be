@@ -1,5 +1,6 @@
 package com.fashionshop.be.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +41,7 @@ public class CatalogDtos {
         private String description;
         private long productCount;
         private String status;
+        @JsonProperty("isActive")
         private boolean isActive;
         private List<CategoryDto> children;
     }
@@ -110,6 +112,7 @@ public class CatalogDtos {
     @AllArgsConstructor
     public static class ProductColorDto {
         private Long id;
+        @JsonProperty("isActive")
         private boolean isActive;
         private ColorDto color;
         private List<ProductImageDto> images;
@@ -154,8 +157,11 @@ public class CatalogDtos {
         private String formattedPrice;
         private int discountPercent;
         private String description;
+        @JsonProperty("isNew")
         private boolean isNew;
+        @JsonProperty("isBestSeller")
         private boolean isBestSeller;
+        @JsonProperty("isActive")
         private boolean isActive;
         private int totalStock;
         private int sold;
@@ -214,6 +220,7 @@ public class CatalogDtos {
         private int rating;
         private String comment;
         private String reply;
+        @JsonProperty("isHidden")
         private boolean isHidden;
         private String createdAt;
     }
