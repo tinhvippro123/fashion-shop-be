@@ -34,9 +34,9 @@ public class AdminController {
     private final OrderService orderService;
     private final AdminManagementService adminManagementService;
 
-    // ================== ANALYTICS & REPORTS ==================
+    // ================== ANALYTICS & DASHBOARD ==================
 
-    @GetMapping({"/dashboard", "/reports"})
+    @GetMapping("/dashboard")
     public ApiResponse<AdminDtos.DashboardResponseDto> getDashboard() {
         return ApiResponse.ok(analyticsService.getDashboardAndReports());
     }
@@ -231,26 +231,6 @@ public class AdminController {
     public ApiResponse<Void> deleteReview(@PathVariable Long id) {
         adminManagementService.deleteReview(id);
         return ApiResponse.ok("Đã xóa đánh giá", null);
-    }
-
-    // ================== CONTACTS ==================
-
-    @GetMapping("/contacts")
-    public ApiResponse<List<AdminDtos.ContactDto>> getContacts() {
-        return ApiResponse.ok(adminManagementService.getAllContacts());
-    }
-
-    @GetMapping("/contacts/{id}")
-    public ApiResponse<AdminDtos.ContactDto> getContactDetail(@PathVariable Long id) {
-        return ApiResponse.ok(adminManagementService.getContactDetail(id));
-    }
-
-    @PutMapping("/contacts/{id}/reply")
-    public ApiResponse<AdminDtos.ContactDto> replyContact(
-            @PathVariable Long id,
-            @Valid @RequestBody AdminDtos.ReplyTextRequest request
-    ) {
-        return ApiResponse.ok("Đã phản hồi liên hệ", adminManagementService.replyContact(id, request.getReply()));
     }
 }
 

@@ -1,11 +1,9 @@
 package com.fashionshop.be.service;
 
-import com.fashionshop.be.domain.entity.ContactMessage;
 import com.fashionshop.be.domain.entity.Order;
 import com.fashionshop.be.domain.entity.Review;
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.domain.entity.Voucher;
-import com.fashionshop.be.domain.enums.ContactStatus;
 import com.fashionshop.be.domain.enums.DiscountType;
 import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.Role;
@@ -16,7 +14,6 @@ import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
 import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ResourceNotFoundException;
-import com.fashionshop.be.repository.ContactMessageRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ReviewRepository;
 import com.fashionshop.be.repository.UserAddressRepository;
@@ -40,7 +37,6 @@ public class AdminManagementService {
     private final UserAddressRepository userAddressRepository;
     private final OrderRepository orderRepository;
     private final ReviewRepository reviewRepository;
-    private final ContactMessageRepository contactMessageRepository;
     private final CatalogService catalogService;
 
     // ================== VOUCHERS ==================
@@ -224,66 +220,6 @@ public class AdminManagementService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đánh giá #" + id));
         reviewRepository.delete(review);
-    }
-
-    // ================== CONTACTS ==================
-
-    @Transactional
-    public AdminDtos.ContactDto submitPublicContact(AdminDtos.CreateContactRequest request) {
-        ContactMessage msg = ContactMessage.builder()
-                .fullName(request.getFullName().trim())
-                .email(request.getEmail().trim())
-                .phone(request.getPhone())
-                .subject(request.getSubject().trim())
-                .message(request.getMessage().trim())
-                .status(ContactStatus.NEW)
-                .build();
-        return toContactDto(contactMessageRepository.save(msg));
-    }
-
-    @Transactional(readOnly = true)
-    public List<AdminDtos.ContactDto> getAllContacts() {
-        return contactMessageRepository.findAllByOrderByCreatedAtDesc()
-                .stream()
-                .map(AdminManagementService::toContactDto)
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public AdminDtos.ContactDto getContactDetail(Long id) {
-        ContactMessage msg = contactMessageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy liên hệ #" + id));
-        return toContactDto(msg);
-    }
-
-    @Transactional
-    public AdminDtos.ContactDto replyContact(Long id, String reply) {
-        ContactMessage msg = contactMessageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy liên hệ #" + id));
-        msg.setAdminReply(reply.trim());
-        msg.setStatus(ContactStatus.REPLIED);
-        return toContactDto(contactMessageRepository.save(msg));
-    }
-
-    private static AdminDtos.ContactDto toContactDto(ContactMessage c) {
-        String uiStatus = switch (c.getStatus()) {
-            case NEW -> "Mới";
-            case REPLIED -> "Đã phản hồi";
-            case CLOSED -> "Đã đóng";
-        };
-        return AdminDtos.ContactDto.builder()
-                .id(String.valueOf(c.getId()))
-                .numericId(c.getId())
-                .name(c.getFullName())
-                .email(c.getEmail())
-                .phone(c.getPhone())
-                .subject(c.getSubject())
-                .message(c.getMessage())
-                .reply(c.getAdminReply())
-                .date(SlugUtils.formatDate(c.getCreatedAt()))
-                .status(uiStatus)
-                .rawStatus(c.getStatus().name())
-                .build();
     }
 }
 

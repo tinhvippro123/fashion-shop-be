@@ -2,7 +2,6 @@ package com.fashionshop.be.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -128,47 +127,9 @@ public class AdminDtos {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateContactRequest {
-        @NotBlank(message = "Họ tên không được để trống")
-        private String fullName;
-
-        @NotBlank(message = "Email không được để trống")
-        @Email(message = "Email không hợp lệ")
-        private String email;
-
-        private String phone;
-
-        @NotBlank(message = "Tiêu đề không được để trống")
-        private String subject;
-
-        @NotBlank(message = "Nội dung liên hệ không được để trống")
-        private String message;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class ReplyTextRequest {
         @NotBlank(message = "Nội dung phản hồi không được để trống")
         private String reply;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ContactDto {
-        private String id;
-        private Long numericId;
-        private String name;
-        private String email;
-        private String phone;
-        private String subject;
-        private String message;
-        private String reply;
-        private String date;
-        private String status;
-        private String rawStatus;
     }
 
     @Data

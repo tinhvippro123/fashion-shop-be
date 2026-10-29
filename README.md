@@ -5,7 +5,7 @@ Backend RESTful API xây dựng bằng **Java 17**, **Spring Boot 4**, **Gradle*
 ## 1. Điểm nhấn Thiết kế Hướng Đối Tượng (OOP & Design Patterns)
 
 1. **Tính Trừu tượng (`Abstraction`) & Kế thừa (`Inheritance`):**
-   - `BaseEntity` (`@MappedSuperclass`): Lớp cơ sở trừu tượng dùng chung `id`, `createdAt`, `updatedAt` cho toàn bộ 17 thực thể nghiệp vụ.
+   - `BaseEntity` (`@MappedSuperclass`): Lớp cơ sở trừu tượng dùng chung `id`, `createdAt`, `updatedAt` cho toàn bộ 16 thực thể nghiệp vụ.
    - `DiscountStrategy`: Interface trừu tượng hóa thuật toán tính khuyến mãi.
 2. **Tính Đóng gói (`Encapsulation` - Rich Domain Model):**
    - `ProductVariant`: Đóng gói trực tiếp nghiệp vụ kho `importStock(qty, unitCost)` (cộng tồn kho & tính giá vốn bình quân gia quyền), `deductStock(qty)` (kiểm tra & trừ tồn kho khi đặt hàng), `restoreStock(qty)` (hoàn kho khi hủy đơn).

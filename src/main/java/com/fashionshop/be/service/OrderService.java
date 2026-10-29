@@ -46,9 +46,7 @@ public class OrderService {
         User currentUser = securityUtils.getCurrentUserOptional().orElse(null);
 
         PaymentMethod paymentMethod = parsePaymentMethod(request.getPaymentMethod());
-        PaymentStatus initialPaymentStatus = (paymentMethod == PaymentMethod.COD)
-                ? PaymentStatus.UNPAID
-                : PaymentStatus.PAID;
+        PaymentStatus initialPaymentStatus = PaymentStatus.UNPAID;
 
         String orderCode = "ORD-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd"))
                 + "-" + (1000 + (System.currentTimeMillis() % 9000));
@@ -234,10 +232,13 @@ public class OrderService {
     }
 
     public static OrderDtos.OrderResponseDto toOrderDto(Order order) {
+        String methodLabel = order.getPaymentMethod() == PaymentMethod.BANK_TRANSFER
+                ? "Chuyển khoản"
+                : "COD";
         String paymentLabel = switch (order.getPaymentStatus()) {
-            case PAID -> "Đã thanh toán";
+            case PAID -> "Đã thanh toán (" + methodLabel + ")";
             case REFUNDED -> "Đã hoàn tiền";
-            case UNPAID -> "Chưa thanh toán (" + order.getPaymentMethod().name() + ")";
+            case UNPAID -> "Chưa thanh toán (" + methodLabel + ")";
         };
         String paymentBg = switch (order.getPaymentStatus()) {
             case PAID -> "bg-emerald-500/10 text-emerald-600";

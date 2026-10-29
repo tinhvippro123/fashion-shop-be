@@ -2,7 +2,6 @@ package com.fashionshop.be.config;
 
 import com.fashionshop.be.domain.entity.Category;
 import com.fashionshop.be.domain.entity.Color;
-import com.fashionshop.be.domain.entity.ContactMessage;
 import com.fashionshop.be.domain.entity.Order;
 import com.fashionshop.be.domain.entity.OrderItem;
 import com.fashionshop.be.domain.entity.Product;
@@ -17,7 +16,6 @@ import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.domain.entity.UserAddress;
 import com.fashionshop.be.domain.entity.Voucher;
 import com.fashionshop.be.domain.entity.Wishlist;
-import com.fashionshop.be.domain.enums.ContactStatus;
 import com.fashionshop.be.domain.enums.DiscountType;
 import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.PaymentMethod;
@@ -27,7 +25,6 @@ import com.fashionshop.be.domain.enums.UserStatus;
 import com.fashionshop.be.domain.enums.VoucherStatus;
 import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
-import com.fashionshop.be.repository.ContactMessageRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ReviewRepository;
@@ -39,6 +36,7 @@ import com.fashionshop.be.repository.VoucherRepository;
 import com.fashionshop.be.repository.WishlistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +44,54 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
+
+    private static final List<String> CLEAN_WEBP_IMAGES = List.of(
+            "03321697-61dc-4f30-8da7-d25085a78741.webp",
+            "0b6e2df0-0401-4eb0-a440-1cbf06651b8d.webp",
+            "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp",
+            "13dddff3-1a53-4b41-8b70-7c0b2ff37345.webp",
+            "4c6dfad6-5fac-4bf0-a37e-11af96fb7191.webp",
+            "501350eb-e04b-4abb-b6cf-58b1cb78373d.webp",
+            "837d3faa-4a85-4c73-9e48-94464f727606.webp",
+            "82dbe045-9c96-4a78-b5fa-d69d30a1c16d.webp",
+            "198b0924-f7c8-463c-9459-97caf17e0e80.webp",
+            "1a273f13-e42b-4f39-a194-69123e2ad90e.webp",
+            "2525fd0c-9394-410f-8bb0-8842184d6b60.webp",
+            "273101e9-e223-4071-a410-5978071e1617.webp",
+            "28b592b1-1c56-46a4-ab6c-3715c5f17fc4.webp",
+            "2f287da2-2ced-4613-b9e8-7d95fe92f718.webp",
+            "3142ae83-5757-43df-a666-da0566f44f25.webp",
+            "3a33de02-d052-4e00-a0b5-a0df121d4209.webp",
+            "3b6096f2-377c-4e81-a4ce-ce42be1690c4.webp",
+            "3ceebb27-34c3-4550-b1d9-059cf8a751d3.webp",
+            "3ec1f27b-051c-4848-b60f-e9426f53fdd3.webp",
+            "3ff1def3-4a16-4711-ab2d-1404932720fc.webp",
+            "41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp",
+            "4df71260-f448-4ad5-acb4-c4602e8ea85c.webp",
+            "4874cfa4-0d43-4455-a51b-a02f0d2b6505.webp",
+            "48da95ec-5eb0-44ac-9845-d33d4c9c4cef.webp",
+            "4f6a834a-c2a0-4783-9fd7-d124f25f4a88.webp",
+            "502977aa-82e1-4697-919e-a2321b8a461e.webp",
+            "566d6e59-052f-4745-abca-ce0a8f3ec970.webp",
+            "60999c15-57aa-49be-9d92-a9c87cac20eb.webp",
+            "631f63ec-1a0d-445a-bd29-b3b10427d726.webp",
+            "66ec2e51-c749-4692-8d81-2fd1245ed298.webp",
+            "677203a0-73b9-4d5d-8930-f528428c631b.webp",
+            "6790a4ca-8a83-43be-b19f-026488664b53.webp",
+            "684cdd93-350c-46a5-aff4-c30b6f0f0a83.webp",
+            "6fc16a01-2f75-4b39-952f-e15db7883ed6.webp",
+            "7041a9db-a348-4a9b-87aa-94db388766d4.webp",
+            "7259b73a-2a9d-42c2-87f8-80d3e5e95d0f.webp",
+            "8ca0fa01-3f9c-4d9e-ad52-4e4559f99695.webp",
+            "8ff32ffa-bb3a-42fc-97bc-b15d94196fdb.webp",
+            "9d02a2ea-f290-4ad6-b232-0d701ac8429a.webp",
+            "9d4de7a2-cee8-429d-996f-3f3ad504115a.webp"
+    );
 
     private final UserRepository userRepository;
     private final UserAddressRepository userAddressRepository;
@@ -62,13 +104,14 @@ public class DataInitializer implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final ReviewRepository reviewRepository;
     private final WishlistRepository wishlistRepository;
-    private final ContactMessageRepository contactMessageRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
     public void run(String... args) {
         if (userRepository.count() > 0) {
+            sanitizeLegacyDataIfNeeded();
             return;
         }
 
@@ -176,7 +219,7 @@ public class DataInitializer implements CommandLineRunner {
         Size sXL = sizeRepository.save(Size.builder().name("XL").sortOrder(4).build());
         List<Size> standardSizes = List.of(sS, sM, sL, sXL);
 
-        // 4. Seed 10 Realistic Fashion Products using real images in /uploads
+        // 4. Seed 10 Realistic Fashion Products using 100% real studio .webp photos in /uploads
         Product p1 = createSeedProduct(catDam, "Đầm Lụa Cổ V Dập Ly Thanh Lịch", "dam-lua-co-v-dap-ly", "LX-W001",
                 new BigDecimal("1250000"), 20, true, true,
                 "Đầm lụa dáng xòe nhẹ, cổ V tinh tế tôn dáng, tay ngắn thanh lịch, eo xếp ly khéo léo che khuyết điểm. Chất liệu lụa tơ nhân tạo mềm mịn, thoáng mát cả ngày.",
@@ -187,8 +230,8 @@ public class DataInitializer implements CommandLineRunner {
         Product p2 = createSeedProduct(catDam, "Đầm Midi Chiết Eo Phối Cúc Ngọc", "dam-midi-chiet-eo-cuc-ngoc", "LX-W002",
                 new BigDecimal("1450000"), 30, true, true,
                 "Thiết kế đầm midi công sở cao cấp với hàng cúc ngọc trai sang trọng, đường cắt may chuẩn xác tôn vòng eo thon gọn.",
-                cBeige, List.of("28bb2cb0-7872-451d-8f8f-612541408673.jpg", "30e40a10-fd10-4075-941e-53bf89b99de7.jpg"),
-                cRed, List.of("47de0024-6102-43f4-b93f-079f7d367891.jpg", "6356198f-9afb-477b-9655-9479ee18a623.jpg"),
+                cBeige, List.of("4c6dfad6-5fac-4bf0-a37e-11af96fb7191.webp", "501350eb-e04b-4abb-b6cf-58b1cb78373d.webp"),
+                cRed, List.of("837d3faa-4a85-4c73-9e48-94464f727606.webp", "82dbe045-9c96-4a78-b5fa-d69d30a1c16d.webp"),
                 standardSizes, 10);
 
         Product p3 = createSeedProduct(catAoNu, "Áo Sơ Mi Lụa Cổ Đức Tay Phồng", "ao-so-mi-lua-co-duc-tay-phong", "LX-W003",
@@ -215,36 +258,36 @@ public class DataInitializer implements CommandLineRunner {
         Product p6 = createSeedProduct(catQuanNu, "Chân Váy Chữ A Xếp Ly Dáng Dài", "chan-vay-chu-a-xep-ly", "LX-W006",
                 new BigDecimal("790000"), 0, true, false,
                 "Chân váy chữ A cạp bản to che bụng hiệu quả, dễ phối cùng áo sơ mi hoặc áo thun tối giản.",
-                cBeige, List.of("72b84d29-1a7c-485b-91ea-87d98e4bdff5.jpg", "41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp"),
+                cBeige, List.of("41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp", "4df71260-f448-4ad5-acb4-c4602e8ea85c.webp"),
                 cBlack, List.of("4874cfa4-0d43-4455-a51b-a02f0d2b6505.webp", "48da95ec-5eb0-44ac-9845-d33d4c9c4cef.webp"),
                 standardSizes, 9);
 
         Product p7 = createSeedProduct(catAoNam, "Áo Sơ Mi Nam Bamboo Chống Nhăn Slimfit", "ao-so-mi-nam-bamboo-slimfit", "LX-M001",
                 new BigDecimal("850000"), 20, true, true,
                 "Áo sơ mi sợi tre tự nhiên kháng khuẩn, thấm hút mồ hôi vượt trội, giữ phom phẳng phiu suốt ngày dài làm việc.",
-                cWhite, List.of("7453f60e-62c2-49cd-af4b-b5a534c16b79.jpg", "7dffd12e-c685-4586-83c5-5c110465e2eb.jpg"),
-                cNavy, List.of("83b8c14b-90b9-48da-8f9c-d68452d72d9c.jpg", "92958062-e371-4364-b849-2d63896a7226.jpg"),
+                cWhite, List.of("4f6a834a-c2a0-4783-9fd7-d124f25f4a88.webp", "502977aa-82e1-4697-919e-a2321b8a461e.webp"),
+                cNavy, List.of("566d6e59-052f-4745-abca-ce0a8f3ec970.webp", "60999c15-57aa-49be-9d92-a9c87cac20eb.webp"),
                 standardSizes, 16);
 
         Product p8 = createSeedProduct(catAoNam, "Áo Polo Nam Dệt Kim Cổ Phối Viền", "ao-polo-nam-det-kim-phoi-vien", "LX-M002",
                 new BigDecimal("650000"), 0, true, true,
                 "Áo polo dệt kim thoáng khí, cổ bẻ cứng cáp mang phong cách Smart Casual trẻ trung, năng động.",
-                cNavy, List.of("e6b035bf-a53b-48d0-acc9-0e8a678f6028.jpg", "95c1dd26-daaf-492d-8af5-3dc328d7d091.jpg"),
-                cBlack, List.of("9e89cfac-f4e7-43c2-ae84-5089501101f1.jpg", "a2faf80e-4f97-4168-820c-bd93f3e0f2ef.jpg"),
+                cNavy, List.of("631f63ec-1a0d-445a-bd29-b3b10427d726.webp", "66ec2e51-c749-4692-8d81-2fd1245ed298.webp"),
+                cBlack, List.of("677203a0-73b9-4d5d-8930-f528428c631b.webp", "6790a4ca-8a83-43be-b19f-026488664b53.webp"),
                 standardSizes, 12);
 
         Product p9 = createSeedProduct(catKhoacNam, "Áo Khoác Blazer Nam 2 Khuy Hiện Đại", "ao-khoac-blazer-nam-2-khuy", "LX-M003",
                 new BigDecimal("1890000"), 30, true, true,
                 "Blazer nam phom Hàn Quốc 2 khuy lịch lãm, đệm vai nhẹ tự nhiên, lót lụa thoáng khí cao cấp.",
-                cBlack, List.of("d33bd65b-fe63-4ee6-bfe8-c4ecd7377349.jpg", "ececf0ed-fc1b-4b8b-b870-1a4011e113b0.jpg"),
-                cGrey, List.of("ee380954-2f85-4dd4-9419-76146f60bbf4.jpg", "f1f07fd9-154a-4b29-a799-cc4d7487d81e.jpg"),
+                cBlack, List.of("684cdd93-350c-46a5-aff4-c30b6f0f0a83.webp", "6fc16a01-2f75-4b39-952f-e15db7883ed6.webp"),
+                cGrey, List.of("7041a9db-a348-4a9b-87aa-94db388766d4.webp", "7259b73a-2a9d-42c2-87f8-80d3e5e95d0f.webp"),
                 standardSizes, 4);
 
         Product p10 = createSeedProduct(catQuanNam, "Quần Âu Nam Co Giãn Nhẹ Chuẩn Công Sở", "quan-au-nam-co-gian-cong-so", "LX-M004",
                 new BigDecimal("950000"), 0, true, false,
                 "Quần âu nam phom Regular Tapered gọn gàng, cạp ẩn co giãn thông minh tạo sự thoải mái tối đa khi ngồi làm việc.",
-                cBlack, List.of("fd3622de-698a-47e5-82ec-640f00b25e4d.jpg", "60999c15-57aa-49be-9d92-a9c87cac20eb.webp"),
-                cNavy, List.of("631f63ec-1a0d-445a-bd29-b3b10427d726.webp", "66ec2e51-c749-4692-8d81-2fd1245ed298.webp"),
+                cBlack, List.of("8ca0fa01-3f9c-4d9e-ad52-4e4559f99695.webp", "8ff32ffa-bb3a-42fc-97bc-b15d94196fdb.webp"),
+                cNavy, List.of("9d02a2ea-f290-4ad6-b232-0d701ac8429a.webp", "9d4de7a2-cee8-429d-996f-3f3ad504115a.webp"),
                 standardSizes, 11);
 
         // 5. Seed Stock Imports (Phiếu Nhập Kho) demonstrating OOP importStock
@@ -337,14 +380,14 @@ public class DataInitializer implements CommandLineRunner {
                 PaymentStatus.PAID, "LUXE10", new BigDecimal("150000"), LocalDateTime.now().minusMonths(3));
         seedHistoricalOrder("ORD-260818-8002", customer2, p7, 3, OrderStatus.COMPLETED, PaymentMethod.COD,
                 PaymentStatus.PAID, "WELCOME50", new BigDecimal("50000"), LocalDateTime.now().minusMonths(2));
-        seedHistoricalOrder("ORD-260920-8003", customer3, p9, 1, OrderStatus.COMPLETED, PaymentMethod.MOMO,
+        seedHistoricalOrder("ORD-260920-8003", customer3, p9, 1, OrderStatus.COMPLETED, PaymentMethod.BANK_TRANSFER,
                 PaymentStatus.PAID, null, BigDecimal.ZERO, LocalDateTime.now().minusMonths(1));
         seedHistoricalOrder("ORD-261025-8004", customer1, p2, 1, OrderStatus.SHIPPING, PaymentMethod.COD,
                 PaymentStatus.UNPAID, null, BigDecimal.ZERO, LocalDateTime.now().minusDays(3));
         seedHistoricalOrder("ORD-261028-8005", customer2, p3, 2, OrderStatus.PENDING, PaymentMethod.COD,
                 PaymentStatus.UNPAID, "WELCOME50", new BigDecimal("50000"), LocalDateTime.now().minusHours(5));
 
-        // 8. Seed Reviews, Wishlist & Contact Messages
+        // 8. Seed Reviews & Wishlist
         reviewRepository.save(Review.builder()
                 .user(customer1).product(p1).rating(5)
                 .comment("Chất lụa cực kỳ mát và mềm, mặc đi làm ai cũng khen sang! Sẽ tiếp tục ủng hộ LUXE.")
@@ -361,15 +404,52 @@ public class DataInitializer implements CommandLineRunner {
 
         wishlistRepository.save(Wishlist.builder().user(customer1).product(p1).build());
         wishlistRepository.save(Wishlist.builder().user(customer1).product(p3).build());
+    }
 
-        contactMessageRepository.save(ContactMessage.builder()
-                .fullName("Phạm Thu Hà")
-                .email("phamthuha@gmail.com")
-                .phone("0938112233")
-                .subject("Tư vấn chọn size Đầm Lụa Cổ V")
-                .message("Mình cao 1m62 nặng 53kg thì mặc size M hay L vừa đẹp ạ?")
-                .status(ContactStatus.NEW)
-                .build());
+    private void sanitizeLegacyDataIfNeeded() {
+        try {
+            jdbcTemplate.update("UPDATE orders SET payment_method = 'BANK_TRANSFER' WHERE payment_method = 'MOMO'");
+            jdbcTemplate.execute("DROP TABLE IF EXISTS contact_messages");
+
+            jdbcTemplate.query(
+                    "SELECT id, image_url FROM product_images ORDER BY id ASC",
+                    rs -> {
+                        long id = rs.getLong("id");
+                        String url = rs.getString("image_url");
+                        if (isLegacyNonWebpUpload(url)) {
+                            int idx = (int) (Math.abs(id - 1) % CLEAN_WEBP_IMAGES.size());
+                            jdbcTemplate.update("UPDATE product_images SET image_url = ? WHERE id = ?",
+                                    CLEAN_WEBP_IMAGES.get(idx), id);
+                        }
+                    }
+            );
+
+            jdbcTemplate.query(
+                    "SELECT id, image_url FROM order_items ORDER BY id ASC",
+                    rs -> {
+                        long id = rs.getLong("id");
+                        String url = rs.getString("image_url");
+                        if (isLegacyNonWebpUpload(url)) {
+                            int idx = (int) (Math.abs(id - 1) % CLEAN_WEBP_IMAGES.size());
+                            jdbcTemplate.update("UPDATE order_items SET image_url = ? WHERE id = ?",
+                                    CLEAN_WEBP_IMAGES.get(idx), id);
+                        }
+                    }
+            );
+        } catch (Exception ignored) {
+            // Safe no-op if schema differs
+        }
+    }
+
+    private boolean isLegacyNonWebpUpload(String url) {
+        if (url == null || url.isBlank()) {
+            return false;
+        }
+        String lower = url.trim().toLowerCase(Locale.ROOT);
+        if (lower.startsWith("http://") || lower.startsWith("https://")) {
+            return false;
+        }
+        return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
     }
 
     private Product createSeedProduct(
@@ -470,4 +550,3 @@ public class DataInitializer implements CommandLineRunner {
         orderRepository.save(order);
     }
 }
-
