@@ -16,6 +16,11 @@ data/
 *.iml
 *.ipr
 out/
+bin/
+.classpath
+.project
+.settings/
+.factorypath
 .vscode/
 .DS_Store
 .env
