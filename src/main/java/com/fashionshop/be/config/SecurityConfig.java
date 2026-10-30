@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/send-otp").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/catalog/vouchers/validate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()

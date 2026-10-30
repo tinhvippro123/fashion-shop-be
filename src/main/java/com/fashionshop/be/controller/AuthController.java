@@ -20,6 +20,11 @@ public class AuthController {
     private final AuthService authService;
     private final AccountService accountService;
 
+    @PostMapping("/send-otp")
+    public ApiResponse<AuthDtos.SendOtpResponse> sendRegisterOtp(@Valid @RequestBody AuthDtos.SendOtpRequest request) {
+        return ApiResponse.ok("Đã gửi mã xác thực OTP tới email của bạn", authService.sendRegisterOtp(request));
+    }
+
     @PostMapping("/register")
     public ApiResponse<AuthDtos.AuthResponse> register(@Valid @RequestBody AuthDtos.RegisterRequest request) {
         return ApiResponse.ok("Đăng ký tài khoản thành công", authService.register(request));

@@ -57,6 +57,28 @@ class FashionBeApiIntegrationTest {
         );
         assertTrue(products.size() >= 10, "Should seed at least 10 fashion products");
 
+        // 1b. Test Registration with Email OTP, Gender & Date of Birth
+        AuthDtos.SendOtpResponse otpResp = authService.sendRegisterOtp(
+                new AuthDtos.SendOtpRequest("newmember@luxe.vn")
+        );
+        assertNotNull(otpResp.getOtpCode());
+        assertEquals(6, otpResp.getOtpCode().length());
+
+        AuthDtos.AuthResponse regResp = authService.register(
+                AuthDtos.RegisterRequest.builder()
+                        .fullName("Phạm Thu Hà")
+                        .email("newmember@luxe.vn")
+                        .phone("0933445566")
+                        .gender("FEMALE")
+                        .dateOfBirth(java.time.LocalDate.of(2002, 6, 12))
+                        .otpCode(otpResp.getOtpCode())
+                        .password("123456")
+                        .build()
+        );
+        assertNotNull(regResp.getToken());
+        assertEquals("FEMALE", regResp.getUser().getGender());
+        assertEquals("2002-06-12", regResp.getUser().getDateOfBirth());
+
         // 2. Customer authentication
         AuthDtos.AuthResponse customerAuth = authService.login(
                 new AuthDtos.LoginRequest("khachhang@gmail.com", "123456")

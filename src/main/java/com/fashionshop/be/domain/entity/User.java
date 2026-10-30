@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,13 @@ public class User extends BaseEntity {
 
     @Column(length = 25)
     private String phone;
+
+    @Column(length = 20)
+    @Builder.Default
+    private String gender = "FEMALE";
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
     @Column(name = "avatar_url", length = 500)
     private String avatarUrl;

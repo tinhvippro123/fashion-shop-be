@@ -46,6 +46,12 @@ public class AccountService {
         if (request.getPhone() != null) {
             user.setPhone(request.getPhone().trim());
         }
+        if (request.getGender() != null && !request.getGender().isBlank()) {
+            user.setGender(AuthService.normalizeGender(request.getGender()));
+        }
+        if (request.getDateOfBirth() != null) {
+            user.setDateOfBirth(request.getDateOfBirth());
+        }
         if (request.getAvatarUrl() != null) {
             user.setAvatarUrl(request.getAvatarUrl().trim());
         }

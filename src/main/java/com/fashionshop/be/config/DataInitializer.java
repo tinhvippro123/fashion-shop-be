@@ -42,6 +42,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -121,6 +122,8 @@ public class DataInitializer implements CommandLineRunner {
                 .passwordHash(passwordEncoder.encode("admin123"))
                 .fullName("Quản Trị Viên LUXE")
                 .phone("0909888999")
+                .gender("MALE")
+                .dateOfBirth(LocalDate.of(1995, 5, 20))
                 .role(Role.ADMIN)
                 .status(UserStatus.ACTIVE)
                 .build());
@@ -130,6 +133,8 @@ public class DataInitializer implements CommandLineRunner {
                 .passwordHash(passwordEncoder.encode("123456"))
                 .fullName("Nguyễn Minh Anh")
                 .phone("0901234567")
+                .gender("FEMALE")
+                .dateOfBirth(LocalDate.of(2000, 8, 15))
                 .role(Role.CUSTOMER)
                 .status(UserStatus.ACTIVE)
                 .build());
@@ -139,6 +144,8 @@ public class DataInitializer implements CommandLineRunner {
                 .passwordHash(passwordEncoder.encode("123456"))
                 .fullName("Trần Thị Bảo Ngọc")
                 .phone("0912345678")
+                .gender("FEMALE")
+                .dateOfBirth(LocalDate.of(1998, 11, 2))
                 .role(Role.CUSTOMER)
                 .status(UserStatus.ACTIVE)
                 .build());
@@ -148,6 +155,8 @@ public class DataInitializer implements CommandLineRunner {
                 .passwordHash(passwordEncoder.encode("123456"))
                 .fullName("Lê Hoàng Nam")
                 .phone("0987654321")
+                .gender("MALE")
+                .dateOfBirth(LocalDate.of(1997, 3, 10))
                 .role(Role.CUSTOMER)
                 .status(UserStatus.ACTIVE)
                 .build());
@@ -410,6 +419,8 @@ public class DataInitializer implements CommandLineRunner {
         try {
             jdbcTemplate.update("UPDATE orders SET payment_method = 'BANK_TRANSFER' WHERE payment_method = 'MOMO'");
             jdbcTemplate.update("UPDATE users SET status = 'ACTIVE' WHERE status = 'UNVERIFIED'");
+            jdbcTemplate.update("UPDATE users SET gender = 'FEMALE' WHERE gender IS NULL");
+            jdbcTemplate.update("UPDATE users SET date_of_birth = DATE '2000-08-15' WHERE date_of_birth IS NULL");
             jdbcTemplate.execute("DROP TABLE IF EXISTS contact_messages");
 
             jdbcTemplate.query(

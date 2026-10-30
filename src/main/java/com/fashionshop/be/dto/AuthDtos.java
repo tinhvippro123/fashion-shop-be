@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 public class AuthDtos {
 
     @Data
@@ -26,6 +28,27 @@ public class AuthDtos {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class SendOtpRequest {
+        @NotBlank(message = "Email không được để trống")
+        @Email(message = "Email không hợp lệ")
+        private String email;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SendOtpResponse {
+        private String email;
+        private int expiresInSeconds;
+        private boolean sentViaSmtp;
+        private String otpCode;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class RegisterRequest {
         @NotBlank(message = "Họ và tên không được để trống")
         private String fullName;
@@ -35,6 +58,13 @@ public class AuthDtos {
         private String email;
 
         private String phone;
+
+        private String gender;
+
+        private LocalDate dateOfBirth;
+
+        @NotBlank(message = "Vui lòng nhập mã OTP xác thực email")
+        private String otpCode;
 
         @NotBlank(message = "Mật khẩu không được để trống")
         @Size(min = 6, message = "Mật khẩu phải từ 6 ký tự trở lên")
@@ -51,6 +81,8 @@ public class AuthDtos {
         private String fullName;
         private String email;
         private String phone;
+        private String gender;
+        private String dateOfBirth;
         private String avatar;
         private String role;
         @JsonProperty("isAdmin")
@@ -74,6 +106,8 @@ public class AuthDtos {
         @NotBlank(message = "Họ và tên không được để trống")
         private String fullName;
         private String phone;
+        private String gender;
+        private LocalDate dateOfBirth;
         private String avatarUrl;
     }
 
