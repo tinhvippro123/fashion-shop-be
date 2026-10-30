@@ -409,6 +409,7 @@ public class DataInitializer implements CommandLineRunner {
     private void sanitizeLegacyDataIfNeeded() {
         try {
             jdbcTemplate.update("UPDATE orders SET payment_method = 'BANK_TRANSFER' WHERE payment_method = 'MOMO'");
+            jdbcTemplate.update("UPDATE users SET status = 'ACTIVE' WHERE status = 'UNVERIFIED'");
             jdbcTemplate.execute("DROP TABLE IF EXISTS contact_messages");
 
             jdbcTemplate.query(

@@ -84,6 +84,15 @@ class OopDomainAndPatternTest {
         DiscountStrategy fixedStrategy = factory.getStrategy(fixedVoucher.getDiscountType());
         BigDecimal fixedDiscount = fixedStrategy.calculateDiscount(new BigDecimal("450000"), fixedVoucher);
         assertEquals(0, new BigDecimal("50000").compareTo(fixedDiscount));
+
+        fixedVoucher.setUsageLimit(1);
+        fixedVoucher.consumeUsage();
+        assertEquals(1, fixedVoucher.getUsedCount());
+        assertEquals(VoucherStatus.EXPIRED, fixedVoucher.getStatus());
+
+        fixedVoucher.restoreUsage();
+        assertEquals(0, fixedVoucher.getUsedCount());
+        assertEquals(VoucherStatus.ACTIVE, fixedVoucher.getStatus());
     }
 
     @Test

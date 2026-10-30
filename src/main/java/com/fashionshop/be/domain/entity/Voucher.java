@@ -95,6 +95,18 @@ public class Voucher extends BaseEntity {
         }
     }
 
+    public void restoreUsage() {
+        if (this.usedCount > 0) {
+            this.usedCount -= 1;
+        }
+        LocalDateTime now = LocalDateTime.now();
+        if (this.status == VoucherStatus.EXPIRED
+                && (this.endDate == null || now.isBefore(this.endDate))
+                && (this.usageLimit == null || this.usedCount < this.usageLimit)) {
+            this.status = VoucherStatus.ACTIVE;
+        }
+    }
+
     public void startNow() {
         LocalDateTime now = LocalDateTime.now();
         if (this.startDate == null || this.startDate.isAfter(now)) {

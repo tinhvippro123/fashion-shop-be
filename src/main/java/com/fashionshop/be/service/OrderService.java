@@ -199,6 +199,13 @@ public class OrderService {
                     productVariantRepository.save(item.getVariant());
                 }
             }
+            if (order.getVoucherCode() != null && !order.getVoucherCode().isBlank()) {
+                voucherRepository.findByCodeIgnoreCase(order.getVoucherCode().trim())
+                        .ifPresent(voucher -> {
+                            voucher.restoreUsage();
+                            voucherRepository.save(voucher);
+                        });
+            }
         }
         return toOrderDto(orderRepository.save(order));
     }
