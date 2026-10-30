@@ -250,21 +250,21 @@ public class DataInitializer implements CommandLineRunner {
                 cBeige, List.of("2525fd0c-9394-410f-8bb0-8842184d6b60.webp", "273101e9-e223-4071-a410-5978071e1617.webp"),
                 standardSizes, 15);
 
-        Product p4 = createSeedProduct(catAoNu, "Áo Kiểu Cổ Nơ Chiffon Hàn Quốc", "ao-kieu-co-no-chiffon", "LX-W004",
+        createSeedProduct(catAoNu, "Áo Kiểu Cổ Nơ Chiffon Hàn Quốc", "ao-kieu-co-no-chiffon", "LX-W004",
                 new BigDecimal("750000"), 15, true, false,
                 "Áo kiểu chất liệu chiffon hai lớp mềm rũ, điểm nhấn cổ thắt nơ nữ tính phù hợp hội họp và sự kiện.",
                 cBeige, List.of("28b592b1-1c56-46a4-ab6c-3715c5f17fc4.webp", "2f287da2-2ced-4613-b9e8-7d95fe92f718.webp"),
                 cBlack, List.of("3142ae83-5757-43df-a666-da0566f44f25.webp", "3a33de02-d052-4e00-a0b5-a0df121d4209.webp"),
                 standardSizes, 8);
 
-        Product p5 = createSeedProduct(catQuanNu, "Quần Âu Nữ Ống Suông Cạp Cao", "quan-au-nu-ong-suong-cap-cao", "LX-W005",
+        createSeedProduct(catQuanNu, "Quần Âu Nữ Ống Suông Cạp Cao", "quan-au-nu-ong-suong-cap-cao", "LX-W005",
                 new BigDecimal("890000"), 25, false, true,
                 "Quần âu ống suông lưng cao giúp kéo dài đôi chân, vải tuyết mưa dày dặn đứng phom không xù lông.",
                 cBlack, List.of("3b6096f2-377c-4e81-a4ce-ce42be1690c4.webp", "3ceebb27-34c3-4550-b1d9-059cf8a751d3.webp"),
                 cGrey, List.of("3ec1f27b-051c-4848-b60f-e9426f53fdd3.webp", "3ff1def3-4a16-4711-ab2d-1404932720fc.webp"),
                 standardSizes, 14);
 
-        Product p6 = createSeedProduct(catQuanNu, "Chân Váy Chữ A Xếp Ly Dáng Dài", "chan-vay-chu-a-xep-ly", "LX-W006",
+        createSeedProduct(catQuanNu, "Chân Váy Chữ A Xếp Ly Dáng Dài", "chan-vay-chu-a-xep-ly", "LX-W006",
                 new BigDecimal("790000"), 0, true, false,
                 "Chân váy chữ A cạp bản to che bụng hiệu quả, dễ phối cùng áo sơ mi hoặc áo thun tối giản.",
                 cBeige, List.of("41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp", "4df71260-f448-4ad5-acb4-c4602e8ea85c.webp"),
@@ -278,7 +278,7 @@ public class DataInitializer implements CommandLineRunner {
                 cNavy, List.of("566d6e59-052f-4745-abca-ce0a8f3ec970.webp", "60999c15-57aa-49be-9d92-a9c87cac20eb.webp"),
                 standardSizes, 16);
 
-        Product p8 = createSeedProduct(catAoNam, "Áo Polo Nam Dệt Kim Cổ Phối Viền", "ao-polo-nam-det-kim-phoi-vien", "LX-M002",
+        createSeedProduct(catAoNam, "Áo Polo Nam Dệt Kim Cổ Phối Viền", "ao-polo-nam-det-kim-phoi-vien", "LX-M002",
                 new BigDecimal("650000"), 0, true, true,
                 "Áo polo dệt kim thoáng khí, cổ bẻ cứng cáp mang phong cách Smart Casual trẻ trung, năng động.",
                 cNavy, List.of("631f63ec-1a0d-445a-bd29-b3b10427d726.webp", "66ec2e51-c749-4692-8d81-2fd1245ed298.webp"),
@@ -292,7 +292,7 @@ public class DataInitializer implements CommandLineRunner {
                 cGrey, List.of("7041a9db-a348-4a9b-87aa-94db388766d4.webp", "7259b73a-2a9d-42c2-87f8-80d3e5e95d0f.webp"),
                 standardSizes, 4);
 
-        Product p10 = createSeedProduct(catQuanNam, "Quần Âu Nam Co Giãn Nhẹ Chuẩn Công Sở", "quan-au-nam-co-gian-cong-so", "LX-M004",
+        createSeedProduct(catQuanNam, "Quần Âu Nam Co Giãn Nhẹ Chuẩn Công Sở", "quan-au-nam-co-gian-cong-so", "LX-M004",
                 new BigDecimal("950000"), 0, true, false,
                 "Quần âu nam phom Regular Tapered gọn gàng, cạp ẩn co giãn thông minh tạo sự thoải mái tối đa khi ngồi làm việc.",
                 cBlack, List.of("8ca0fa01-3f9c-4d9e-ad52-4e4559f99695.webp", "8ff32ffa-bb3a-42fc-97bc-b15d94196fdb.webp"),

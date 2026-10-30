@@ -9,81 +9,83 @@ import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Locale;
+import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
     private static final int OTP_EXPIRY_SECONDS = 300;
-
-    private record OtpEntry(String code, LocalDateTime expiresAt) {}
-
-    private final Map<String, OtpEntry> otpStore = new ConcurrentHashMap<>();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Value("${spring.mail.username:}")
-    private String mailUsername;
+    private final Map<String, OtpEntry> otpStore = new ConcurrentHashMap<>();
+
+    private record OtpEntry(String code, Instant expiresAt) {
+        boolean isExpired() {
+            return Instant.now().isAfter(expiresAt);
+        }
+    }
 
     @Transactional(readOnly = true)
     public AuthDtos.SendOtpResponse sendRegisterOtp(AuthDtos.SendOtpRequest request) {
-        String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
+        String email = request.getEmail().trim().toLowerCase();
         if (userRepository.existsByEmailIgnoreCase(email)) {
             throw new BusinessException("Email này đã được đăng ký");
         }
 
-        String otpCode = String.format("%06d", ThreadLocalRandom.current().nextInt(100000, 1000000));
-        otpStore.put(email, new OtpEntry(otpCode, LocalDateTime.now().plusSeconds(OTP_EXPIRY_SECONDS)));
+        String code = String.format("%06d", RANDOM.nextInt(1_000_000));
+        otpStore.put(email, new OtpEntry(code, Instant.now().plusSeconds(OTP_EXPIRY_SECONDS)));
 
-        boolean smtpConfigured = mailUsername != null && !mailUsername.isBlank();
-        log.info("[LUXE EMAIL OTP] Ma OTP xac thuc dang ky cho {} la: {} (hieu luc {}s)",
-                email, otpCode, OTP_EXPIRY_SECONDS);
+        log.info("[LUXE EMAIL OTP] Mã xác thực đăng ký cho {} là: {} (hiệu lực {} giây)", email, code, OTP_EXPIRY_SECONDS);
 
         return AuthDtos.SendOtpResponse.builder()
                 .email(email)
                 .expiresInSeconds(OTP_EXPIRY_SECONDS)
-                .sentViaSmtp(smtpConfigured)
-                .otpCode(otpCode)
+                .sentViaSmtp(false)
+                .otpCode(code)
                 .build();
     }
 
     @Transactional
     public AuthDtos.AuthResponse register(AuthDtos.RegisterRequest request) {
-        String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
+        String email = request.getEmail().trim().toLowerCase();
         if (userRepository.existsByEmailIgnoreCase(email)) {
             throw new BusinessException("Email này đã được đăng ký");
         }
 
+        String submittedOtp = request.getOtpCode() == null ? "" : request.getOtpCode().trim();
         OtpEntry otpEntry = otpStore.get(email);
-        if (otpEntry == null || LocalDateTime.now().isAfter(otpEntry.expiresAt())) {
-            throw new BusinessException("Mã OTP đã hết hạn hoặc chưa được gửi. Vui lòng nhấn 'Gửi mã OTP'");
+        if (otpEntry == null || otpEntry.isExpired()) {
+            otpStore.remove(email);
+            throw new BusinessException("Mã OTP đã hết hạn hoặc chưa được gửi. Vui lòng nhấn 'Lấy mã OTP'");
         }
-        if (request.getOtpCode() == null || !otpEntry.code().equals(request.getOtpCode().trim())) {
-            throw new BusinessException("Mã OTP xác thực email không chính xác");
+        if (!otpEntry.code().equals(submittedOtp)) {
+            throw new BusinessException("Mã OTP xác thực không chính xác");
         }
         otpStore.remove(email);
+
+        String normalizedGender = normalizeGender(request.getGender());
 
         User user = User.builder()
                 .email(email)
                 .fullName(request.getFullName().trim())
                 .phone(request.getPhone() == null ? "" : request.getPhone().trim())
-                .gender(normalizeGender(request.getGender()))
+                .gender(normalizedGender)
                 .dateOfBirth(request.getDateOfBirth())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(Role.CUSTOMER)
@@ -98,9 +100,23 @@ public class AuthService {
                 .build();
     }
 
+    public static String normalizeGender(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return "FEMALE";
+        }
+        String upper = raw.trim().toUpperCase();
+        if ("NAM".equals(upper) || "MALE".equals(upper)) {
+            return "MALE";
+        }
+        if ("KHÁC".equals(upper) || "KHAC".equals(upper) || "OTHER".equals(upper)) {
+            return "OTHER";
+        }
+        return "FEMALE";
+    }
+
     @Transactional(readOnly = true)
     public AuthDtos.AuthResponse login(AuthDtos.LoginRequest request) {
-        String email = request.getEmail().trim().toLowerCase(Locale.ROOT);
+        String email = request.getEmail().trim().toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new BusinessException("Email hoặc mật khẩu không chính xác"));
 
@@ -119,17 +135,6 @@ public class AuthService {
                 .build();
     }
 
-    public static String normalizeGender(String raw) {
-        if (raw == null || raw.isBlank()) {
-            return "FEMALE";
-        }
-        return switch (raw.trim().toUpperCase(Locale.ROOT)) {
-            case "MALE", "NAM" -> "MALE";
-            case "OTHER", "KHAC", "KHÁC" -> "OTHER";
-            default -> "FEMALE";
-        };
-    }
-
     public static AuthDtos.UserDto toUserDto(User user) {
         return AuthDtos.UserDto.builder()
                 .id(String.valueOf(user.getId()))
@@ -137,8 +142,8 @@ public class AuthService {
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .phone(user.getPhone() == null ? "" : user.getPhone())
-                .gender(user.getGender() == null || user.getGender().isBlank() ? "FEMALE" : user.getGender())
-                .dateOfBirth(user.getDateOfBirth() == null ? "" : user.getDateOfBirth().toString())
+                .gender(user.getGender() == null ? "FEMALE" : user.getGender())
+                .dateOfBirth(user.getDateOfBirth() == null ? null : user.getDateOfBirth().toString())
                 .avatar(user.getAvatarUrl())
                 .role(user.getRole().name())
                 .isAdmin(user.isAdmin())
