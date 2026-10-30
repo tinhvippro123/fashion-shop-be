@@ -125,8 +125,7 @@ public class AuthService {
         }
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(email, request.getPassword()));
 
         String token = jwtTokenProvider.generateToken(user);
         return AuthDtos.AuthResponse.builder()
@@ -151,4 +150,3 @@ public class AuthService {
                 .build();
     }
 }
-

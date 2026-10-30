@@ -10,6 +10,7 @@ import com.fashionshop.be.domain.entity.Review;
 import com.fashionshop.be.domain.entity.Size;
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.domain.entity.Voucher;
+import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.VoucherStatus;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
@@ -338,6 +339,9 @@ public class CatalogService {
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục"));
+        if (category.getChildren() != null && !category.getChildren().isEmpty()) {
+            throw new BusinessException("Không thể xóa danh mục cha đang có danh mục con. Vui lòng xóa danh mục con trước");
+        }
         if (productRepository.countByCategoryId(id) > 0) {
             throw new BusinessException("Không thể xóa danh mục đang chứa sản phẩm");
         }
@@ -353,6 +357,9 @@ public class CatalogService {
                 : baseSlug;
 
         boolean active = !"draft".equalsIgnoreCase(request.getStatus());
+        int discountPercent = request.getDiscountPercent() == null
+                ? 0
+                : Math.min(100, Math.max(0, request.getDiscountPercent()));
         Product product = Product.builder()
                 .category(category)
                 .name(request.getName().trim())
@@ -362,7 +369,7 @@ public class CatalogService {
                         : request.getSku().trim())
                 .brand((request.getBrand() == null || request.getBrand().isBlank()) ? "LUXE" : request.getBrand().trim())
                 .basePrice(request.getPrice())
-                .discountPercent(request.getDiscountPercent() == null ? 0 : Math.max(0, request.getDiscountPercent()))
+                .discountPercent(discountPercent)
                 .description(request.getDescription())
                 .isNew(request.getIsNew() == null || request.getIsNew())
                 .isBestSeller(Boolean.TRUE.equals(request.getIsBestSeller()))
@@ -384,7 +391,7 @@ public class CatalogService {
         product.setName(request.getName().trim());
         product.setBasePrice(request.getPrice());
         if (request.getDiscountPercent() != null) {
-            product.setDiscountPercent(Math.max(0, request.getDiscountPercent()));
+            product.setDiscountPercent(Math.min(100, Math.max(0, request.getDiscountPercent())));
         }
         product.setDescription(request.getDescription());
         if (request.getBrand() != null && !request.getBrand().isBlank()) {
@@ -404,9 +411,16 @@ public class CatalogService {
         }
 
         if (request.getVariants() != null && !request.getVariants().isEmpty()) {
-            product.getProductColors().clear();
-            productRepository.flush();
-            populateColorsAndVariants(product, request);
+            mergeColorsAndVariantsOnUpdate(product, request);
+        } else if (request.getImages() != null && !request.getImages().isEmpty() && !product.getProductColors().isEmpty()) {
+            ProductColor firstColor = product.getProductColors().get(0);
+            firstColor.getImages().clear();
+            int ord = 0;
+            for (String img : request.getImages()) {
+                if (img != null && !img.isBlank()) {
+                    firstColor.addImage(ProductImage.builder().imageUrl(img.trim()).displayOrder(ord++).build());
+                }
+            }
         }
 
         return toProductDto(productRepository.save(product), true);
@@ -490,6 +504,113 @@ public class CatalogService {
                             : vReq.getCostPrice())
                     .stock(Math.max(0, vReq.getStock()))
                     .build());
+        }
+    }
+
+    private void mergeColorsAndVariantsOnUpdate(Product product, CatalogDtos.AdminProductUpsertRequest request) {
+        List<String> fallbackImages = (request.getImages() == null || request.getImages().isEmpty())
+                ? List.of("03321697-61dc-4f30-8da7-d25085a78741.webp", "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp")
+                : request.getImages();
+
+        Map<String, ProductColor> existingColorsByLowerName = new LinkedHashMap<>();
+        for (ProductColor pc : product.getProductColors()) {
+            existingColorsByLowerName.put(pc.getColor().getName().toLowerCase(Locale.ROOT), pc);
+        }
+
+        Set<String> updatedColorImages = new LinkedHashSet<>();
+        int index = 1;
+        for (CatalogDtos.AdminVariantPayloadDto vReq : request.getVariants()) {
+            Map<String, String> opts = vReq.getOptions() == null ? Map.of() : vReq.getOptions();
+            String colorName = opts.getOrDefault("Màu sắc", opts.getOrDefault("Color", "Mặc định")).trim();
+            String sizeName = opts.getOrDefault("Kích thước", opts.getOrDefault("Size", "Freesize")).trim();
+            String colorKey = colorName.toLowerCase(Locale.ROOT);
+
+            ProductColor pc = existingColorsByLowerName.get(colorKey);
+            if (pc == null) {
+                Color color = getOrCreateColor(colorName);
+                pc = ProductColor.builder().color(color).isActive(true).build();
+                int ord = 0;
+                if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
+                    pc.addImage(ProductImage.builder().imageUrl(vReq.getImage().trim()).displayOrder(ord++).build());
+                } else {
+                    for (String img : fallbackImages) {
+                        pc.addImage(ProductImage.builder().imageUrl(img).displayOrder(ord++).build());
+                    }
+                }
+                product.addProductColor(pc);
+                existingColorsByLowerName.put(colorKey, pc);
+                updatedColorImages.add(colorKey);
+            } else if (!updatedColorImages.contains(colorKey)) {
+                updatedColorImages.add(colorKey);
+                pc.setActive(true);
+                if (request.getImages() != null && !request.getImages().isEmpty()) {
+                    pc.getImages().clear();
+                    int ord = 0;
+                    for (String img : request.getImages()) {
+                        if (img != null && !img.isBlank()) {
+                            pc.addImage(ProductImage.builder().imageUrl(img.trim()).displayOrder(ord++).build());
+                        }
+                    }
+                }
+            }
+
+            if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
+                String trimmedImg = vReq.getImage().trim();
+                if (pc.getImages().stream().noneMatch(i -> i.getImageUrl().equals(trimmedImg))) {
+                    pc.addImage(ProductImage.builder()
+                            .imageUrl(trimmedImg)
+                            .displayOrder(pc.getImages().size())
+                            .build());
+                }
+            }
+
+            Size size = getOrCreateSize(sizeName);
+            String candidateSku = (vReq.getSku() == null || vReq.getSku().isBlank())
+                    ? product.getSkuPrefix() + "-" + index
+                    : vReq.getSku().trim();
+            index++;
+
+            ProductVariant matchedVariant = null;
+            if (vReq.getId() != null) {
+                for (ProductVariant ev : pc.getVariants()) {
+                    if (vReq.getId().equals(ev.getId())) {
+                        matchedVariant = ev;
+                        break;
+                    }
+                }
+            }
+            if (matchedVariant == null) {
+                for (ProductVariant ev : pc.getVariants()) {
+                    if (ev.getSize().getName().equalsIgnoreCase(size.getName())) {
+                        matchedVariant = ev;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedVariant != null) {
+                matchedVariant.setSize(size);
+                if (!matchedVariant.getSku().equalsIgnoreCase(candidateSku)) {
+                    matchedVariant.setSku(ensureUniqueSku(candidateSku));
+                }
+                matchedVariant.setPrice(vReq.getPrice() == null ? request.getPrice() : vReq.getPrice());
+                if (vReq.getCostPrice() != null) {
+                    matchedVariant.setCostPrice(vReq.getCostPrice());
+                } else if (matchedVariant.getCostPrice() == null) {
+                    matchedVariant.setCostPrice(request.getPrice().multiply(new BigDecimal("0.55")));
+                }
+                matchedVariant.setStock(Math.max(0, vReq.getStock()));
+            } else {
+                pc.addVariant(ProductVariant.builder()
+                        .size(size)
+                        .sku(ensureUniqueSku(candidateSku))
+                        .price(vReq.getPrice() == null ? request.getPrice() : vReq.getPrice())
+                        .costPrice(vReq.getCostPrice() == null
+                                ? request.getPrice().multiply(new BigDecimal("0.55"))
+                                : vReq.getCostPrice())
+                        .stock(Math.max(0, vReq.getStock()))
+                        .build());
+            }
         }
     }
 
@@ -593,6 +714,7 @@ public class CatalogService {
                 Math.round(visibleReviews.stream().mapToInt(Review::getRating).average().orElse(5.0) * 10.0) / 10.0;
 
         int soldCount = orderRepository.findAll().stream()
+                .filter(o -> o.getStatus() != OrderStatus.CANCELLED)
                 .flatMap(o -> o.getItems().stream())
                 .filter(oi -> p.getId().equals(oi.getProductId()))
                 .mapToInt(oi -> oi.getQuantity())

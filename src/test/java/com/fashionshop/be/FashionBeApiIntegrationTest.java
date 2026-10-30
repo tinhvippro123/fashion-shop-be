@@ -145,6 +145,28 @@ class FashionBeApiIntegrationTest {
         ProductVariant afterImport = productVariantRepository.findById(variantId).orElseThrow();
         assertEquals(initialStock + 15, afterImport.getStock());
 
+        // 5b. Admin updates an ordered & stock-imported product in-place (must not violate FK constraints)
+        CatalogDtos.ProductResponseDto existingProd = catalogService.getProductDetail(String.valueOf(products.get(0).getId()));
+        CatalogDtos.AdminProductUpsertRequest updateReq = new CatalogDtos.AdminProductUpsertRequest(
+                existingProd.getName(),
+                existingProd.getDescription(),
+                existingProd.getBasePrice(),
+                existingProd.getDiscountPercent(),
+                existingProd.isNew(),
+                existingProd.isBestSeller(),
+                existingProd.getSku(),
+                existingProd.getTotalStock(),
+                existingProd.getCategory().getSlug(),
+                existingProd.getBrand(),
+                existingProd.getImages(),
+                existingProd.getOptions(),
+                existingProd.getAdminVariants(),
+                "published"
+        );
+        CatalogDtos.ProductResponseDto updatedProd = catalogService.updateAdminProduct(existingProd.getId(), updateReq);
+        assertEquals(existingProd.getId(), updatedProd.getId());
+        assertEquals(initialStock + 15, productVariantRepository.findById(variantId).orElseThrow().getStock());
+
         // 6. Dashboard analytics returns positive revenue & chart data
         AdminDtos.DashboardResponseDto dashboard = analyticsService.getDashboardAndReports();
         assertTrue(dashboard.getStats().getTotalRevenue().compareTo(BigDecimal.ZERO) > 0);

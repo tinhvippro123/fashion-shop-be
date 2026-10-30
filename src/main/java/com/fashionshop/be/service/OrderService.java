@@ -76,11 +76,13 @@ public class OrderService {
 
             ProductColor pc = variant.getProductColor();
             Product product = pc.getProduct();
+            BigDecimal baseUnitPrice = (variant.getPrice() != null && variant.getPrice().compareTo(BigDecimal.ZERO) > 0)
+                    ? variant.getPrice()
+                    : product.getBasePrice();
             BigDecimal effectiveUnitPrice = product.getDiscountPercent() > 0
-                    ? product.getEffectivePrice()
-                    : (variant.getPrice() != null && variant.getPrice().compareTo(BigDecimal.ZERO) > 0
-                        ? variant.getPrice()
-                        : product.getEffectivePrice());
+                    ? baseUnitPrice.multiply(BigDecimal.valueOf(100 - product.getDiscountPercent()))
+                            .divide(BigDecimal.valueOf(100), 0, java.math.RoundingMode.HALF_UP)
+                    : baseUnitPrice;
 
             BigDecimal lineTotal = effectiveUnitPrice.multiply(BigDecimal.valueOf(itemReq.getQuantity()));
             String img = pc.getImages().isEmpty() ? "" : pc.getImages().get(0).getImageUrl();
@@ -135,7 +137,13 @@ public class OrderService {
     public OrderDtos.OrderResponseDto getOrderByIdOrCode(String idOrCode) {
         Order order = resolveOrder(idOrCode);
         User currentUser = securityUtils.getCurrentUserOptional().orElse(null);
-        if (currentUser != null && !currentUser.isAdmin()
+        if (currentUser == null) {
+            if (!order.getOrderCode().equalsIgnoreCase(idOrCode.trim())) {
+                throw new BusinessException("Vui lòng đăng nhập hoặc sử dụng mã đơn hàng để xem chi tiết");
+            }
+            return toOrderDto(order);
+        }
+        if (!currentUser.isAdmin()
                 && order.getUser() != null
                 && !order.getUser().getId().equals(currentUser.getId())) {
             throw new BusinessException("Bạn không có quyền xem đơn hàng này");
@@ -148,9 +156,12 @@ public class OrderService {
         if (orderCode == null || orderCode.isBlank()) {
             throw new BusinessException("Vui lòng nhập mã đơn hàng");
         }
+        if (phone == null || phone.isBlank()) {
+            throw new BusinessException("Vui lòng nhập số điện thoại nhận hàng để tra cứu");
+        }
         Order order = orderRepository.findByOrderCodeIgnoreCase(orderCode.trim())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng với mã: " + orderCode));
-        if (phone != null && !phone.isBlank() && !order.getRecipientPhone().equals(phone.trim())) {
+        if (!order.getRecipientPhone().equals(phone.trim())) {
             throw new BusinessException("Số điện thoại không khớp với mã đơn hàng");
         }
         return toOrderDto(order);

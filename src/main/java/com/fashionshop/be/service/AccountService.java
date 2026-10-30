@@ -109,10 +109,20 @@ public class AccountService {
         UserAddress address = userAddressRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));
 
-        if (request.isDefault()) {
-            List<UserAddress> existing = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+        List<UserAddress> existing = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+        if (request.isDefault() || existing.size() == 1) {
             existing.forEach(a -> a.setDefault(a.getId().equals(id)));
             userAddressRepository.saveAll(existing);
+            address.setDefault(true);
+        } else if (address.isDefault()) {
+            address.setDefault(false);
+            existing.stream()
+                    .filter(a -> !a.getId().equals(id))
+                    .findFirst()
+                    .ifPresent(other -> {
+                        other.setDefault(true);
+                        userAddressRepository.save(other);
+                    });
         }
 
         address.setRecipientName(request.getRecipientName().trim());
@@ -122,7 +132,6 @@ public class AccountService {
         address.setWard(request.getWard());
         address.setStreetAddress(request.getStreetAddress());
         address.setFullAddress(buildFullAddress(request));
-        address.setDefault(request.isDefault() || address.isDefault());
         return toAddressDto(userAddressRepository.save(address));
     }
 
@@ -131,7 +140,17 @@ public class AccountService {
         User user = securityUtils.getCurrentUserRequired();
         UserAddress address = userAddressRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));
+        boolean wasDefault = address.isDefault();
         userAddressRepository.delete(address);
+        userAddressRepository.flush();
+        if (wasDefault) {
+            List<UserAddress> remaining = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+            if (!remaining.isEmpty()) {
+                UserAddress nextDefault = remaining.get(0);
+                nextDefault.setDefault(true);
+                userAddressRepository.save(nextDefault);
+            }
+        }
     }
 
     @Transactional(readOnly = true)

@@ -85,6 +85,7 @@ public class AdminDtos {
     @AllArgsConstructor
     public static class CustomerAddressItemDto {
         private Long id;
+        private String recipientName;
         @JsonProperty("isDefault")
         private boolean isDefault;
         private String address;
@@ -113,6 +114,8 @@ public class AdminDtos {
         private String name;
         private String email;
         private String phone;
+        private String gender;
+        private String dateOfBirth;
         private int orders;
         private int totalOrders;
         private String totalSpent;

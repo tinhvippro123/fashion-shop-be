@@ -56,9 +56,16 @@ public class AdminManagementService {
             throw new BusinessException("Mã giảm giá " + code + " đã tồn tại");
         }
         DiscountType type = DiscountType.valueOf(request.getDiscountType().trim().toUpperCase(Locale.ROOT));
+        validateVoucherPayload(type, request);
         LocalDateTime start = request.getStartDate() == null ? LocalDateTime.now() : request.getStartDate();
         LocalDateTime end = request.getEndDate() == null ? start.plusDays(30) : request.getEndDate();
-        VoucherStatus initialStatus = start.isAfter(LocalDateTime.now()) ? VoucherStatus.SCHEDULED : VoucherStatus.ACTIVE;
+        if (end.isBefore(start)) {
+            throw new BusinessException("Ngày kết thúc phải sau ngày bắt đầu");
+        }
+        LocalDateTime now = LocalDateTime.now();
+        VoucherStatus initialStatus = end.isBefore(now)
+                ? VoucherStatus.EXPIRED
+                : (start.isAfter(now) ? VoucherStatus.SCHEDULED : VoucherStatus.ACTIVE);
 
         Voucher voucher = Voucher.builder()
                 .code(code)
@@ -81,11 +88,26 @@ public class AdminManagementService {
     public OrderDtos.VoucherDto updateVoucher(Long id, OrderDtos.VoucherUpsertRequest request) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy mã giảm giá #" + id));
-        voucher.setCode(request.getCode().trim().toUpperCase(Locale.ROOT));
+        String code = request.getCode().trim().toUpperCase(Locale.ROOT);
+        voucherRepository.findByCodeIgnoreCase(code)
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(existing -> {
+                    throw new BusinessException("Mã giảm giá " + code + " đã tồn tại");
+                });
+        DiscountType type = DiscountType.valueOf(request.getDiscountType().trim().toUpperCase(Locale.ROOT));
+        validateVoucherPayload(type, request);
+
+        LocalDateTime start = request.getStartDate() != null ? request.getStartDate() : voucher.getStartDate();
+        LocalDateTime end = request.getEndDate() != null ? request.getEndDate() : voucher.getEndDate();
+        if (start != null && end != null && end.isBefore(start)) {
+            throw new BusinessException("Ngày kết thúc phải sau ngày bắt đầu");
+        }
+
+        voucher.setCode(code);
         if (request.getName() != null && !request.getName().isBlank()) {
             voucher.setName(request.getName().trim());
         }
-        voucher.setDiscountType(DiscountType.valueOf(request.getDiscountType().trim().toUpperCase(Locale.ROOT)));
+        voucher.setDiscountType(type);
         voucher.setDiscountValue(request.getDiscountValue());
         voucher.setMinOrderValue(request.getMinOrderValue() == null ? BigDecimal.ZERO : request.getMinOrderValue());
         voucher.setMaxDiscountAmount(request.getMaxDiscountAmount());
@@ -93,7 +115,28 @@ public class AdminManagementService {
         if (request.getEndDate() != null) voucher.setEndDate(request.getEndDate());
         voucher.setUsageLimit(request.getUsageLimit());
 
+        if (voucher.getStatus() != VoucherStatus.CANCELLED) {
+            LocalDateTime now = LocalDateTime.now();
+            if ((voucher.getEndDate() != null && now.isAfter(voucher.getEndDate()))
+                    || (voucher.getUsageLimit() != null && voucher.getUsedCount() >= voucher.getUsageLimit())) {
+                voucher.setStatus(VoucherStatus.EXPIRED);
+            } else if (voucher.getStartDate() != null && now.isBefore(voucher.getStartDate())) {
+                voucher.setStatus(VoucherStatus.SCHEDULED);
+            } else {
+                voucher.setStatus(VoucherStatus.ACTIVE);
+            }
+        }
+
         return CatalogService.toVoucherDto(voucherRepository.save(voucher));
+    }
+
+    private void validateVoucherPayload(DiscountType type, OrderDtos.VoucherUpsertRequest request) {
+        if (request.getDiscountValue() == null || request.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("Mức giảm giá phải lớn hơn 0");
+        }
+        if (type == DiscountType.PERCENTAGE && request.getDiscountValue().compareTo(new BigDecimal("100")) > 0) {
+            throw new BusinessException("Mức giảm theo phần trăm không được vượt quá 100%");
+        }
     }
 
     @Transactional
@@ -152,6 +195,7 @@ public class AdminManagementService {
                 ? userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId()).stream()
                 .map(a -> AdminDtos.CustomerAddressItemDto.builder()
                         .id(a.getId())
+                        .recipientName(a.getRecipientName())
                         .isDefault(a.isDefault())
                         .address(a.getFullAddress())
                         .phone(a.getPhone())
@@ -177,6 +221,8 @@ public class AdminManagementService {
                 .name(user.getFullName())
                 .email(user.getEmail())
                 .phone(user.getPhone() == null || user.getPhone().isBlank() ? "Chưa cập nhật" : user.getPhone())
+                .gender(user.getGender())
+                .dateOfBirth(user.getDateOfBirth() == null ? null : user.getDateOfBirth().toString())
                 .orders(userOrders.size())
                 .totalOrders(userOrders.size())
                 .totalSpent(SlugUtils.formatVnd(totalSpent))
