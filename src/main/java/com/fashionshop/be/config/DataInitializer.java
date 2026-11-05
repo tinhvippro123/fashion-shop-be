@@ -2,6 +2,7 @@ package com.fashionshop.be.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fashionshop.be.domain.entity.Banner;
 import com.fashionshop.be.domain.entity.Category;
 import com.fashionshop.be.domain.entity.Color;
 import com.fashionshop.be.domain.entity.Order;
@@ -18,6 +19,7 @@ import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.domain.entity.UserAddress;
 import com.fashionshop.be.domain.entity.Voucher;
 import com.fashionshop.be.domain.entity.Wishlist;
+import com.fashionshop.be.domain.enums.BannerPosition;
 import com.fashionshop.be.domain.enums.DiscountType;
 import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.PaymentMethod;
@@ -25,6 +27,7 @@ import com.fashionshop.be.domain.enums.PaymentStatus;
 import com.fashionshop.be.domain.enums.Role;
 import com.fashionshop.be.domain.enums.UserStatus;
 import com.fashionshop.be.domain.enums.VoucherStatus;
+import com.fashionshop.be.repository.BannerRepository;
 import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
 import com.fashionshop.be.repository.OrderRepository;
@@ -113,6 +116,7 @@ public class DataInitializer implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final ReviewRepository reviewRepository;
     private final WishlistRepository wishlistRepository;
+    private final BannerRepository bannerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JdbcTemplate jdbcTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -122,6 +126,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (userRepository.count() > 0) {
             sanitizeLegacyDataIfNeeded();
+            seedBannersIfEmpty();
             return;
         }
 
@@ -415,6 +420,67 @@ public class DataInitializer implements CommandLineRunner {
 
         wishlistRepository.save(Wishlist.builder().user(customer1).product(p1).build());
         wishlistRepository.save(Wishlist.builder().user(customer1).product(p3).build());
+        seedBannersIfEmpty();
+    }
+
+    private void seedBannersIfEmpty() {
+        if (bannerRepository.count() > 0) {
+            return;
+        }
+
+        // 1. HERO Banners
+        bannerRepository.save(Banner.builder()
+                .title("BỘ SƯU TẬP THỜI TRANG NỮ")
+                .subtitle("Thanh lịch, hiện đại và cuốn hút trong từng đường nét")
+                .imageUrl("/client/img/banner-1.jpg")
+                .targetUrl("/danh-muc/nu")
+                .position(BannerPosition.HERO)
+                .sortOrder(1)
+                .isActive(true)
+                .build());
+
+        bannerRepository.save(Banner.builder()
+                .title("XU HƯỚNG THỜI TRANG NAM")
+                .subtitle("Phong cách lịch lãm, bản lĩnh phái mạnh")
+                .imageUrl("/client/img/banner-2.jpg")
+                .targetUrl("/danh-muc/nam")
+                .position(BannerPosition.HERO)
+                .sortOrder(2)
+                .isActive(true)
+                .build());
+
+        // 2. FEATURED Banners (Featured Categories on Home)
+        bannerRepository.save(Banner.builder()
+                .title("ĐẦM & CHÂN VÁY")
+                .subtitle("BST Đầm & Chân váy thanh lịch, sang trọng")
+                .imageUrl("/uploads/ivy/002eab5bd95091694139ae9e8f046007.webp")
+                .targetUrl("/danh-muc/dam-nu")
+                .position(BannerPosition.FEATURED)
+                .sortOrder(1)
+                .isActive(true)
+                .build());
+
+        bannerRepository.save(Banner.builder()
+                .title("ÁO POLO & SƠ MI NAM")
+                .subtitle("Phong cách trẻ trung, chuẩn phom lịch lãm")
+                .imageUrl("/uploads/ivy/9278e16772c52fe0c41b035b775a2f9c.jpg")
+                .targetUrl("/danh-muc/ao-nam")
+                .position(BannerPosition.FEATURED)
+                .sortOrder(2)
+                .isActive(true)
+                .build());
+
+        bannerRepository.save(Banner.builder()
+                .title("ƯU ĐÃI ĐẶC BIỆT")
+                .subtitle("Giảm giá lên đến 50%")
+                .imageUrl("/uploads/ivy/0284007651a63e1aa34493daa2754ba1.webp")
+                .targetUrl("/danh-muc/sale")
+                .position(BannerPosition.FEATURED)
+                .sortOrder(3)
+                .isActive(true)
+                .build());
+
+        log.info("Initialized 5 default banners (2 HERO, 3 FEATURED).");
     }
 
     private void sanitizeLegacyDataIfNeeded() {
