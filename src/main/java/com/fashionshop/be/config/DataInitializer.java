@@ -451,8 +451,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // 2. FEATURED Banners (Featured Categories on Home)
         bannerRepository.save(Banner.builder()
-                .title("ĐẦM & CHÂN VÁY")
-                .subtitle("BST Đầm & Chân váy thanh lịch, sang trọng")
+                .title("ĐẦM")
+                .subtitle("BST Đầm thanh lịch, sang trọng")
                 .imageUrl("/uploads/ivy/002eab5bd95091694139ae9e8f046007.webp")
                 .targetUrl("/danh-muc/dam-nu")
                 .position(BannerPosition.FEATURED)
@@ -461,26 +461,36 @@ public class DataInitializer implements CommandLineRunner {
                 .build());
 
         bannerRepository.save(Banner.builder()
-                .title("ÁO POLO & SƠ MI NAM")
-                .subtitle("Phong cách trẻ trung, chuẩn phom lịch lãm")
-                .imageUrl("/uploads/ivy/9278e16772c52fe0c41b035b775a2f9c.jpg")
-                .targetUrl("/danh-muc/ao-nam")
+                .title("ÁO NỮ")
+                .subtitle("Sơ mi & áo kiểu nữ tính, hiện đại")
+                .imageUrl("/uploads/ivy/f4a49449c18a61d9d49c0f976bc56606.webp")
+                .targetUrl("/danh-muc/ao-nu")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(2)
                 .isActive(true)
                 .build());
 
         bannerRepository.save(Banner.builder()
-                .title("ƯU ĐÃI ĐẶC BIỆT")
-                .subtitle("Giảm giá lên đến 50%")
-                .imageUrl("/uploads/ivy/0284007651a63e1aa34493daa2754ba1.webp")
-                .targetUrl("/danh-muc/sale")
+                .title("ÁO NAM")
+                .subtitle("Polo, sơ mi chuẩn phom lịch lãm")
+                .imageUrl("/uploads/ivy/9278e16772c52fe0c41b035b775a2f9c.jpg")
+                .targetUrl("/danh-muc/ao-nam")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(3)
                 .isActive(true)
                 .build());
 
-        log.info("Initialized 5 default banners (2 HERO, 3 FEATURED).");
+        bannerRepository.save(Banner.builder()
+                .title("SẢN PHẨM SALE")
+                .subtitle("Ưu đãi đặc biệt giảm đến 50%")
+                .imageUrl("/uploads/ivy/0284007651a63e1aa34493daa2754ba1.webp")
+                .targetUrl("/danh-muc/sale")
+                .position(BannerPosition.FEATURED)
+                .sortOrder(4)
+                .isActive(true)
+                .build());
+
+        log.info("Initialized default banners (2 HERO, 4 FEATURED).");
     }
 
     private void sanitizeLegacyDataIfNeeded() {
@@ -488,6 +498,9 @@ public class DataInitializer implements CommandLineRunner {
             jdbcTemplate.update("UPDATE users SET gender = 'FEMALE' WHERE gender IS NULL");
             jdbcTemplate.update("UPDATE users SET date_of_birth = DATE '2000-08-15' WHERE date_of_birth IS NULL");
             jdbcTemplate.execute("DROP TABLE IF EXISTS contact_messages");
+            jdbcTemplate.update("UPDATE banners SET title = 'ĐẦM' WHERE title = 'ĐẦM & CHÂN VÁY'");
+            jdbcTemplate.update("UPDATE banners SET title = 'ÁO NAM' WHERE title = 'ÁO POLO & SƠ MI NAM'");
+            jdbcTemplate.update("UPDATE banners SET title = 'SẢN PHẨM SALE' WHERE title = 'ƯU ĐÃI ĐẶC BIỆT'");
         } catch (Exception e) {
             log.warn("Notice in user sanitize: {}", e.getMessage());
         }

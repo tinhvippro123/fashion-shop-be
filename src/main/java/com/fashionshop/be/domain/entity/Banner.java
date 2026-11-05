@@ -45,3 +45,4 @@ public class Banner extends BaseEntity {
     @Builder.Default
     private boolean isActive = true;
 }
+
