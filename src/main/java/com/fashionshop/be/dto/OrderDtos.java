@@ -188,6 +188,7 @@ public class OrderDtos {
         private String paymentMethod;
         private String payment;
         private String paymentBg;
+        private String paymentUrl;
         private String total;
         private BigDecimal subtotal;
         private BigDecimal shippingFee;

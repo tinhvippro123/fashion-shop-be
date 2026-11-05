@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
     Optional<ProductVariant> findBySkuIgnoreCase(String sku);
     boolean existsBySkuIgnoreCase(String sku);
+    boolean existsBySizeId(Long sizeId);
     List<ProductVariant> findByStockLessThanEqualOrderByStockAsc(int threshold);
 }
 

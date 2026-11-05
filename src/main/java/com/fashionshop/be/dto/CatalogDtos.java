@@ -157,6 +157,8 @@ public class CatalogDtos {
         private String formattedPrice;
         private int discountPercent;
         private String description;
+        private String material;
+        private String careInstructions;
         @JsonProperty("isNew")
         private boolean isNew;
         @JsonProperty("isBestSeller")
@@ -170,17 +172,21 @@ public class CatalogDtos {
         private CategorySimpleDto category;
         private List<ProductColorDto> productColors;
         private List<String> images;
+        private Map<String, List<String>> colorImages;
         private List<AdminOptionDto> options;
         private List<AdminVariantPayloadDto> adminVariants;
     }
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AdminProductUpsertRequest {
         @NotBlank(message = "Tên sản phẩm không được để trống")
         private String name;
         private String description;
+        private String material;
+        private String careInstructions;
         @NotNull(message = "Giá bán không được để trống")
         private BigDecimal price;
         private Integer discountPercent;
@@ -192,9 +198,42 @@ public class CatalogDtos {
         private String category;
         private String brand;
         private List<String> images;
+        private Map<String, List<String>> colorImages;
         private List<AdminOptionDto> options;
         private List<AdminVariantPayloadDto> variants;
         private String status;
+
+        public AdminProductUpsertRequest(
+                String name,
+                String description,
+                BigDecimal price,
+                Integer discountPercent,
+                Boolean isNew,
+                Boolean isBestSeller,
+                String sku,
+                Integer stock,
+                String category,
+                String brand,
+                List<String> images,
+                List<AdminOptionDto> options,
+                List<AdminVariantPayloadDto> variants,
+                String status
+        ) {
+            this.name = name;
+            this.description = description;
+            this.price = price;
+            this.discountPercent = discountPercent;
+            this.isNew = isNew;
+            this.isBestSeller = isBestSeller;
+            this.sku = sku;
+            this.stock = stock;
+            this.category = category;
+            this.brand = brand;
+            this.images = images;
+            this.options = options;
+            this.variants = variants;
+            this.status = status;
+        }
     }
 
     @Data

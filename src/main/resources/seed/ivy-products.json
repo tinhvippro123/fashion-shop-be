@@ -1,0 +1,2579 @@
+[
+  {
+    "name": "Đầm A xếp ly Rose Cobalt",
+    "slug": "dam-a-xep-ly-rose-cobalt",
+    "sku": "LX-W001",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 1790000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Với phong cách công sở hiện đại, vẻ đẹp được định nghĩa bởi chính sự tối giản! Khám phá ngay thiết kế Đầm A xếp ly Rose Cobalt từ BST Sapphire Chic. </p>\r\n\r\n<p>Không cầu kỳ, kiểu cách, dáng đầm chữ A vẫn khiến nàng thêm muôn phần cuốn hút nhờ được tô điểm với phần xếp ly đầy nữ tính. Đặc biệt, sắc xanh Cobalt tinh tế không chỉ mang đến sự tươi mới mà còn thể hiện phong thái tự tin và quý phái cho nàng.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh tím than",
+        "hex": "#2E323D",
+        "images": [
+          "ivy/0622919f176e5d2b84400b0993434cf3.webp",
+          "ivy/a7e2aa2fd0e92751d6361ef5373a21e4.webp",
+          "ivy/dc77ae14db23171f45c2f5b227e32b36.webp",
+          "ivy/ab45468e86afabba97461979cd124f6f.webp",
+          "ivy/1326a9b078b32b09bee9df6a44b74b12.webp",
+          "ivy/46f059063086dfe6ab7f5299c41f0190.webp",
+          "ivy/412f048e1fbf015538e1eea0e9f2e7bc.webp",
+          "ivy/070e112b38af2fea964de18e1cfccb62.webp",
+          "ivy/ad678928068654519e1c899063552dba.webp",
+          "ivy/5420270a5a2190f07b2853afb797ce0a.webp",
+          "ivy/0694b7e840275fdb95ff514bf23721aa.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 9
+          },
+          {
+            "name": "M",
+            "stock": 22
+          },
+          {
+            "name": "L",
+            "stock": 14
+          },
+          {
+            "name": "XL",
+            "stock": 7
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      },
+      {
+        "name": "Đỏ",
+        "hex": "#8D2935",
+        "images": [
+          "ivy/a4039502109702fb9715ecf1937cd60a.webp",
+          "ivy/94ad1e7787108673ba02cdd5fa95e9c0.webp",
+          "ivy/ebbc63de8b2b494c30341c04cbdf28eb.webp",
+          "ivy/9e6e05096fe18e3d475b8c27fd05706f.webp",
+          "ivy/d11be344dae3778bc2f77aeac5026fd8.webp",
+          "ivy/922758b5a8bb3dcec2f97c7fe506bed0.webp",
+          "ivy/5bb933d4bd81ce8550658561e11597ef.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm xòe lụa dệt vân",
+    "slug": "dam-xoe-lua-det-van",
+    "sku": "LX-W002",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 1890000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/879d2e09cbabaa8402051679accdf7e2.webp",
+          "ivy/6f804da29944f48aa337698d26c9dfa3.webp",
+          "ivy/6156094ffbfdd43637cb704276d26aab.webp",
+          "ivy/16ab8f8ddbed281d6a097040a656c9c7.webp",
+          "ivy/07944bba22cd011e2f1e6e2562b11225.webp",
+          "ivy/f19d012ec222c96929181ae9fd20e597.webp",
+          "ivy/b89d87f4f0133c822aeb77902bb4081a.webp",
+          "ivy/b0a1a77ebc933d9f27bedcd4016b8a9b.webp",
+          "ivy/86bda2073bc86d0aecaaf3203d3b196c.webp",
+          "ivy/322d253537c4c1780b0d3589714e17f6.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 8
+          },
+          {
+            "name": "L",
+            "stock": 11
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm công sở Effortless",
+    "slug": "dam-cong-so-effortless",
+    "sku": "LX-W003",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 2190000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Mang sắc <strong>nâu rêu trầm ấm</strong>, <strong>Effortless Grace</strong> mang đến vẻ thanh lịch với nét nữ tính được thể hiện qua những đường cắt tinh gọn. Thiết kế cổ tròn kết hợp khăn lụa họa tiết, tạo điểm nhấn duyên dáng, giúp diện mạo công sở trở nên cuốn hút hơn.</p>\r\n\r\n<p>Phom đầm ôm nhẹ phần thân trên, nhấn eo bằng đai mảnh đồng điệu, sau đó thả dáng chữ A, tôn lên đường nét cơ thể mà vẫn đảm bảo sự thoải mái khi chuyển động. </p>\r\n\r\n<p>Một thiết kế lý tưởng cho nàng diện đến công sở, gặp gỡ đối tác hay những buổi hẹn sau giờ làm.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Nâu",
+        "hex": "#5B5240",
+        "images": [
+          "ivy/b96d193e3db98c73c3e161aa9eb203ea.webp",
+          "ivy/2f662c1de241c0baba8ef0230d7fa134.webp",
+          "ivy/9ae12f583f122be993ad5a390cf09923.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 3
+          },
+          {
+            "name": "M",
+            "stock": 11
+          },
+          {
+            "name": "L",
+            "stock": 3
+          },
+          {
+            "name": "XL",
+            "stock": 3
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm lụa họa tiết",
+    "slug": "dam-lua-hoa-tiet",
+    "sku": "LX-W004",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 1890000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh bơ",
+        "hex": "#809546",
+        "images": [
+          "ivy/5294362b3a1b24d9e8dc1f82ff00fa8a.webp",
+          "ivy/a0d4491d3070de062b1700063ee53d96.webp",
+          "ivy/9083b623d37a474e8e6b935055e5668d.webp",
+          "ivy/9f90246f44b2709cd67fdda701b65523.webp",
+          "ivy/c5ebdcf20e0e7a6c29f55f3d3b73ecc0.webp",
+          "ivy/a41385daa6778a56075a156550bdf385.webp",
+          "ivy/95f46b5f6d118657c62dacffe409010c.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 3
+          },
+          {
+            "name": "M",
+            "stock": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm công sở Evening Rhythm",
+    "slug": "dam-cong-so-evening-rhythm",
+    "sku": "LX-W005",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 1690000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": true,
+    "description": "<p>Đầm công sở Evening Rhythm mang vẻ đẹp thanh lịch, sang trọng với sắc đen kinh điển và thiết kế tối giản, tinh tế. Điểm nhấn peplum lệch eo tạo nét duyên dáng, đồng thời khéo léo tôn lên đường nét vóc dáng. Phom dáng suông nhẹ, cổ tròn, sát tay cùng độ dài qua gối cho một diện mạo chỉn chu, thanh thoát.</p>\r\n\r\n<p>Dễ dàng kết hợp cùng giày cao gót và phụ kiện tối giản, Evening Rhythm phù hợp từ những ngày công sở đến các buổi gặp gỡ, sự kiện sau giờ làm – khi nàng muốn giữ trọn vẻ thanh lịch, tự tin và cuốn hút.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/0a644a8a2be15af8f3d728adfaf30ce5.webp",
+          "ivy/1ed38f34350513e4d64c31fd227ca8c5.webp",
+          "ivy/a7a38b381c4399cd8b037614e6c2f1de.webp",
+          "ivy/8777ff1f5c963008bd446444d12ba754.webp",
+          "ivy/ff5c386bc3a3271b2836a07bf8212b75.webp",
+          "ivy/7bb6e481e1652d4e615ddee928db58f1.webp",
+          "ivy/348e41e59198c520fbaa40c07971132f.webp",
+          "ivy/77e4c5f68aec935bc17b6b99d1fc7678.webp",
+          "ivy/9da1bc84192aab0ab62cc0d1df58644f.webp",
+          "ivy/48ef8cbbf019f9879b3a5c5ec2d89806.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 4
+          },
+          {
+            "name": "M",
+            "stock": 10
+          },
+          {
+            "name": "L",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 5
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm xòe City Bloom",
+    "slug": "dam-xoe-city-bloom",
+    "sku": "LX-W006",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 1990000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": true,
+    "description": "<p>Lấy cảm hứng từ vẻ đẹp dịu dàng của thiên nhiên, City Bloom nổi bật với gam xanh pastel tươi sáng cùng họa tiết hoa loang đầy sức sống, mang đến diện mạo trẻ trung và duyên dáng cho quý cô hiện đại.</p>\r\n\r\n<p>Phom xòe nhẹ kết hợp cổ tròn cách điệu, sát tay và đường chiết eo khéo léo cho một tổng thể hài hòa, tôn dáng. Đai vải đồng màu nhấn nhá vòng eo, trong khi chất liệu Tencel in hoa với độ rủ tự nhiên giúp chân váy chuyển động uyển chuyển, tăng nét bay bổng cho trang phục.</p>\r\n\r\n<p>Phối cùng giày cao gót, sandal hoặc túi xách tối giản, nàng dễ dàng hoàn thiện phong cách chỉn chu khi đi làm, dạo phố hay gặp gỡ bạn bè.</p>\r\n\r\n<p><strong>Phom dáng:</strong> Phom xòe nhẹ, cổ tròn cách điệu, sát tay, chiết eo<br />\r\n<strong>Chi tiết:</strong> Họa tiết hoa loang toàn thân, đai vải đồng điệu, chân váy xòe<br />\r\n<strong>Chất liệu:</strong> Tencel in họa tiết, mềm mại, thoáng mát, có độ rủ tự nhiên<br />\r\n<strong>Màu sắc:</strong> Họa tiết Xanh bầu trời<br />\r\n<strong>Phù hợp:</strong> Đi làm, dạo phố, gặp gỡ bạn bè hoặc các dịp thường ngày thanh lịch</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Họa tiết",
+        "hex": "#8E9DA2",
+        "images": [
+          "ivy/3bf361e8086938b965414d2b5a4cce5c.webp",
+          "ivy/118f73dded40322b99b4cbdf29cacb17.webp",
+          "ivy/792586d101ceba5f1b5857c3b11b5492.webp",
+          "ivy/ac44ff974d6a8f8ce47e0a9687bd1352.webp",
+          "ivy/012786e7668a6b3e6655f0c677f4c4fc.webp",
+          "ivy/bacf5a252b1a296b121bdc2c73d813e7.webp",
+          "ivy/8119970ef15b0a91eda0c66c6a2b9f14.webp",
+          "ivy/254fe9f64358be0c68acc2d4b63a1b46.webp",
+          "ivy/fcad801f8a9cc47add8c3ac9443123b4.webp",
+          "ivy/c2438c32cf953c53574374d78046e3ec.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 5
+          },
+          {
+            "name": "M",
+            "stock": 6
+          },
+          {
+            "name": "L",
+            "stock": 6
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Đầm kẻ 2 lớp Tuysi",
+    "slug": "dam-ke-2-lop-tuysi",
+    "sku": "LX-W007",
+    "categoryKey": "dam",
+    "gender": "nu",
+    "basePrice": 2290000,
+    "discountPercent": 69,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Mượn thiết kế Vest cổ điển, đầm biến tấu dáng xòe cách điệu, độ dài trên đầu gối và có hai túi sườn. Điểm nhấn là chi tiết xếp ly phồng ở tay trên nền họa tiết kẻ thời thượng. Đầm ôm eo xòe nhẹ 2 bên vừa tôn dáng nàng vừa có tách dụng che khuyết điểm phần hông tốt.</p>\r\n\r\n<p>Chất liệu được sử dụng là chất vải tuysi cao cấp. Đây là sự lựa chọn hàng đầu của các nhà mốt dành cho các thiết kế đòi hỏi sự thanh lịch, sang trọng mà vẫn đảm bảo tính thoải mái. Đầm 2 lớp chất liệu vải tuysi mềm nhẹ, thoáng mát, ít nhăn và giữ form dáng tốt. </p>\r\n\r\n<p>Với đầm có màu sắc trẻ trung này, các nàng có thể lựa chọn kết hợp cùng túi xách bản nhỏ và giày cao gót, phù hợp để đi làm hoặc đi chơi.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 167 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 50 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>83-65-93 cm</p>\r\n\r\n<p>Mẫu mặc size M Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Kẻ Đen",
+        "hex": "#939393",
+        "images": [
+          "ivy/b1d1109d936b994033d0b4adb48219ec.JPG",
+          "ivy/7e0b4a85f6a650be88a483f8529e35a1.JPG",
+          "ivy/0f8868659c1944347590db35c9198f38.JPG",
+          "ivy/b151ea0a7c122f7f810e7ce564a05dc0.jpg",
+          "ivy/da9428d51a54541701006836e56b2cf4.jpg",
+          "ivy/1ccdf63c9bc18118eb319b30b75246aa.jpg",
+          "ivy/dfd272ce21f01a27ae469e6beb322980.jpg",
+          "ivy/3087ab302dae1a6f77bab15a31e4562e.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 40
+          },
+          {
+            "name": "M",
+            "stock": 107
+          },
+          {
+            "name": "L",
+            "stock": 64
+          },
+          {
+            "name": "XL",
+            "stock": 25
+          },
+          {
+            "name": "XXL",
+            "stock": 4
+          }
+        ]
+      },
+      {
+        "name": "Kẻ Hồng nhạt",
+        "hex": "#FADBE2",
+        "images": [
+          "ivy/c65633e81aa7c3772f68deb042f0a3e3.jpg",
+          "ivy/6f0127f11252c854a9e14b1258280c2c.jpg",
+          "ivy/bb28a82062b2e54dddfe609ee9d171f9.jpg",
+          "ivy/b4cb4f82c6b3a91a44b26bb82e0bb547.jpg",
+          "ivy/99ef2071441b684319f06cb773bac08b.jpg",
+          "ivy/b02b20f092735bf08acefdb07b52479d.jpg",
+          "ivy/acbd257530466309486aba8ff9ccaba0.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 3
+          },
+          {
+            "name": "L",
+            "stock": 1
+          },
+          {
+            "name": "XL",
+            "stock": 4
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo tơ lụa Ivory Muse",
+    "slug": "ao-to-lua-ivory-muse",
+    "sku": "LX-W008",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 1090000,
+    "discountPercent": 40,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Sản phẩm Độc quyền Online – Mở bán trên các kênh trực tuyến</strong></p>\r\n\r\n<p>Áo kiểu <strong>Ivory Muse</strong> tô điểm cho nàng công sở một vẻ đẹp tinh khôi và thanh lịch trên nền chất liệu tơ lụa mềm mại. Thiết kế tạo điểm nhấn duyên dáng nơi phần cổ lá cách điệu, kết hợp tay lỡ phồng nhẹ, tôn lên vẻ nữ tính mà vẫn giữ nét được nét hiện đại.</p>\r\n\r\n<p>Sắc trắng thanh thoát giúp thiết kế dễ dàng biến hóa trong nhiều hoàn cảnh, từ những ngày công sở chỉn chu đến những buổi gặp gỡ nhẹ nhàng.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Trắng ngà",
+        "hex": "#EBE5D9",
+        "images": [
+          "ivy/f4a49449c18a61d9d49c0f976bc56606.webp",
+          "ivy/799589d5643cd9ded91a499e9696f00a.webp",
+          "ivy/e83f1a06cc56fb75ccffd439a56a812d.webp",
+          "ivy/ec2a9ddb7a042e54a71742ce0b48a056.webp",
+          "ivy/ff9eeecd91daf74c46102eef91338b4b.webp",
+          "ivy/dadc071997f6b55b91ceb7f812e13604.webp",
+          "ivy/79a313fe633de9824707bccd0c6f6f9b.webp",
+          "ivy/a8c9dd644482d2b041f564f43713a8f0.webp",
+          "ivy/3902c8e121f1f870bc05703d1820ec18.webp",
+          "ivy/d7d1d6b5c835930e63b052ade5c3a904.webp",
+          "ivy/7897ccf4823f614fd0a2ccbd5a0ce45f.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 250
+          },
+          {
+            "name": "M",
+            "stock": 422
+          },
+          {
+            "name": "L",
+            "stock": 209
+          },
+          {
+            "name": "XL",
+            "stock": 34
+          },
+          {
+            "name": "XXL",
+            "stock": 35
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo sơ mi lụa cổ V",
+    "slug": "ao-so-mi-lua-co-v",
+    "sku": "LX-W009",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 1190000,
+    "discountPercent": 45,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Be",
+        "hex": "#C4A780",
+        "images": [
+          "ivy/3cc19ba677154e636e5ffc1a09115e39.webp",
+          "ivy/b225808942e11d3b5bb536b0512303fc.webp",
+          "ivy/11a644cee263e87e8301bf65d2f38cbc.webp",
+          "ivy/6cbcecc1c27f9498adebc2ba8dffc799.webp",
+          "ivy/22e3d337e383bfb01f02cd6e8da39027.webp",
+          "ivy/1b0d51786015ca82d768d6ce3965693e.webp",
+          "ivy/477b96ae4ab725632cab8d14117156a7.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 286
+          },
+          {
+            "name": "M",
+            "stock": 150
+          },
+          {
+            "name": "L",
+            "stock": 288
+          },
+          {
+            "name": "XL",
+            "stock": 101
+          },
+          {
+            "name": "XXL",
+            "stock": 136
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo thanh lụa Serene",
+    "slug": "ao-thanh-lua-serene",
+    "sku": "LX-W010",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 1190000,
+    "discountPercent": 45,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Mang sắc <strong>xanh pastel dịu mắt và nâu trầm ấm</strong>, áo sơ mi lụa <strong>Serene </strong>ghi dấu bằng vẻ thanh thoát, nữ tính, phù hợp với tinh thần thanh lịch, tối giản. Thiết kế cổ tròn đứng nhẹ, điểm xuyết chi tiết dây buộc mềm rủ phía trước và điểm cài kim loại tinh tế, tạo nên nét duyên dáng mà vẫn giữ được sự chỉn chu cần thiết.</p>\r\n\r\n<p>Chất liệu <strong>Tencel thanh lụa</strong> nổi bật với độ mềm mượt, nhẹ thoáng. Phom áo suông vừa vặn, dễ dàng phối cùng quần tây hoặc chân váy. Hai gam màu mang đến hai sắc thái riêng: xanh pastel nhẹ nhàng, trong trẻo; nâu trầm sang trọng, ấm áp — để nàng linh hoạt lựa chọn theo phong cách và khoảnh khắc.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 164 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 48 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>85-62-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Nâu",
+        "hex": "#8C705B",
+        "images": [
+          "ivy/de6f594e25f512b2ac220ba998e4d40a.webp",
+          "ivy/50719b58ae5a9d24c60fc3ea9d5da46f.webp",
+          "ivy/be5caacf4ba31ff50ff75fc8df09f6bd.webp",
+          "ivy/aa99f9ea10314ff92c671309ef8478de.webp",
+          "ivy/499e7c619ce2bf79fa27c3e723cd6595.webp",
+          "ivy/2033eac231794ec2bb51eb60a40468f3.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 116
+          },
+          {
+            "name": "M",
+            "stock": 217
+          },
+          {
+            "name": "L",
+            "stock": 123
+          },
+          {
+            "name": "XL",
+            "stock": 60
+          },
+          {
+            "name": "XXL",
+            "stock": 59
+          }
+        ]
+      },
+      {
+        "name": "Xanh da trời",
+        "hex": "#98A7AC",
+        "images": [
+          "ivy/6f89738827d2bbcd4f796f9af5c9bb86.webp",
+          "ivy/e4a6aad18c34bcdc75dded0c58158126.webp",
+          "ivy/151ae6ba7a3fda5e62f2e69c725c1296.webp",
+          "ivy/cbe54f1d6e5306a8e3683499c4b69df3.webp",
+          "ivy/90fe5eae1212a37a63e4ee41fafe46bc.webp",
+          "ivy/f302a7db25ec0231a0baf06fc5559e84.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 70
+          },
+          {
+            "name": "M",
+            "stock": 147
+          },
+          {
+            "name": "L",
+            "stock": 105
+          },
+          {
+            "name": "XL",
+            "stock": 54
+          },
+          {
+            "name": "XXL",
+            "stock": 49
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo công sở cách điệu",
+    "slug": "ao-cong-so-cach-dieu",
+    "sku": "LX-W011",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 1090000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Bạc hà",
+        "hex": "#719590",
+        "images": [
+          "ivy/a9006df0311970eac1e8b4ed85e08823.webp",
+          "ivy/ab6ee215c707777dcb2ab312308f7e92.webp",
+          "ivy/f25d0508427bd5bc37f279d59af64a5e.webp",
+          "ivy/5ce29a1db1fea4d01b63cb7c57ac4099.webp",
+          "ivy/cdb923036a928cec5e97636092de3583.webp",
+          "ivy/a2c08a19909d4598aaa1bdc3e7086c63.webp",
+          "ivy/6d56819bec08dc2c2c824519e7d34eac.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 6
+          },
+          {
+            "name": "M",
+            "stock": 9
+          },
+          {
+            "name": "L",
+            "stock": 7
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác Aura Tweed",
+    "slug": "ao-khoac-aura-tweed",
+    "sku": "LX-W012",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 1990000,
+    "discountPercent": 45,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Sản phẩm Độc quyền Online – Mở bán trên các kênh trực tuyến</strong></p>\r\n\r\n<p>Tái hiện tinh thần thanh lịch và hiện đại, <strong>Aura Tweed </strong>gây ấn tượng bởi đường cắt tinh xảo cùng phom dáng chiết eo ôm nhẹ tôn vinh vóc dáng người mặc. Thiết kế cổ tròn tối giản kết hợp hàng nắp túi trang trí - nẹp khuy ở thân trước, tạo điểm xuyết đầy cuốn hút cho tổng thể.</p>\r\n\r\n<p>Chất liệu vải Tweed mỏng, bề mặt dệt nổi sang trọng, có độ co giãn nhẹ mang lại sự thoải mái tối đa mà vẫn giữ chuẩn phom dáng chỉn chu. Dễ dàng kết hợp cùng chân váy đồng bộ hoặc phối linh hoạt với quần tây dáng rông, mẫu áo khoác là lựa chọn hoàn hảo cho quý cô công sở hiện đại.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/36bbb69678e8d74b3da786ada468dc02.webp",
+          "ivy/051a4e535f7c72f9a9716803e39806e8.webp",
+          "ivy/c87519dd362066e907947880a499d39f.webp",
+          "ivy/0c7e11c4823fbc2adeece41905f94a0b.webp",
+          "ivy/6df6393c32a4bf3c3bde3ef66b7ae9ed.webp",
+          "ivy/a64bfe19098267267696727b347c98ab.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 104
+          },
+          {
+            "name": "M",
+            "stock": 269
+          },
+          {
+            "name": "L",
+            "stock": 215
+          },
+          {
+            "name": "XL",
+            "stock": 87
+          },
+          {
+            "name": "XXL",
+            "stock": 67
+          }
+        ]
+      },
+      {
+        "name": "Xanh da trời",
+        "hex": "#98A7AC",
+        "images": [
+          "ivy/1aa62565c99091c13689ae3fe4bc827f.webp",
+          "ivy/25689639ae15c6125225cdedad0cfb64.webp",
+          "ivy/aa9bf1eda302316ee92a93605a1497a3.webp",
+          "ivy/619d682698ef011abe3dd890461a10c1.webp",
+          "ivy/378a1fa697e4e97652be1292c02d50c1.webp",
+          "ivy/36788439167e2a216c60b881406f4bf4.webp",
+          "ivy/ed95ab39eec7b8c99e8da69c27848e07.webp"
+        ],
+        "sizes": [
+          {
+            "name": "L",
+            "stock": 71
+          },
+          {
+            "name": "XL",
+            "stock": 89
+          },
+          {
+            "name": "XXL",
+            "stock": 62
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Little Tweed Jacket",
+    "slug": "little-tweed-jacket",
+    "sku": "LX-W013",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 2790000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>* Sản phẩm chỉ GIẶT KHÔ, tuyệt đối không giặt nước!</strong></p>\r\n\r\n<p>Áo khoác Little Tweed Jacket là sự kế thừa vẻ tinh tế của chiếc áo khoác tweed cổ điển: cổ tròn, viền bằng vải vặn thừng khác màu, 2 nắp túi phía trước cùng hàng khuy ngọc trai mang lại vẻ thanh lịch cho các quý cô.</p>\r\n\r\n<p>Vải tweed cổ điển luôn là hiện thân của nét thanh lịch kín đáo vô cùng kiêu sa. Bề mặt vải Tweed có độ gồ ghề nhẹ đặc trưng, bên trong có lớp lót lụa mềm mại. Tính cao cấp của chất liệu Tweed đem lại là sự mềm nhẹ, khả năng chống nước, chống lạnh tốt. Đặc biệt hơn là khả năng “tự hồi phục” của các sợi vải khi bị những vật sắc nhọn bên ngoài tác động vào, chỉ cần dùng tay vuốt nhẹ nhàng thì những sợi len sẽ bện lại và xếp thành vị trí để che lấp hoàn toàn lỗ thủng. Bởi vậy đây chính là chất liệu \"Timeless\", là sự lựa chọn hàng đầu của các nhà mốt trên toàn thế giới.</p>\r\n\r\n<p>Không chỉ đẹp từ thiết kế đến chất liệu, set đồ còn mang tính ứng dụng cao, phù hợp cho các cô nàng diện nơi công sở và đi dự sự kiện.</p>\r\n\r\n<p>Thiết kế có hai kiểu dáng: Kẻ viền trắng đậm và kẻ viền trắng nhạt</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Trắng ngà",
+        "hex": "#EBE5D9",
+        "images": [
+          "ivy/3c4601f9dd8a7c24de99ea00262924ca.webp",
+          "ivy/14698bff1b2fc2ee18c0ba769dd3cc15.webp",
+          "ivy/1d944592c9d21c86077bc5c728f36461.webp",
+          "ivy/468c9effe8c9f61df3f2708322276499.webp",
+          "ivy/670a969ebffe1632dfcbcb21327aab13.webp",
+          "ivy/bc4ac340e670363aa85cb6584a832fd8.webp",
+          "ivy/781210643abcac9028a397057719c972.webp",
+          "ivy/d03256705d45e119720f1ac8294917e7.webp",
+          "ivy/572da535156de1c69b966877ebcdae99.webp",
+          "ivy/d6e9134a9f553722be9e654bcc804b3a.webp",
+          "ivy/ada5424aa2df56d8fce4c926029b0fbd.webp",
+          "ivy/6f6cc9b872c911cf4be2c231c066cab7.webp",
+          "ivy/c528ef51121a5d4e71490c987ab26003.webp",
+          "ivy/9226415b0575254eb959db3d1c732b70.webp",
+          "ivy/8bbb179432f7f95b0e84eda4cb47349f.webp",
+          "ivy/75e885813b21d751eb293bf001c96eb7.webp",
+          "ivy/e387e66e23047dcfc177f38b3ced38dc.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 19
+          },
+          {
+            "name": "M",
+            "stock": 32
+          },
+          {
+            "name": "L",
+            "stock": 30
+          },
+          {
+            "name": "XL",
+            "stock": 12
+          },
+          {
+            "name": "XXL",
+            "stock": 7
+          }
+        ]
+      },
+      {
+        "name": "Be",
+        "hex": "#C4A780",
+        "images": [
+          "ivy/f6690f07593028d4b24f56d14f644564.jpg",
+          "ivy/aaaf4ff8f4734615e791d9bcd53c17c1.jpg",
+          "ivy/d0794e788f33841021b3c3df13e8a7c9.jpg",
+          "ivy/b34780ce4cc669770b3854b228fc130b.jpg",
+          "ivy/9d9f9b8d9ba93be97f8c070fdeef324e.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo Tweed Timeless Weave",
+    "slug": "ao-tweed-timeless-weave",
+    "sku": "LX-W014",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 2590000,
+    "discountPercent": 0,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p><strong>Áo Tweed Timeless Weave </strong>nổi bật với vẻ ngoài sang trọng trên tinh thần cổ điển được tiết chế theo hướng hiện đại. Thiết kế dáng ngắn, cổ tròn không ve cùng đường cắt gọn gàng giúp tổng thể trở nên thanh thoát, trong khi phần tay dài và phom áo vừa vặn tôn lên nét chỉn chu, nữ tính.</p>\r\n\r\n<p>Chất liệu <strong>Wool Blend Tweed</strong> sở hữu bề mặt dệt đặc trưng với những sợi đan xen tạo chiều sâu, cảm giác sang trọng. Thiết kế có thể kết hợp linh hoạt cùng áo kiểu, sơ mi và quần tây, trở thành điểm nhấn hoàn thiện những bản phối công sở thanh lịch, tinh tế.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Bạc hà",
+        "hex": "#B5C8C5",
+        "images": [
+          "ivy/d8b52c2ec70a30e56eded15803bb0fc1.webp",
+          "ivy/39a562e837da83c6f27aef1bdba3440d.webp",
+          "ivy/e14d1149733eed3f2a0bc78693be5e02.webp",
+          "ivy/9882dcd5aff942cdaa8f4077c35a48bd.webp",
+          "ivy/1827898a0ae930c20ee0ce771178abaf.webp",
+          "ivy/d2e2cdb60c57bff7695b61d24604b06b.webp",
+          "ivy/37cbb3a6d643f70334df983b9780bb70.webp",
+          "ivy/dc1fd8254a422ac00f141bab63a6b453.webp",
+          "ivy/9a2e99e24b9d3aa52e5f591fa58508ee.webp",
+          "ivy/d1a1ab8223a2669353b1aae72b7c514a.webp",
+          "ivy/a68d911d6ecb6576dd54305e94410302.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 17
+          },
+          {
+            "name": "M",
+            "stock": 45
+          },
+          {
+            "name": "L",
+            "stock": 41
+          },
+          {
+            "name": "XL",
+            "stock": 12
+          },
+          {
+            "name": "XXL",
+            "stock": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác Elysian Tweed",
+    "slug": "ao-khoac-elysian-tweed",
+    "sku": "LX-W015",
+    "categoryKey": "ao-nu",
+    "gender": "nu",
+    "basePrice": 3490000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p dir=\"auto\"><strong>Áo khoác Elysian Tweed</strong> mang đến diện mạo nữ tính với gam vàng kem nhẹ nhàng. Chất liệu tweed dệt vân tạo nên bề mặt giàu kết cấu, kết hợp những đường viền ánh vàng tinh tế, gợi lên vẻ sang trọng và dịu dàng đặc trưng của <strong>BST THE EVERGLOW EDIT.</strong></p>\r\n\r\n<p dir=\"auto\">Áo thiết kế <strong>dáng ôm vừa vặn, cổ tròn và tay dài</strong>, tạo cảm giác gọn gàng, thanh thoát. Điểm nhấn nằm ở <strong>đường viền ánh vàng chạy quanh cổ áo, nẹp thân và hai túi trước</strong>, kết hợp hàng khuy cho hiệu ứng bắt sáng nhẹ. </p>\r\n\r\n<p dir=\"auto\">Có thể kết hợp cùng<a href=\"https://ivymoda.com/sanpham/quan-tay-soft-form-ms-22m9522-45210\"> <strong>quần tây Soft Form</strong> </a>hoặc chân váy để tạo nên tổng thể thanh lịch, nữ tính; hoặc phối cùng các thiết kế màu trắng kem cho diện mạo đồng điệu và sang trọng. </p>\r\n\r\n<p dir=\"auto\"><strong>Phom dáng:</strong> Phom ôm vừa, cổ tròn, tay dài, dáng áo gọn<br />\r\n<strong>Chi tiết:</strong> Viền ánh vàng, hàng cúc đính đá, hai túi ngực giả, logo kim loại<br />\r\n<strong>Chất liệu:</strong> Vải tweed dệt vân, bề mặt có kết cấu, giữ phom tốt<br />\r\n<strong>Màu sắc:</strong> Vàng kem<br />\r\n<strong>Phù hợp:</strong> Đi làm, gặp gỡ đối tác, dự sự kiện hoặc các dịp cần vẻ ngoài thanh lịch, sang trọng</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Vàng kem",
+        "hex": "#E3CB51",
+        "images": [
+          "ivy/2659923107726eb1b33ef3e20c87f7b5.webp",
+          "ivy/e38d4e8d2613d37a41c4119ec63f2c2c.webp",
+          "ivy/e8f6ff7462ea1a3fd91ee4d418a78cc6.webp",
+          "ivy/570024a178b5ab6163af538cd68d9b87.webp",
+          "ivy/b92a77318cb254bb2ccb88542a475d8c.webp",
+          "ivy/83025dc40461b5240c3d4ddf78bb7c7b.webp",
+          "ivy/e9eb4119f5e0162eb181e5dc678c7ce0.webp",
+          "ivy/a39175ef78d9e03c1f4f5ac74a29ff4c.webp",
+          "ivy/37391b53d3d3de7f5030a42460eb01fd.webp",
+          "ivy/73ac3f2edba0bdc4af2c771f96f214da.webp",
+          "ivy/6cd6b3dde82587efa0511bcb21acac0f.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 11
+          },
+          {
+            "name": "M",
+            "stock": 25
+          },
+          {
+            "name": "L",
+            "stock": 16
+          },
+          {
+            "name": "XL",
+            "stock": 5
+          },
+          {
+            "name": "XXL",
+            "stock": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần âu ống loe classic",
+    "slug": "quan-au-ong-loe-classic",
+    "sku": "LX-W016",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1090000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Mang tinh thần thanh lịch chuẩn mực của thời trang công sở hiện đại, Classic Pants chinh phục ánh nhìn bởi phom dáng gọn gàng, tinh tế và dễ ứng dụng trong nhiều hoàn cảnh.</p>\r\n\r\n<p>Thiết kế quần ống đứng, cạp cao vừa vặn giúp tôn dáng và tạo hiệu ứng đôi chân thon dài. Đường ly ép sắc nét kết hợp chi tiết thắt lưng mảnh tạo điểm nhấn nhẹ nhàng, giữ trọn vẻ chỉn chu nhưng không cứng nhắc.</p>\r\n\r\n<p><strong>Phom dáng:</strong> Quần ống loe, cạp cao, dáng đứng.<br />\r\n<strong>Chi tiết:</strong> Ly ép thẳng, khóa kéo giấu. <br />\r\n<strong>Chất liệu:</strong> Vải tuytsi cao cấp, đứng phom, ít nhăn, thoải mái khi mặc.<br />\r\n<strong>Màu sắc:</strong> Xám đậm thanh lịch.<br />\r\n<strong>Phù hợp:</strong> Công sở, họp hành, gặp gỡ đối tác, phối cùng áo sơ mi hoặc áo kiểu.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xám đậm",
+        "hex": "#6C6D6E",
+        "images": [
+          "ivy/327bc31ca7f073fbd81b85e91ccbdd2b.webp",
+          "ivy/0e1d4bd90f3eb7b7e5c55bb240bd14c4.webp",
+          "ivy/cacbbec0fb27575b270f99804a3fc460.webp",
+          "ivy/9593b12f503ecd6d2355b8fd095eaaab.webp",
+          "ivy/b4da8f39fed0fb2b87408db950aeaf66.webp",
+          "ivy/fe1bbcb7cf1543b18e3e5f2467d7a985.webp",
+          "ivy/016a1377a7f480810b8a9ae2518d35ae.webp",
+          "ivy/882e32f6117328b279ff935e8e7e71a2.webp",
+          "ivy/9395e038d418bed9b9fb8de70db1892b.webp",
+          "ivy/87975374a6381a65c398719b03f7cff2.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Urban Passion Pants - Quần dài lưng cao",
+    "slug": "urban-passion-pants-quan-dai-lung-cao",
+    "sku": "LX-W017",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1490000,
+    "discountPercent": 30,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Urban Passion Pants được thiết kế theo phong cách tối giản hiện đại, mang đến vẻ ngoài thanh lịch mà vẫn toát lên khí chất mạnh mẽ. Phom quần suông rộng tôn dáng, tạo hiệu ứng kéo dài đôi chân, phù hợp với nhiều vóc dáng.</p>\r\n\r\n<p>Phần lưng cao kết hợp cùng chi tiết thắt lưng nhỏ gọn giúp định hình vòng eo và hoàn thiện tổng thể gọn gàng, chỉn chu. Chất liệu vải Tuytsi cao cấp mềm mịn, đứng phom nhưng vẫn đảm bảo độ bay nhẹ, thoải mái khi di chuyển.</p>\r\n\r\n<p>Chiếc quần này dễ dàng phối cùng áo blouse, áo thun hay sơ mi để tạo nên các set đồ công sở, dạo phố hay dự tiệc thanh lịch – đặc biệt phù hợp với phong cách tối giản yêu chuộng màu đen.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/23f2bd2995b73c2e9012134dbfff3e71.webp",
+          "ivy/ad176457f2621113b6022544ae16198c.webp",
+          "ivy/f84fc39b135b1a164efc081abb93a3ee.webp",
+          "ivy/e97e4eaa858fac09bca01d7f35c731b9.webp",
+          "ivy/caeb54d4c5dd4e7f5f320d5ec59bb7e5.webp",
+          "ivy/b9495c8d6766046777cf0dd770736a73.webp",
+          "ivy/e620c59849ac86cb909c5eaac5d3213c.webp",
+          "ivy/3263e64e4a174a18b0127ec1b9ee95a9.webp",
+          "ivy/50d8ebabe1b7633c54ff7c061dc103a7.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần suông Tuytsi Magic",
+    "slug": "quan-suong-tuytsi-magic",
+    "sku": "LX-W018",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1390000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Sử dụng chất kiệu vải Tuytsi mềm nhẹ, thoải mái, thiết kế che khuyết điểm tốt giúp nàng tự tin mỗi khi xuất hiện.</p>\r\n\r\n<p>- Quần kèm hai túi sườn và độ dài ngang mắt cá chân. Thiết kế chỉn chu, tỉ mỉ, nhấn ly nhẹ nhàng.</p>\r\n\r\n<p>- Nàng công sở có thể kết hợp với nhiều kiểu áo khác nhau để mang đến những bộ trang phục chỉn chu và lịch sự.  </p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Be",
+        "hex": "#C4A780",
+        "images": [
+          "ivy/f26f1ed4c7796ada0b3daef4bf165c31_rp1756896762.webp",
+          "ivy/92888a17b2b3a3eff7c70b740f2b054e_rp1756896796.webp",
+          "ivy/fb891e70009fc50bed2e6b4fb296249d.webp",
+          "ivy/2c59734fe4604283b2d6811d4892c77b.webp",
+          "ivy/d29aec40b004238a1906b6a249dd44a3.webp",
+          "ivy/715992b3b4e36ddc3fb90d1ab706717c.webp",
+          "ivy/70d0a436e4cf2a02c887f256312d592c.webp",
+          "ivy/4abf535fcfca447a4c7ca518061a04bf.webp",
+          "ivy/98d1396879d38a4a8639e01b3b3f19e6.webp",
+          "ivy/25ac4f3f0cefa1ef1f12edd196483fa3.webp",
+          "ivy/a2552b39a121fa0d030f8b46a1d3aa8c.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 2
+          },
+          {
+            "name": "L",
+            "stock": 1
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      },
+      {
+        "name": "Trắng",
+        "hex": "#FFFFFF",
+        "images": [
+          "ivy/905e78ee1184a4bf62f00577cc5fbc4c.webp",
+          "ivy/678d9a7f56ec4d5c7710a9793e4549d6.webp",
+          "ivy/e19caeb56d4381d7d0dac95263b5d0a9.webp",
+          "ivy/96b13858a6a1bb2c9cefb62b26291d8d.webp",
+          "ivy/039eeee61bd90112b410ce8acc00171f.webp",
+          "ivy/2e328fd9e75133e7683cf21b7ba7ef66.webp",
+          "ivy/a6cfd0b492a082357a6ed6c82eeed137.webp",
+          "ivy/9f604fa84fb45bf443a8bf0ba987adca.webp",
+          "ivy/7a8e9a8291fc3ca1058e7ad1ad144ad4.webp",
+          "ivy/6a0ef939834d854213f677344916280c.webp",
+          "ivy/ccf20a699a5b9738db219c65c71a15f6.webp",
+          "ivy/040e52a240c9adc6bf5341fc892a7ff4.webp",
+          "ivy/a78564d82d4c42d4102a774fa1f4f8cd.webp",
+          "ivy/4648df9864699c73c06343980579311a.webp",
+          "ivy/cab93fa0ac235c70e139c2cd67e443c0.webp"
+        ],
+        "sizes": [
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần suông Soft Chic",
+    "slug": "quan-suong-soft-chic",
+    "sku": "LX-W019",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1190000,
+    "discountPercent": 30,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Quần suông Soft Chic được thiết kế trên nền vải Tuytsi cao cấp với phom đứng mềm mại, mang đến sự cân bằng hoàn hảo giữa vẻ thanh lịch và sự thoải mái.</p>\r\n\r\n<p>Gam màu xám trung tính tinh tế dễ dàng phối hợp với nhiều kiểu áo, từ sơ mi công sở đến áo lụa hay blazer. Thiết kế cạp cao tôn dáng, đường cắt may chuẩn xác giúp kéo dài đôi chân và tạo nên phong thái chuyên nghiệp nhưng vẫn giữ được sự bay bổng, phóng khoáng.</p>\r\n\r\n<p>Đây là lựa chọn lý tưởng cho quý cô hiện đại trong mọi hoàn cảnh – từ nơi công sở đến những buổi hẹn sang trọng.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Ghi",
+        "hex": "#63626A",
+        "images": [
+          "ivy/6aa799713f4b24109c32c2c01bac9e2b.webp",
+          "ivy/911c17d5ea81b85ef0e0bab0bcb2ccab.webp",
+          "ivy/36428adb75a9d515b97cd67e13013ad8.webp",
+          "ivy/064a6d8a42e526668c0c1310ce9c4a71.webp",
+          "ivy/f0ae972b4f4a23839a539059401e48ef.webp",
+          "ivy/a9644c982a39224cc9cd8698460feb3f.webp",
+          "ivy/786da60a0aad5e6ce40097ac193c2fd0.webp",
+          "ivy/4a36311bf6771641ead8f87fc10c6251.webp",
+          "ivy/07cf53f50f479a6005c774fd39ecd9bd.webp",
+          "ivy/535a5bbf14aaf6539b21fc3e71cf44c4.webp",
+          "ivy/e3459c29b98becf04ee779c78560c564.webp",
+          "ivy/002eab5bd95091694139ae9e8f046007.webp",
+          "ivy/f15269d51d76083ae582245aa7047a73.webp",
+          "ivy/732052f68b6ff905a84d1027361d3740.webp"
+        ],
+        "sizes": [
+          {
+            "name": "L",
+            "stock": 1
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Chân váy A Essential",
+    "slug": "chan-vay-a-essential",
+    "sku": "LX-W020",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1190000,
+    "discountPercent": 0,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p>Chân váy A Essential gây ấn tượng với 2 gam màu: <strong>nâu trầm ấm/ be thời thượng,</strong> mang đến vẻ đẹp trang nhã và dễ dàng ứng dụng trong tủ đồ công sở. Phom dáng chữ A nhẹ nhàng ôm gọn vòng eo, buông mềm theo đường nét cơ thể, tạo hiệu ứng tôn dáng cũng như giữ trọn nét nữ tính, thanh lịch.</p>\r\n\r\n<p>Chất liệu tinh sợi định hình giúp chân váy duy trì phom dáng chỉn chu, tạo bề mặt vải mượt mà và cảm giác đứng dáng khi mặc. Thiết kế tối giản dễ dàng kết hợp cùng <strong><a href=\"https://ivymoda.com/sanpham/ao-vest-kieu-essential-ms-67m9457-45136\">áo vest Essential</a> MS 67M9457 </strong>đồng điệu hoặc những mẫu sơ mi, áo kiểu khác, mang đến nhiều lựa chọn phối đồ tinh tế cho quý cô hiện đại.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Nâu",
+        "hex": "#61362F",
+        "images": [
+          "ivy/3fb09a85744dfbb4fd6b52e1272e0c9c.webp",
+          "ivy/d1789079797475b2254e562b7eccf789.webp",
+          "ivy/51b08549d87263e096c827bcf7b1c7bb.webp",
+          "ivy/069cf537020fda30ff69f36878ee0346.webp",
+          "ivy/38f06d98332f6a08ed0ced48e18734a0.webp",
+          "ivy/b76e6e7efc4417a255a94dca20c0b540.webp",
+          "ivy/9573ae685c5c95ea6bd611089ac77683.webp",
+          "ivy/ad5b155e0bbc3646b453e2666bf3dd49.webp",
+          "ivy/35f0de84958adaf394dc1294c8ac69b3.webp",
+          "ivy/259efc55bc6d35aa5ce6223842af228b.webp",
+          "ivy/d151ec1457abf54fa1dc9c8605731c45.webp",
+          "ivy/28fc9fadf91a85e04e16ed5f2cedf953.webp",
+          "ivy/d28254bdfc73fa82a3a02c86da8204d0.webp",
+          "ivy/fb5b1ea4c13a100614ea2b0926166ab7.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 9
+          },
+          {
+            "name": "M",
+            "stock": 8
+          },
+          {
+            "name": "L",
+            "stock": 15
+          },
+          {
+            "name": "XL",
+            "stock": 1
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      },
+      {
+        "name": "Be",
+        "hex": "#C4A780",
+        "images": [
+          "ivy/08c23ecb7ec6c715f9e1c8e2a1368e4d.webp",
+          "ivy/ef4e0723556aa3cbecfdaafe17eff783.webp",
+          "ivy/745412c86422941a3e8602e31f367d62.webp",
+          "ivy/488919221649a00babada227cabbb03a.webp",
+          "ivy/82cfa0fa3bb9848a1809bd0dad626ef9.webp",
+          "ivy/6a0f00cd588c4ddecdc148dc0d2d174b.webp",
+          "ivy/dd24a0724666da80fb16e858272b80be.webp",
+          "ivy/3c0c84fa41a6471f3fe9adda98839987.webp",
+          "ivy/9dd1fb73d288edc7ace90dd0bd67a4a3.webp",
+          "ivy/1174c96d5208546ca5c83665ec751ba2.webp",
+          "ivy/6992a5aa70690818f168032f7fd1d6e8.webp",
+          "ivy/88155548a5fe14adef44aea5c0d7210e.webp",
+          "ivy/7ab2f08cb545e77974f5eee8470ea3ab.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 3
+          },
+          {
+            "name": "M",
+            "stock": 14
+          },
+          {
+            "name": "L",
+            "stock": 12
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Chân váy Tweed Warm",
+    "slug": "chan-vay-tweed-warm",
+    "sku": "LX-W021",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1490000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Sở hữu gam <strong>trầm ấm</strong>, chân váy Tweed Warm mang đến vẻ thanh lịch, nền nã với phom dáng đề cao sự chỉn chu. Thiết kế cạp cao ôm gọn vòng eo, đường may dọc thân tạo hiệu ứng thon gọn, kết hợp dáng váy suông nhẹ dài qua gối giúp tổng thể cân đối và thời thượng. </p>\r\n\r\n<p>Chất liệu <strong>tweed</strong> bề mặt dệt sợi đặc trưng tạo nên chiều sâu cho gam màu, đồng thời giữ phom tốt để thiết kế luôn đứng dáng khi mặc. Điểm nhấn cúc kim loại nhỏ ở hai bên cạp - tinh tế mà không làm mất đi nét tối giản.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Kẻ Nâu vàng",
+        "hex": "#CBB9A5",
+        "images": [
+          "ivy/b170beab7c25858acc6cefd663c63a7d.webp",
+          "ivy/c75a024349ffc2ffaf968a7f6dc266f7.webp",
+          "ivy/7ea98a48bf1b698bffd22baeed4fc84f.webp",
+          "ivy/2ca4f9451b3498183a082ad7eee43c2a.webp",
+          "ivy/d078661662504dad2664239076483e0f.webp",
+          "ivy/4416ac3af2d060066c6962b3480aac73.webp",
+          "ivy/900080da41f62c3a48f537a2574ac824.webp",
+          "ivy/cea6f1c441ca9ca97809493274a3db99.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 6
+          },
+          {
+            "name": "M",
+            "stock": 5
+          },
+          {
+            "name": "L",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 1
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      },
+      {
+        "name": "Kẻ Xanh oliu",
+        "hex": "#949E96",
+        "images": [
+          "ivy/521641e0f93d2a1dc6ca523b7b0fd9a9.webp",
+          "ivy/411181f3a0c7c79519751978dd78e7a4.webp",
+          "ivy/62d43a347b446df9b636357a404ff94f.webp",
+          "ivy/7a094dce0f87649b00129987ddcee1a1.webp",
+          "ivy/1de2de37ffbe3cfae95b88a6d1dbcce6.webp",
+          "ivy/4b2ab7f164dd82d87da823e82e079020.webp",
+          "ivy/b063d7653a05ffe7e39db29ca2cf1af0.webp",
+          "ivy/53ce4ba382b4a05bf7a2ad3458d53ef8.webp",
+          "ivy/9e6599fd9927fadf7a8d023d56b248c0.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 4
+          },
+          {
+            "name": "L",
+            "stock": 2
+          },
+          {
+            "name": "XL",
+            "stock": 1
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Chân váy A Midi xẻ tà",
+    "slug": "chan-vay-a-midi-xe-ta",
+    "sku": "LX-W022",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1090000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Tông màu ghi xám trung tính kết hợp thiết kế tinh tế, chân váy<strong> </strong>mang đến diện mạo công sở hiện đại, sang trọng.</p>\r\n\r\n<p>Thiết kế cạp cao ôm gọn vòng eo với các đường cắt cup cách điệu ở thân trước, tạo phom dáng A rủ nhẹ tự nhiên giúp khéo léo tôn vinh đôi chân dài cùng vóc dáng thanh thoát. Điểm nhấn đường xẻ tà nhẹ ở gấu váy vừa tạo khoảng hở quyến rũ vừa mang lại sự thoải mái trong từng bước di chuyển.</p>\r\n\r\n<p>Chất liệu vải tinh sợi định hình cao cấp dày dặn vừa phải, đứng dáng và hạn chế nhăn hiệu quả.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Ghi",
+        "hex": "#B4B4B3",
+        "images": [
+          "ivy/dbd4db70e844fe9d1e8959db1c94f625.webp",
+          "ivy/991622b2aa879eaae4c4b42808b14b8b.webp",
+          "ivy/87b5b29aa74bff798616916508f1c477.webp",
+          "ivy/a24a1c077c39582b0ca879d1b5ffba56.webp",
+          "ivy/014e381f8d02dfd3fc7db643ef483d6d.webp",
+          "ivy/97cd6fa06e9ea519bfc8304ba0cdf629.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 6
+          },
+          {
+            "name": "M",
+            "stock": 10
+          },
+          {
+            "name": "L",
+            "stock": 6
+          },
+          {
+            "name": "XL",
+            "stock": 3
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Chân váy ren hai lớp",
+    "slug": "chan-vay-ren-hai-lop",
+    "sku": "LX-W023",
+    "categoryKey": "quan-nu",
+    "gender": "nu",
+    "basePrice": 1990000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 165 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 49 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>81-63-90 cm</p>\r\n\r\n<p>Mẫu mặc size S</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Trắng",
+        "hex": "#FFFFFF",
+        "images": [
+          "ivy/b25b18370b831a53e42f62eaf487894a.webp",
+          "ivy/ccd362075235ae3bf765bdfdc5b91d83.webp",
+          "ivy/aa583b30a518de9b03ddab2c83830728.webp",
+          "ivy/c80a75a3366fcaae580f8695637ed1d3.webp",
+          "ivy/46f4f825af277c158ec09b8f3912d089.webp",
+          "ivy/e057430a45ffb855edc5b2172d7bf7e8.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo sơ mi kẻ tay dài",
+    "slug": "ao-so-mi-ke-tay-dai",
+    "sku": "LX-M001",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 1250000,
+    "discountPercent": 72,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Chất liệu Thô Cotton ứng dụng công nghệ hiện đại giúp bề mặt mềm mịn, thấm hút mồ hôi, hạn chế nhàu tối đa cho người mặc.</p>\r\n\r\n<p>- Thiết kế áo sơ mi kiểu dáng Regular cổ đức khỏe khoắn, thời trang, phần cổ áo mềm mại, không gây khó chịu.</p>\r\n\r\n<p>- Gam màu sáng, họa tiết kẻ dễ dàng phối với nhiều kiểu trang phục khác nhau.</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 180 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Mẫu mặc size: L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh lơ",
+        "hex": "#71D1D5",
+        "images": [
+          "ivy/ab8474d5a72f76d5859383097643314f.jpg",
+          "ivy/c1021a22af3eac5019b09b85e7979ead.jpg",
+          "ivy/73fbdecb12d5255f06bd02167c93a7da.jpg",
+          "ivy/da6048490123cc7e1b14e6361894a084.jpg",
+          "ivy/0677e1fd5143656956a20df07a5ced3e.jpg",
+          "ivy/fffaa7bf1792b8c7ca2e02443f1df0f3.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 8
+          },
+          {
+            "name": "M",
+            "stock": 61
+          },
+          {
+            "name": "L",
+            "stock": 48
+          },
+          {
+            "name": "XL",
+            "stock": 16
+          },
+          {
+            "name": "XXL",
+            "stock": 3
+          }
+        ]
+      },
+      {
+        "name": "Họa tiết Xanh dương đậm",
+        "hex": "#2B3856",
+        "images": [
+          "ivy/c8dddf59e2b8f999d4f2e6201b6d0a5a.jpg",
+          "ivy/3f74e345139b4f669a7b577e8f30b8af.jpg",
+          "ivy/e9e45797df6b9dc4d3d3661eb9478874.jpg",
+          "ivy/ad1465439acd6acbeba7dd13e3a32818.jpg",
+          "ivy/ac82661caffc22d6c8aa6524d8dca8c9.jpg",
+          "ivy/8d8a8c8eb4abe7dd78f386edce4adc80.jpg",
+          "ivy/5934aaee4ffd7d944199f8fdcbf6fdc7.jpg",
+          "ivy/c9ed71f3ff81a7fd7e187aadb35d13fe.jpg",
+          "ivy/0218efc64aa333af18213ce2bf7c4e61.jpg",
+          "ivy/660fc74e59edcd7de6b2e4dacb62c124.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 4
+          },
+          {
+            "name": "L",
+            "stock": 3
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo sơ mi kẻ caro phối túi",
+    "slug": "ao-so-mi-ke-caro-phoi-tui",
+    "sku": "LX-M002",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 1290000,
+    "discountPercent": 73,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Áo sơ mi dáng regular fit, cổ đức, tay dài</p>\r\n\r\n<p>- Cài bằng hàng khuy phía trước, phối túi ngực bên trái tạo kiểu</p>\r\n\r\n<p>- Chất liệu vải thô mềm mát, ít nhăn. Họa tiết kẻ caro phối màu bắt mắt</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao:</strong> 180 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 68 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>97-77-92 cm</p>\r\n\r\n<p>Mẫu mặc size L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh cổ vịt",
+        "hex": "#A3AEB2",
+        "images": [
+          "ivy/217012c47b6b306bab6ad1f1476aa2bd.jpg",
+          "ivy/dc03a3c7a3b224c1492c6ca882e3d543.jpg",
+          "ivy/32f6457b1d0a633a7bc06d7e65459e00.jpg",
+          "ivy/93e5789e5e7bf19ccf07705e4f1ea8b6.jpg",
+          "ivy/005298cd43d7902216a8ccba74418944.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "M",
+            "stock": 14
+          },
+          {
+            "name": "L",
+            "stock": 26
+          },
+          {
+            "name": "XL",
+            "stock": 17
+          },
+          {
+            "name": "XXL",
+            "stock": 11
+          }
+        ]
+      },
+      {
+        "name": "Kẻ Đen",
+        "hex": "#939393",
+        "images": [
+          "ivy/721f61cb723a078729fcf97fad8bb938.jpg",
+          "ivy/317516622eb82a19a5d2e63902e584a4.jpg",
+          "ivy/22920842e1cf1ff0d9ed2130430a37f4.jpg",
+          "ivy/8161b4632c7afefd84ee522dd5105dcf.jpg",
+          "ivy/eefb592c90fbe2dae41d24fc9ca9eb66.jpg",
+          "ivy/d6030af71081926abd4caf9ad78a4621.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "M",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo sơ mi Denim Urban",
+    "slug": "ao-so-mi-denim-urban",
+    "sku": "LX-M003",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 790000,
+    "discountPercent": 0,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p>- Áo cổ Cuban (cổ mở)</p>\r\n\r\n<p>- Tay áo ngắn</p>\r\n\r\n<p>- Thiết kế cài khuy trước</p>\r\n\r\n<p>- Kết hợp túi ngực tiện dụng</p>\r\n\r\n<p>- Kiểu dáng Regular Fit</p>\r\n\r\n<p>- Chất liệu Denim mềm nhẹ</p>\r\n\r\n<p>- Bề mặt vải mịn, đứng form</p>\r\n\r\n<p>- Thoáng khí, mặc thoải mái</p>\r\n\r\n<p>- Ít nhăn, dễ bảo quản</p>\r\n\r\n<p>- Phù hợp phong cách casual, năng động</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 185 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 75 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>100-74-96 cm</p>\r\n\r\n<p>Mẫu mặc sz L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh tím than",
+        "hex": "#2E323D",
+        "images": [
+          "ivy/40146f76a13c6b530ecd18f05ef25684.jpg",
+          "ivy/31a49a220313401e83d40be5d328f558.jpg",
+          "ivy/2cf12a2c4065cde25baf413307b5788a.jpg",
+          "ivy/8b3c1d583e4ef5ca87bbadb23c3d221b.jpg",
+          "ivy/54df2a11ee71a77e5c5e7c8f06be8a5e.jpg",
+          "ivy/0d08c75d02b02c530c26c6fb861e7b6e.jpg",
+          "ivy/879bbd913183d3a6754bf54c38f9fed8.jpg",
+          "ivy/9154608f9a95ee87513315008525081f.jpg",
+          "ivy/5bd48fdfc9ce58aa701efcb1a4dd0178.jpg",
+          "ivy/192e55f7b559362f628e61a95b45172b.jpg",
+          "ivy/cd71fb8af4c976340984aa9988418272.jpg",
+          "ivy/6b1286f027532a2c25560c33274b8ff5.jpg",
+          "ivy/9b8d0a530d91036f98657e59f24fa302.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 3
+          },
+          {
+            "name": "M",
+            "stock": 9
+          },
+          {
+            "name": "L",
+            "stock": 6
+          },
+          {
+            "name": "XL",
+            "stock": 4
+          },
+          {
+            "name": "XXL",
+            "stock": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo sơ mi nam",
+    "slug": "ao-so-mi-nam",
+    "sku": "LX-M004",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 990000,
+    "discountPercent": 70,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Áo sơ mi nam</p>",
+    "colors": [
+      {
+        "name": "Xanh cổ vịt",
+        "hex": "#A3AEB2",
+        "images": [
+          "ivy/9d4217efd8fd8e2343eeced2f1d38521_rp1754905357.webp",
+          "ivy/3e7b8a1d1d4b1ac7f9e54bb1bfd5e331_rp1754905378.webp",
+          "ivy/fd5f22d30224a0e229288fa0c7500193_rp1754905374.webp",
+          "ivy/f23a96c4ebc61c247bdaf824415cbf08_rp1754905370.webp",
+          "ivy/a6e0104adc45c313bcb4fd0ddc803054_rp1754905366.webp",
+          "ivy/742ac3be2d9c7d32fff73e24345bc907_rp1754905362.webp"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 14
+          },
+          {
+            "name": "M",
+            "stock": 35
+          },
+          {
+            "name": "L",
+            "stock": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Knit Polo - Áo len cổ đức",
+    "slug": "knit-polo-ao-len-co-duc",
+    "sku": "LX-M005",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 1190000,
+    "discountPercent": 71,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p>- Áo len cổ đức, thiết kế 3 khuy cài. Áo kiểu dáng Regular fit, hơi ôm cơ thể. Áo độ dài thường, thích hợp sơ vin để tạo nên những Outfit thời thượng cho Quý anh. </p>\r\n\r\n<p>- Knit Polo sử dụng công nghệ dệt len tiêu chuẩn mang đến chất len mềm, nhẹ phù hợp với thời tiết sang Thu. </p>\r\n\r\n<p>- Nếu Quý anh đang muốn tìm kiểm một thiết kế hiện đại, trẻ trung mà còn mang lại sự lịch lãm cho mùa Thu/ Đông này thì đừng bỏ lỡ phiên bản áo len Polo này. </p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao:</strong> 186 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 75  kg</p>\r\n\r\n<p><strong>Mẫu mặc size XXL</strong></p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Ghi",
+        "hex": "#B4B4B3",
+        "images": [
+          "ivy/3967c3ebb2353351e5590076ec9af2f8.jpg",
+          "ivy/e8b2ffbfd19283d93748e698c810d9ad.jpg",
+          "ivy/64368bc5b7091bcf5595eaf83137a6e3.jpg",
+          "ivy/0acbc4019fba2dc8f53af0849eadb361.jpg",
+          "ivy/36d7122841adfee8fb3e989353e9f56d.jpg",
+          "ivy/718fb3b1765ee219cec96fe26deacc0d.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 6
+          },
+          {
+            "name": "M",
+            "stock": 22
+          },
+          {
+            "name": "L",
+            "stock": 32
+          },
+          {
+            "name": "XL",
+            "stock": 7
+          }
+        ]
+      },
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/7df6f5ca573c52f622aa21e33cc94500.JPG",
+          "ivy/4522cff9b9e64f1f525a56cad3443a05.JPG",
+          "ivy/a04317d519593433b197ebc99a319a78.JPG",
+          "ivy/96641956ffd01adde8e090a8ac190df2.JPG",
+          "ivy/55dec45c48be095b1fed4033ca072be3.jpg",
+          "ivy/e3f50962c28de69e4baf4dfcdc57e680.jpg",
+          "ivy/e59c289c8956c716079b348b7581aeb8.jpg",
+          "ivy/5ee1fd268c097b4d57e1e1abfd409c95.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 14
+          },
+          {
+            "name": "M",
+            "stock": 22
+          },
+          {
+            "name": "L",
+            "stock": 26
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo Polo Cool Air Relax",
+    "slug": "ao-polo-cool-air-relax",
+    "sku": "LX-M006",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 690000,
+    "discountPercent": 0,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p>- Áo cổ polo (cổ bẻ)</p>\r\n\r\n<p>- Tay áo ngắn</p>\r\n\r\n<p>- Thiết kế 2 nút cài cổ</p>\r\n\r\n<p>- Kiểu dáng Relax Fit </p>\r\n\r\n<p>- Thiết kế trơn, logo nhỏ tinh tế</p>\r\n\r\n<p>- Chất liệu 58% Cotton/ 39% Modal / 3% Spandex</p>\r\n\r\n<p>- Sợi bông dài, mềm mịn, ít xù lông</p>\r\n\r\n<p>- Thấm hút mồ hôi tốt</p>\r\n\r\n<p>- Thoáng khí, mặc mát</p>\r\n\r\n<p>- Giữ form tốt, bền màu sau nhiều lần giặt</p>\r\n\r\n<p>- Ít nhăn, dễ bảo quản</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 185 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 75 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>100-74-96 cm</p>\r\n\r\n<p>Mẫu mặc sz L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/9278e16772c52fe0c41b035b775a2f9c.jpg",
+          "ivy/11a46a898c6ee9082bc71318758cc3b2.jpg",
+          "ivy/b660c19cad61ea4b10cd38be4afd1bc7.jpg",
+          "ivy/c4a91ccc5afb000b808f60b60428020b.jpg",
+          "ivy/085a1fc787dabc1f9f959eec81aeba14.jpg",
+          "ivy/593f3db35dc9466a598c0e2c7bc7f76a.jpg",
+          "ivy/8bc43d53c0757dc3e82158a8068c568f.jpg",
+          "ivy/4331c26831fe341337827681c9dd156e.jpg",
+          "ivy/e2be930b224b75239e7682516cc4373c.jpg",
+          "ivy/af2c2283f8993708eaba404f003961ab.jpg",
+          "ivy/de4c6e94d5863914fb312f4794bfa549.jpg",
+          "ivy/a0fe47c6172b48501e828888ec30fef9.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 9
+          },
+          {
+            "name": "L",
+            "stock": 7
+          },
+          {
+            "name": "XL",
+            "stock": 4
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      },
+      {
+        "name": "Trắng ngà",
+        "hex": "#EBE5D9",
+        "images": [
+          "ivy/4cbd9707ef4e42edc60c05efb73da645.jpg",
+          "ivy/51651e3abc6fa445c74bf7cd4c2aa581.jpg",
+          "ivy/b6e4ab0a8ee96aaddbe129f97729b708.jpg",
+          "ivy/e6c528d4593ff19e0b3df11c1ffe2301.jpg",
+          "ivy/e8758e5f3f2b4d3d30875bc16e555338.jpg",
+          "ivy/cf21bbc153d0504a76f4e14548310260.jpg",
+          "ivy/15cfbda64739d524641835a0f28d5d70.jpg",
+          "ivy/4a35688c0ed5d4442e5b0d61b3001367.jpg",
+          "ivy/3197a5f6fa7be9ef559f2db41d64c733.jpg",
+          "ivy/07970d6d708b8d2cfb563082ae09ec9f.jpg",
+          "ivy/2ce71ef502333da4c467ce5238ef0144.jpg",
+          "ivy/2e36e56505bde9a7afbaf4ead29ad8c3.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 12
+          },
+          {
+            "name": "L",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo Polo Modal Meta",
+    "slug": "ao-polo-modal-meta",
+    "sku": "LX-M007",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 890000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Áo polo cổ đức</p>\r\n\r\n<p>- Thiết kế tay ngắn</p>\r\n\r\n<p>- Cài khuy thời thượng</p>\r\n\r\n<p>- Tạo điểm nhấn mix màu viền</p>\r\n\r\n<p>- Kiểu dáng Slim fit</p>\r\n\r\n<p>- Chất liệu 58% Cotton, 39% Modal, 3% Spandex</p>\r\n\r\n<p>- Thoáng khí, thấm hút mồ hôi</p>\r\n\r\n<p>- Mềm mại, thoải mái</p>\r\n\r\n<p>- An toàn cho da</p>\r\n\r\n<p>- Dễ dàng mix&amp;match với nhiều kiểu trang phục khác nhau</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 178 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 67 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>97-76-97 cm</p>\r\n\r\n<p>Mặc size: L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh dương đậm",
+        "hex": "#344367",
+        "images": [
+          "ivy/9bcf8cf7a3aa3544cfd57bbb7bcd8787.jpg",
+          "ivy/decc623bc1d49255a495824320736590.jpg",
+          "ivy/591e37c934bbaec636205ef58506080d.jpg",
+          "ivy/448df78b7571ffdf1d491a68563552aa.jpg",
+          "ivy/275d15f3a598ac8a978042a29066d8ff.jpg",
+          "ivy/eb9b6989c0f6cdff0d0f3c9562469905.jpg",
+          "ivy/f15f556588e36da699f2fd9f51a83ae4.jpg",
+          "ivy/91dcb5f59ed59c2cc7e5846be99cfb8f.jpg",
+          "ivy/220be94cae82fcafba9925cf78d348b0.jpg",
+          "ivy/a7ecc15d8af83da8481be165bccdba65.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 8
+          },
+          {
+            "name": "L",
+            "stock": 2
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo Polo Cotton Daily",
+    "slug": "ao-polo-cotton-daily",
+    "sku": "LX-M008",
+    "categoryKey": "ao-nam",
+    "gender": "nam",
+    "basePrice": 690000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Áo polo nam tay ngắn phong cách hiện đại</p>\r\n\r\n<p>- Thiết kế cổ polo phối khóa kéo trẻ trung, tiện dụng</p>\r\n\r\n<p>- Form Regular vừa vặn, tạo cảm giác thoải mái khi mặc</p>\r\n\r\n<p>- Bảng màu thanh lịch, dễ phối nhiều trang phục</p>\r\n\r\n<p>- Chất liệu 58% Cotton, 39% Modal, 3% Spandex</p>\r\n\r\n<p>- Bề mặt vải mềm mịn, nhẹ và thoáng khí</p>\r\n\r\n<p>- Thấm hút mồ hôi tốt, phù hợp mặc cả ngày dài</p>\r\n\r\n<p>- Co giãn nhẹ giúp vận động linh hoạt hơn</p>\r\n\r\n<p>- Dễ phối cùng quần short, kaki hoặc quần dài casual</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 180 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 74 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>98-79-97 cm</p>\r\n\r\n<p>Mẫu mặc size: L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/47df0db8ebdef29d758b7523ce8881be.jpg",
+          "ivy/5b03e8a2f3a8fb3e0b61c82bdccf9bbf.jpg",
+          "ivy/666a1528dafafcf5fff101fa51524a6d.jpg",
+          "ivy/fac77cad0b63e8231c132f51cd0fb9ce.jpg",
+          "ivy/e32ff3aa385d190fc1325060ae8f74d6.jpg",
+          "ivy/2ba4cb596e84dff968e92493592ce5d3.jpg",
+          "ivy/7c345febb990ca21f02bee1e92e1e787.jpg",
+          "ivy/0501fc342c0337bcd659478a04dfa9b7.jpg",
+          "ivy/5b1638f37d9b162ca9c3d7f83add5487.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 8
+          },
+          {
+            "name": "L",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 3
+          },
+          {
+            "name": "XXL",
+            "stock": 1
+          }
+        ]
+      },
+      {
+        "name": "Trắng",
+        "hex": "#FFFFFF",
+        "images": [
+          "ivy/aba820e5aca51542c7fea0a4da78854e.jpg",
+          "ivy/daec5eab3ff306ec23fa0909f7c50984.jpg",
+          "ivy/6912a12e91e06b0ed1e0acae490f4a44.jpg",
+          "ivy/cdba3845cb795c086c5a0cc3ad93e560.jpg",
+          "ivy/c2a26d9a96b27398fbffe375aabf0362.jpg",
+          "ivy/06fd80b09c9d82d09757f30e9c7b8f7c.jpg",
+          "ivy/9aed83b393a109db88ecfd63b5f77c03.jpg",
+          "ivy/dcc46115d87a2a6b00c2bc59820b8f47.jpg",
+          "ivy/e5b9e99dd847153816ae7e3193a7a6c9.jpg",
+          "ivy/628a1131464677ee24c5cfd3567b8cb4.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 4
+          },
+          {
+            "name": "L",
+            "stock": 2
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác chần bông",
+    "slug": "ao-khoac-chan-bong",
+    "sku": "LX-M009",
+    "categoryKey": "ao-khoac-nam",
+    "gender": "nam",
+    "basePrice": 2590000,
+    "discountPercent": 73,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Chất liệu vải Polyester, áo may chần bông nhân tạo tác dụng giữ ấm cực tốt vào những ngày đại hàn</p>\r\n\r\n<p>- Áo khoác phao dáng suông, cổ sơ mi, cài bằng hàng khuy phía trước</p>\r\n\r\n<p>- Trước ngực phối 2 túi vuông có nắp và 2 túi chéo 2 bên</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao:</strong> 175 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng:</strong>98-75-97 cm</p>\r\n\r\n<p>Mẫu mặc size L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Ghi",
+        "hex": "#6C6D6E",
+        "images": [
+          "ivy/e39204d5abb54adbef01f8b98d4ed996.jpg",
+          "ivy/4e5ae538328618cd684b4a8d8d0b0054.jpg",
+          "ivy/397c737988cd4688b54d12fe9b36b508.jpg",
+          "ivy/d6e29063ebf1121e6245d2d31e1c7c1c.jpg",
+          "ivy/dce27e835795c44ecc2c829b99fa2ac5.jpg",
+          "ivy/7773cc137f12191a45a82216f0b73532.jpg",
+          "ivy/45f9163282f9744af161cf1395a6bfcc.jpg",
+          "ivy/c6ed10deee190db9d51cc151052af388.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 22
+          },
+          {
+            "name": "M",
+            "stock": 113
+          },
+          {
+            "name": "L",
+            "stock": 137
+          },
+          {
+            "name": "XL",
+            "stock": 36
+          }
+        ]
+      },
+      {
+        "name": "Be",
+        "hex": "#C4A780",
+        "images": [
+          "ivy/12442f90c417edc8149a059bc495fbab.jpg",
+          "ivy/627c3cc849b71f06f4aaa82a4e358ef0.jpg",
+          "ivy/4a6e2d68a48ce65051e3323039b1e912.jpg",
+          "ivy/200f36748b2e434eac2ae0ec383a0bdf.jpg",
+          "ivy/f9c01705a825ec258d4f4438891f5042.jpg",
+          "ivy/b6d5cf0749ed68a635c1072f6efb7883.jpg",
+          "ivy/e96a5794dd6e0bf4f02fcb8f8fb41388.jpg",
+          "ivy/be6f9c75b8c24e98126205c70a2f7acf.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 23
+          },
+          {
+            "name": "L",
+            "stock": 40
+          },
+          {
+            "name": "XL",
+            "stock": 20
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác",
+    "slug": "ao-khoac",
+    "sku": "LX-M010",
+    "categoryKey": "ao-khoac-nam",
+    "gender": "nam",
+    "basePrice": 2990000,
+    "discountPercent": 70,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Áo khoác</p>",
+    "colors": [
+      {
+        "name": "Be",
+        "hex": "#C3B296",
+        "images": [
+          "ivy/277811386a35e3b10dc03db4a5a26a99.jpg",
+          "ivy/a83e5790af7656180fc21c908c4ec3a8.jpg",
+          "ivy/5ff9cdd5b68e243dc3c8f1eb9d2d167d.jpg",
+          "ivy/7df56c3443ed41df995773e6e2a97c6c.jpg",
+          "ivy/0d893bdec7dd42eaaed3eefa34dc96c7.jpg",
+          "ivy/0720e32aa51e5578745be5d4519ff25b.jpg",
+          "ivy/8f715283dc4449b6d18e48232e085a58.jpg",
+          "ivy/4da6d022ed1bd7ce019c8b9cfe43d2cf.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 91
+          },
+          {
+            "name": "M",
+            "stock": 87
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Wool Jacket - Áo khoác sơ mi dạ lông cừu",
+    "slug": "wool-jacket-ao-khoac-so-mi-da-long-cuu",
+    "sku": "LX-M011",
+    "categoryKey": "ao-khoac-nam",
+    "gender": "nam",
+    "basePrice": 5999000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Chất liệu 100% lông cừu cao cấp đã qua kiểm định chất lượng nghiêm ngặt với công đoạn xử lý thủ công hàng trăm giờ đồng hồ. Chất vải dạ ép từ những sợi lông cừu được chắt lọc ở những vị trí lông tốt nhất. Đặc tính chất liệu mềm, mỏng, nhẹ và giữ ấm tuyệt đối; khả năng giữ phom dáng và tuổi thọ của áo khoác Metagent cao hơn các sản phẩm thông thường.</p>\r\n\r\n<p>Áo khoác dạ khâu tay 100% với các mũi khâu được khâu tỉ mỉ khéo léo không làm lộ chỉ. Các mũi khâu được 'giấu kĩ', phom dáng chuẩn từng centimet, mang đến sự khác biệt và trải nghiệm thời trang đẳng cấp cho người mặc.</p>\r\n\r\n<p>Thiết kế áo khoác sơ mi dáng oversize trẻ trung, thời thượng, phù hợp với thân hình người Việt cùng chất liệu cao cấp và kĩ thuật khâu tay tỉ mỉ sẽ là sự đầu tư đáng giá cho tủ đồ Đông của bạn!</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 180 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Mẫu mặc size: L Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Be",
+        "hex": "#A3784E",
+        "images": [
+          "ivy/ee5f6369bd9a2549b18146fa77677173.jpg",
+          "ivy/2331b37d73b9e0f16ee0c057ba07327f.jpg",
+          "ivy/a7ca066a7dde14a66f3b5bf225ee767b.jpg",
+          "ivy/90848b72660ae937472e33eb2bc8e105.jpg",
+          "ivy/3aa85ea6d663f86b410b40cef1c5c559.jpg",
+          "ivy/76e4b773c34d142caafe66295fbd4b1c.jpg",
+          "ivy/f6fdac14c389d8dc294829e23bfc0907.jpg",
+          "ivy/2dd781b05678b5a3506a129a1f56591b.jpg",
+          "ivy/1fed2e091a50abdf6cd3e901fd11405d.jpg",
+          "ivy/82f4ea0cd4e77bff738dce17678d7676.jpg",
+          "ivy/b53e80b2123102d0379b21963931aef8.jpg",
+          "ivy/5a96465ff3b1c753729e84559612c003.jpg",
+          "ivy/1d415843be323111d5411ba0337821cd.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 12
+          },
+          {
+            "name": "L",
+            "stock": 11
+          },
+          {
+            "name": "XL",
+            "stock": 3
+          }
+        ]
+      },
+      {
+        "name": "Trắng ngà",
+        "hex": "#EBE5D9",
+        "images": [
+          "ivy/6d40da112fd17a5cadabd4eaf79eca63.jpg",
+          "ivy/eb14a235f8a15bfee2c988a6c13e90f6.jpg",
+          "ivy/5fed30a38865a9197858cb4f07606aca.jpg",
+          "ivy/86737eebdf69ac18cb962d7fa12c5a22.jpg",
+          "ivy/d72eb14ed4abef14446acb42ecf7817f.jpg",
+          "ivy/6b39e4837815b36cf357d21fe1314e20.jpg",
+          "ivy/facc08fda77f68adf55d5d66cc2d1f6a.jpg",
+          "ivy/0613d3730d5134b9f1c7341e95ba86de.jpg",
+          "ivy/1a5141fa56c5b29ac7352583ce5fb495.jpg",
+          "ivy/c68da4de4e6fa0ba80d915ae218a06d2.jpg",
+          "ivy/1c1bb26d7e4125d82c73d789fc80c94a.jpg",
+          "ivy/81e4aa2af2c0b1f61e57e8f0f4d4f6dd.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 5
+          },
+          {
+            "name": "M",
+            "stock": 7
+          },
+          {
+            "name": "L",
+            "stock": 16
+          },
+          {
+            "name": "XL",
+            "stock": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác dạ lông cừu",
+    "slug": "ao-khoac-da-long-cuu",
+    "sku": "LX-M012",
+    "categoryKey": "ao-khoac-nam",
+    "gender": "nam",
+    "basePrice": 6999000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Áo khoác dạ lông cừu</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/c29bed911158827d52a73a86eb6b3dbd.jpg",
+          "ivy/0d1bda0458212ba37e9c3472d0614dd7.jpg",
+          "ivy/da731b0919e7852ddddea423925f1fef.jpg",
+          "ivy/d8047b422a1aa01ee9bcc0633e668ec0.jpg",
+          "ivy/3644103f3d9afd02710d0eec2d97f95b.jpg",
+          "ivy/a8d112471be9de97c3a099a576b17e6f.jpg",
+          "ivy/8cd3d3f902d1c36fa829e14c93a1d008.jpg",
+          "ivy/88eb2f67dbf5d8fdfd054ce679a5b3b7.jpg",
+          "ivy/dd1eaf090e62b1887a9dee326f9a07da.jpg",
+          "ivy/f840e500b1d6164c20c4b5aeeef51a14.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 5
+          },
+          {
+            "name": "M",
+            "stock": 13
+          },
+          {
+            "name": "L",
+            "stock": 2
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Áo khoác dạ lông cừu",
+    "slug": "ao-khoac-da-long-cuu-77e3190",
+    "sku": "LX-M013",
+    "categoryKey": "ao-khoac-nam",
+    "gender": "nam",
+    "basePrice": 5999000,
+    "discountPercent": 0,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>Chất liệu 100% lông cừu cao cấp đã qua kiểm định chất lượng nghiêm ngặt với công đoạn xử lý thủ công hàng trăm giờ đồng hồ. Chất vải dạ ép từ những sợi lông cừu được chắt lọc ở những vị trí lông tốt nhất. Đặc tính chất liệu mềm, mỏng, nhẹ và giữ ấm tuyệt đối; khả năng giữ phom dáng và tuổi thọ của áo khoác Metagent cao hơn các sản phẩm thông thường.</p>\r\n\r\n<p>Áo khoác dạ khâu tay 100% với các mũi khâu được khâu tỉ mỉ khéo léo không làm lộ chỉ. Các mũi khâu được 'giấu kĩ', phom dáng chuẩn từng centimet, mang đến sự khác biệt và trải nghiệm thời trang đẳng cấp cho người mặc.</p>\r\n\r\n<p>Thiết kế áo khoác sơ mi dáng trẻ trung, thời thượng, phù hợp với thân hình người Việt cùng chất liệu cao cấp và kĩ thuật khâu tay tỉ mỉ sẽ là sự đầu tư đáng giá cho tủ đồ Đông của bạn!</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong>180 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong>70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Mẫu mặc size: L Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Be",
+        "hex": "#A3784E",
+        "images": [
+          "ivy/e270d1dbd8a7f64bdb34df08d339a615.jpg",
+          "ivy/b6a0e26a7a5877a297bfd7a4d41c2240.jpg",
+          "ivy/fbdb3a36eafb3f4a3b21de50cf6a89b5.jpg",
+          "ivy/73b36d45f22f07c20d501de7c1ca00b2.jpg",
+          "ivy/10ee9325edcb9be35f2f73e8e95d57ed.jpg",
+          "ivy/b98b1f8c5d409f7f07b505497b9af13e.jpg",
+          "ivy/17df7a074f82965c6d6c4cc4a62f14da.jpg",
+          "ivy/1072069faa9b1644da53cbcae11fde41.jpg",
+          "ivy/60c3e0df875ad8b014d63a7d9cef123d.jpg",
+          "ivy/1acd7f1ee02192e4fc9e48511f96ccfd.jpg",
+          "ivy/472db43545931c35b1cb109487ec7faf.jpg",
+          "ivy/26ba34cd897ff181ba66025e6305a957.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 4
+          },
+          {
+            "name": "M",
+            "stock": 8
+          },
+          {
+            "name": "L",
+            "stock": 4
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          }
+        ]
+      },
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/0406f00eda878e5ef765b1acbd2000e8.JPG",
+          "ivy/2957b7206fff4ab84fe6dc69035d415b.JPG",
+          "ivy/f00bc11a5e0f5fb3d79f4fdcb8b3feda.jpg",
+          "ivy/95b893051540d895e13f6f27b0dc2267.jpg",
+          "ivy/5557a1045ac938217290ef5830ae83a6.jpg",
+          "ivy/1a802cb70d446245ff93de2ca8bdb687.jpg",
+          "ivy/d0e768f53284ae71192697076c37ed94.jpg",
+          "ivy/3ff117cc3b8d6d953a948be9a6f7f2b5.jpg",
+          "ivy/95ac2bb00a61441abd3c9e57cdb03b5c.jpg",
+          "ivy/b0743e918b102729be513e34e423162e.jpg",
+          "ivy/15c802c1468efc91a4be6aab25dc0f99.jpg",
+          "ivy/393f922d815d26751f9cb46da03fd213.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 2
+          },
+          {
+            "name": "M",
+            "stock": 2
+          },
+          {
+            "name": "L",
+            "stock": 1
+          },
+          {
+            "name": "XL",
+            "stock": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần Khaki",
+    "slug": "quan-khaki",
+    "sku": "LX-M014",
+    "categoryKey": "quan-nam",
+    "gender": "nam",
+    "basePrice": 1450000,
+    "discountPercent": 73,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Sử dụng loại vải Khaki cao cấp, bóng và rất ít nhăn, dễ dàng là ủi về đúng phom giúp tạo nên phong cách lịch lãm, sang trọng cho người mặc. </p>\r\n\r\n<p>- Quần dài kiểu dáng basic, độ dài qua mắt cá chân, thích hợp mùa hè này. </p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong>185 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng:</strong> 92-78-98 cm</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh oliu",
+        "hex": "#324436",
+        "images": [
+          "ivy/6973ea7c52d8915b16f87b761a38ebf6.JPG",
+          "ivy/1e0c1fb1dcf63e321573554a34649238.JPG",
+          "ivy/5ce659645a4b9f5bf69aae27b9c9a345.JPG",
+          "ivy/60f87209bc7938d75ab7be322c98a157.JPG",
+          "ivy/5e9d9da6de9e5596202493c8717080b4.JPG",
+          "ivy/513ebed9d896adfb3032c9628163af2e.JPG",
+          "ivy/b8a90057d43709c82b026b66eca26713.JPG",
+          "ivy/47171861e6fecf6610a72828e4fc2ca8.JPG"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 11
+          },
+          {
+            "name": "M",
+            "stock": 37
+          },
+          {
+            "name": "L",
+            "stock": 32
+          },
+          {
+            "name": "XL",
+            "stock": 28
+          },
+          {
+            "name": "XXL",
+            "stock": 12
+          }
+        ]
+      },
+      {
+        "name": "Xanh tím than",
+        "hex": "#2E323D",
+        "images": [
+          "ivy/c78610edc2c452b906bc81be0237883d.jpg",
+          "ivy/ffc529ab4fc53ae52a26987d6cd90104.jpg",
+          "ivy/655641f51b5102aede64f9c7842747d6.jpg",
+          "ivy/163e88be3ac895a898fe88ed13e692d5.jpg",
+          "ivy/7a6fa820e7a8078750a2655918024de7.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 4
+          },
+          {
+            "name": "M",
+            "stock": 35
+          },
+          {
+            "name": "L",
+            "stock": 44
+          },
+          {
+            "name": "XL",
+            "stock": 18
+          },
+          {
+            "name": "XXL",
+            "stock": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần short Regular Cotton",
+    "slug": "quan-short-regular-cotton",
+    "sku": "LX-M015",
+    "categoryKey": "quan-nam",
+    "gender": "nam",
+    "basePrice": 690000,
+    "discountPercent": 58,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Quần shorts độ dài ngang gối</p>\r\n\r\n<p>- Thiết kế cạp chun thoải mái</p>\r\n\r\n<p>- Thân trước chiết ly tạo kiểu</p>\r\n\r\n<p>- Có túi sườn đa dụng</p>\r\n\r\n<p>- Thiết kế dáng Regular</p>\r\n\r\n<p>- Chất liệu thun Cotton</p>\r\n\r\n<p>- Khả năng hấp thụ và thoát ẩm tốt</p>\r\n\r\n<p>- Thoải mái, dễ chịu</p>\r\n\r\n<p>- Phù hợp mặc hàng ngày và khi vận động thể thao</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong>178 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 67 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>97-76-97 cm</p>\r\n\r\n<p><strong>Mặc size</strong>: L</p>\r\n\r\n<p><strong>Lưu ý:</strong> Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/f80b9e65a0d3cc5acda768065579b7f8.jpg",
+          "ivy/fa085b6c96d56673c37a1776c98f6b8c.jpg",
+          "ivy/d08b6bda51c26325b94554b0cb314ddf.jpg",
+          "ivy/ef66664f8195734743a58dece8e1b7c9.jpg",
+          "ivy/9649bb71c7d1dd9d04789efda3292f1c.jpg",
+          "ivy/fc81b1e7e3bfbfe76fd44983ce957426.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 41
+          },
+          {
+            "name": "M",
+            "stock": 124
+          },
+          {
+            "name": "L",
+            "stock": 169
+          },
+          {
+            "name": "XL",
+            "stock": 81
+          },
+          {
+            "name": "XXL",
+            "stock": 34
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần dài Flow tex",
+    "slug": "quan-dai-flow-tex",
+    "sku": "LX-M016",
+    "categoryKey": "quan-nam",
+    "gender": "nam",
+    "basePrice": 1190000,
+    "discountPercent": 75,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Quần basic hiện đại, kiểu dáng Slim fit được giới trẻ ưu chuộng. </p>\r\n\r\n<p>- Item mang đến sự thoải mái tối đa cho người mặc, có thiết kế vừa vặn từ eo xuống đùi, phần ống được may không quá ôm khít vào chân gây khó chịu.</p>\r\n\r\n<p>- Thiết kế hướng tới sự thoải mái nhưng quần vẫn luôn giữ được sự trẻ trung, năng động và thể hiện được sự mạnh mẽ, cá tính vốn có của một Quý anh hiện đại. </p>\r\n\r\n<p>- Quần sử dụng chất liệu Meta Flow Tex, nổi bật với cấu trúc sợi tinh chỉnh cho trải nghiệm thời trang thoải mái, dễ chịu trong mọi hoạt động. Phù hợp mặc hàng ngày và cả khi vận động thể thao: </p>\r\n\r\n<p>- Khả năng co dãn &amp; đàn hồi: mang lại sự linh hoạt tối đa trong những vận động hàng ngày</p>\r\n\r\n<p>- Bền &amp; chống nhăn: sản phẩm giữ form tốt ngay cả khi giặt nhiều lần bằng máy giặt. Dễ dàng bảo quản, tuổi thọ cao</p>\r\n\r\n<p>- Điều hòa ẩm: khả năng hấp thụ và thoát ẩm tốt, giúp cơ thể luôn thoáng khí dễ chịu</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong>185 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Vàng mustard",
+        "hex": "#A38F1E",
+        "images": [
+          "ivy/e534c20be1b3d8bd77fe35aea555958f.jpg",
+          "ivy/27ecce50c586c0d624af0eda7ec40e70.jpg",
+          "ivy/1505e6d8be4a1e8c13509f102065538d.jpg",
+          "ivy/49cd33e1087ecf662d2be5ed621510ee.jpg",
+          "ivy/20d5f36a472526bb61775beae6ebeda1.jpg",
+          "ivy/7f77f715351ec9415910f4b708d6b410.jpg",
+          "ivy/74692b43c31ae1e541d7b2cabd9c27b6.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 15
+          },
+          {
+            "name": "M",
+            "stock": 42
+          },
+          {
+            "name": "L",
+            "stock": 56
+          },
+          {
+            "name": "XL",
+            "stock": 34
+          },
+          {
+            "name": "XXL",
+            "stock": 25
+          }
+        ]
+      },
+      {
+        "name": "Be",
+        "hex": "#C3B296",
+        "images": [
+          "ivy/0b7e819941a66327c23097b4a651053a.jpg",
+          "ivy/b8c3f15b178299215c4db4dca29de57d.jpg",
+          "ivy/78fd449d2cb46a87607cd7e024b3fb20.jpg",
+          "ivy/62db17a067ba9a97e82f85e45aa02809.jpg",
+          "ivy/426a346ad0fec63debdd0ba4f4d74abe.jpg",
+          "ivy/ea2967a066f259792989498bf51b0ce9.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 1
+          },
+          {
+            "name": "M",
+            "stock": 3
+          },
+          {
+            "name": "L",
+            "stock": 3
+          },
+          {
+            "name": "XL",
+            "stock": 2
+          },
+          {
+            "name": "XXL",
+            "stock": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần dài Regular Tuytsi Basic",
+    "slug": "quan-dai-regular-tuytsi-basic",
+    "sku": "LX-M017",
+    "categoryKey": "quan-nam",
+    "gender": "nam",
+    "basePrice": 1290000,
+    "discountPercent": 70,
+    "isNew": false,
+    "isBestSeller": false,
+    "description": "<p>- Quần Tuysi hiện đại</p>\r\n\r\n<p>- Độ dài ngang mắt cá chân</p>\r\n\r\n<p>- Cạp cài khuy kèm đỉa đeo thắt lưng</p>\r\n\r\n<p>- Thiết kế 4 túi tiện lợi</p>\r\n\r\n<p>- Họa tiết trơn</p>\r\n\r\n<p>- Kiểu dáng Regular Fit</p>\r\n\r\n<p>- Chất liệu Tuytsi mềm mịn</p>\r\n\r\n<p>- Bền &amp; chống nhăn</p>\r\n\r\n<p>- Sản phẩm giữ form tốt ngay cả khi giặt nhiều lần bằng máy giặt</p>\r\n\r\n<p>- Dễ dàng bảo quản, tuổi thọ cao</p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong> 180 cm</p>\r\n\r\n<p><strong>Cân nặng: </strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Mẫu mặc size: L</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Ghi",
+        "hex": "#6C6D6E",
+        "images": [
+          "ivy/19d0567b1b9408ff1aad1a38db6915ab.jpg",
+          "ivy/cc0ca7bd38aa831ff4a15148aad49948.jpg",
+          "ivy/75d1fa8755d80198d4f27fa8c5bde271.jpg",
+          "ivy/235051d908eda4264ff14dab1410a85d.jpg",
+          "ivy/92acbb045a091f8c878eac1e68a26f8f.jpg",
+          "ivy/63031940edec60f6b78da8f9259ed0bd.jpg",
+          "ivy/c68fe6f9020a461142d9e7b2e2ee6abd.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 17
+          },
+          {
+            "name": "M",
+            "stock": 37
+          },
+          {
+            "name": "L",
+            "stock": 63
+          },
+          {
+            "name": "XL",
+            "stock": 53
+          },
+          {
+            "name": "XXL",
+            "stock": 18
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quần Khaki Basic",
+    "slug": "quan-khaki-basic",
+    "sku": "LX-M018",
+    "categoryKey": "quan-nam",
+    "gender": "nam",
+    "basePrice": 1190000,
+    "discountPercent": 70,
+    "isNew": true,
+    "isBestSeller": false,
+    "description": "<p>- Quần Khaki Basic sở hữu kiểu dáng Slim vừa vặn, tôn dáng hoàn hảo, giúp mang đến phong cách trẻ trung, khỏe khoắn đầy cuôn hút cho người mặc. </p>\r\n\r\n<p>- Độ dài quần ngang mắt cá chân hiện đại kết hợp với thiết kế đơn giản, lịch sự khi đi làm và năng động, thoải mái khi đi chơi, đi học. </p>\r\n\r\n<p>- Chất liệu chính là Khaki  cao cấp dễ dàng sử dụng, vừa giữ form tốt vừa dễ vệ sinh và bảo quản. Khả năng co giãn, đàn hồi tốt, phù hợp cho cả những hoạt động ngoài trời hay vận động thể thao. </p>\r\n\r\n<p><strong>Thông tin mẫu:</strong></p>\r\n\r\n<p><strong>Chiều cao: </strong>185 cm</p>\r\n\r\n<p><strong>Cân nặng:</strong> 70 kg</p>\r\n\r\n<p><strong>Số đo 3 vòng: </strong>92-78-98 cm</p>\r\n\r\n<p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>",
+    "colors": [
+      {
+        "name": "Xanh oliu",
+        "hex": "#324436",
+        "images": [
+          "ivy/e68c1fe0aeab3377c3ee1621f492f72a.jpg",
+          "ivy/3905db52d133da68b21a7bfe0807548f.jpg",
+          "ivy/9bd0604c6d19e3055a987f58529e0ed0.jpg",
+          "ivy/e34ffc719f0741c402dd7cc5801e45d6.jpg",
+          "ivy/55f1d9d8cfce5c5f96457eb54ea420f7.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 9
+          },
+          {
+            "name": "M",
+            "stock": 41
+          },
+          {
+            "name": "L",
+            "stock": 47
+          },
+          {
+            "name": "XL",
+            "stock": 34
+          },
+          {
+            "name": "XXL",
+            "stock": 25
+          }
+        ]
+      },
+      {
+        "name": "Đen",
+        "hex": "#303030",
+        "images": [
+          "ivy/0311501904d06427d136264c1c5d861f.JPG",
+          "ivy/1a17a5c64dda982a9764c077e25e2f70.JPG",
+          "ivy/c17ce09a5d98ca5dbed68a740d7bfdb4.JPG",
+          "ivy/a90af608f6a8c9901ff9e577dcfdf665.JPG",
+          "ivy/4594edcecd5c3fba545035b07032acad.jpg"
+        ],
+        "sizes": [
+          {
+            "name": "S",
+            "stock": 5
+          },
+          {
+            "name": "M",
+            "stock": 36
+          },
+          {
+            "name": "L",
+            "stock": 38
+          },
+          {
+            "name": "XL",
+            "stock": 27
+          },
+          {
+            "name": "XXL",
+            "stock": 13
+          }
+        ]
+      }
+    ]
+  }
+]

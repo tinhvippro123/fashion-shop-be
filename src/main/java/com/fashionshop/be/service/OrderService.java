@@ -40,6 +40,7 @@ public class OrderService {
     private final VoucherRepository voucherRepository;
     private final DiscountStrategyFactory discountStrategyFactory;
     private final SecurityUtils securityUtils;
+    private final PaymentService paymentService;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -121,7 +122,12 @@ public class OrderService {
 
         order.recalculateTotals(DEFAULT_SHIPPING_FEE, discountAmount);
         Order saved = orderRepository.save(order);
-        return toOrderDto(saved);
+        OrderDtos.OrderResponseDto dto = toOrderDto(saved);
+        if (saved.getPaymentMethod() == PaymentMethod.VNPAY) {
+            String vnpayUrl = paymentService.createVnPayPaymentUrl(saved, "127.0.0.1");
+            dto.setPaymentUrl(vnpayUrl);
+        }
+        return dto;
     }
 
     @Transactional(readOnly = true)
@@ -250,9 +256,11 @@ public class OrderService {
     }
 
     public static OrderDtos.OrderResponseDto toOrderDto(Order order) {
-        String methodLabel = order.getPaymentMethod() == PaymentMethod.BANK_TRANSFER
-                ? "Chuyển khoản"
-                : "COD";
+        String methodLabel = switch (order.getPaymentMethod()) {
+            case BANK_TRANSFER -> "Chuyển khoản";
+            case VNPAY -> "VNPay";
+            case COD -> "COD";
+        };
         String paymentLabel = switch (order.getPaymentStatus()) {
             case PAID -> "Đã thanh toán (" + methodLabel + ")";
             case REFUNDED -> "Đã hoàn tiền";

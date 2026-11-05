@@ -31,5 +31,21 @@ public class ProductImage extends BaseEntity {
     @Column(name = "display_order", nullable = false)
     @Builder.Default
     private int displayOrder = 0;
+
+    public int getSortOrder() {
+        return this.displayOrder;
+    }
+
+    public void setSortOrder(int sortOrder) {
+        this.displayOrder = sortOrder;
+    }
+
+    public static class ProductImageBuilder {
+        public ProductImageBuilder sortOrder(int sortOrder) {
+            this.displayOrder$value = sortOrder;
+            this.displayOrder$set = true;
+            return this;
+        }
+    }
 }
 

@@ -21,6 +21,7 @@ import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
 import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
 import com.fashionshop.be.repository.OrderRepository;
+import com.fashionshop.be.repository.ProductColorRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.repository.ReviewRepository;
@@ -48,24 +49,118 @@ public class CatalogService {
 
     private static final Map<String, String> DEFAULT_COLOR_HEX = Map.ofEntries(
             Map.entry("đen", "#111111"),
+            Map.entry("den", "#111111"),
+            Map.entry("black", "#111111"),
             Map.entry("trắng", "#FFFFFF"),
-            Map.entry("kem", "#F5F0E6"),
-            Map.entry("be", "#E8DCC8"),
+            Map.entry("trang", "#FFFFFF"),
+            Map.entry("white", "#FFFFFF"),
+            Map.entry("trắng sữa", "#F5F5F0"),
+            Map.entry("trang sua", "#F5F5F0"),
+            Map.entry("kem", "#FFF4D4"),
+            Map.entry("cream", "#FFF4D4"),
+            Map.entry("be", "#D8C7B0"),
+            Map.entry("beige", "#D8C7B0"),
+            Map.entry("be vàng", "#E6C587"),
+            Map.entry("be vang", "#E6C587"),
+            Map.entry("be sữa", "#EFE5D5"),
+            Map.entry("be sua", "#EFE5D5"),
             Map.entry("đỏ", "#C92A2A"),
+            Map.entry("do", "#C92A2A"),
+            Map.entry("red", "#C92A2A"),
+            Map.entry("đỏ tươi", "#E02020"),
+            Map.entry("do tuoi", "#E02020"),
+            Map.entry("đỏ đô", "#800020"),
+            Map.entry("do do", "#800020"),
+            Map.entry("đỏ mận", "#5B1E31"),
+            Map.entry("do man", "#5B1E31"),
+            Map.entry("đỏ rượu", "#67162E"),
+            Map.entry("do ruou", "#67162E"),
+            Map.entry("đỏ ruby", "#A61C1C"),
+            Map.entry("do ruby", "#A61C1C"),
             Map.entry("hồng", "#F2A6B3"),
+            Map.entry("hong", "#F2A6B3"),
+            Map.entry("pink", "#F2A6B3"),
+            Map.entry("hồng phấn", "#FFC0CB"),
+            Map.entry("hong phan", "#FFC0CB"),
+            Map.entry("hồng pastel", "#F9D5DC"),
+            Map.entry("hong pastel", "#F9D5DC"),
+            Map.entry("hồng đất", "#B86B77"),
+            Map.entry("hong dat", "#B86B77"),
+            Map.entry("hồng cánh sen", "#D81B60"),
+            Map.entry("hong canh sen", "#D81B60"),
             Map.entry("vàng", "#F5C542"),
+            Map.entry("vang", "#F5C542"),
+            Map.entry("yellow", "#F5C542"),
+            Map.entry("vàng chanh", "#F4E04D"),
+            Map.entry("vang chanh", "#F4E04D"),
+            Map.entry("vàng mù tạt", "#E1AD01"),
+            Map.entry("vang mu tat", "#E1AD01"),
             Map.entry("xanh navy", "#1B365D"),
+            Map.entry("navy", "#1B365D"),
+            Map.entry("xanh tím than", "#232B3E"),
+            Map.entry("xanh tim than", "#232B3E"),
+            Map.entry("tím than", "#3B234A"),
+            Map.entry("tim than", "#3B234A"),
+            Map.entry("xanh đen", "#0F172A"),
+            Map.entry("xanh den", "#0F172A"),
             Map.entry("xanh dương", "#2563EB"),
+            Map.entry("xanh duong", "#2563EB"),
+            Map.entry("blue", "#2563EB"),
+            Map.entry("xanh coban", "#0047AB"),
+            Map.entry("xanh da trời", "#6BA4FF"),
+            Map.entry("xanh da troi", "#6BA4FF"),
+            Map.entry("xanh baby", "#89CFF0"),
             Map.entry("xanh rêu", "#4A5D4E"),
+            Map.entry("xanh reu", "#4A5D4E"),
+            Map.entry("xanh lá", "#198754"),
+            Map.entry("xanh la", "#198754"),
+            Map.entry("green", "#198754"),
+            Map.entry("xanh bơ", "#9DB672"),
+            Map.entry("xanh bo", "#9DB672"),
+            Map.entry("xanh mint", "#8FE3D4"),
+            Map.entry("xanh ngọc", "#20B2AA"),
+            Map.entry("xanh ngoc", "#20B2AA"),
+            Map.entry("xanh oliu", "#6B7A40"),
             Map.entry("xám", "#9CA3AF"),
-            Map.entry("xám nhạt", "#E0E0E0"),
-            Map.entry("nâu", "#6F4E37")
+            Map.entry("xam", "#9CA3AF"),
+            Map.entry("gray", "#9CA3AF"),
+            Map.entry("grey", "#9CA3AF"),
+            Map.entry("xám nhạt", "#E5E7EB"),
+            Map.entry("xam nhat", "#E5E7EB"),
+            Map.entry("xám đậm", "#374151"),
+            Map.entry("xam dam", "#374151"),
+            Map.entry("ghi", "#6B7280"),
+            Map.entry("nâu", "#6F4E37"),
+            Map.entry("nau", "#6F4E37"),
+            Map.entry("brown", "#6F4E37"),
+            Map.entry("nâu tây", "#A67B5B"),
+            Map.entry("nau tay", "#A67B5B"),
+            Map.entry("nâu bò", "#C17737"),
+            Map.entry("nau bo", "#C17737"),
+            Map.entry("nâu socola", "#382216"),
+            Map.entry("nau socola", "#382216"),
+            Map.entry("nâu cà phê", "#4A3728"),
+            Map.entry("nau ca phe", "#4A3728"),
+            Map.entry("cam", "#FD7E14"),
+            Map.entry("orange", "#FD7E14"),
+            Map.entry("cam cháy", "#BF4611"),
+            Map.entry("cam chay", "#BF4611"),
+            Map.entry("cam đất", "#CF6943"),
+            Map.entry("cam dat", "#CF6943"),
+            Map.entry("cam san hô", "#FF7F66"),
+            Map.entry("cam san ho", "#FF7F66"),
+            Map.entry("tím", "#7952B3"),
+            Map.entry("tim", "#7952B3"),
+            Map.entry("purple", "#7952B3"),
+            Map.entry("tím pastel", "#C3B1E1"),
+            Map.entry("tím huế", "#581845")
     );
 
     private final CategoryRepository categoryRepository;
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
     private final ProductRepository productRepository;
+    private final ProductColorRepository productColorRepository;
     private final ProductVariantRepository productVariantRepository;
     private final ReviewRepository reviewRepository;
     private final VoucherRepository voucherRepository;
@@ -77,6 +172,7 @@ public class CatalogService {
     public List<CatalogDtos.CategoryDto> getCategoryTree() {
         return categoryRepository.findByParentIsNullOrderByIdAsc()
                 .stream()
+                .filter(Category::isActive)
                 .map(this::toCategoryTreeDto)
                 .toList();
     }
@@ -108,11 +204,112 @@ public class CatalogService {
                 .toList();
     }
 
+    @Transactional
+    public CatalogDtos.ColorDto createColor(CatalogDtos.ColorDto dto) {
+        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
+            throw new BusinessException("Tên màu không được để trống");
+        }
+        String trimmed = dto.getName().trim();
+        if (colorRepository.findByNameIgnoreCase(trimmed).isPresent()) {
+            throw new BusinessException("Màu sắc '" + trimmed + "' đã tồn tại");
+        }
+        String hex = (dto.getHexCode() != null && !dto.getHexCode().isBlank())
+                ? dto.getHexCode().trim()
+                : resolveColorHex(trimmed);
+
+        Color color = colorRepository.save(Color.builder()
+                .name(trimmed)
+                .hexCode(hex)
+                .build());
+        return CatalogDtos.ColorDto.builder().id(color.getId()).name(color.getName()).hexCode(color.getHexCode()).build();
+    }
+
+    @Transactional
+    public CatalogDtos.ColorDto updateColor(Long id, CatalogDtos.ColorDto dto) {
+        Color color = colorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy màu sắc"));
+
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            String trimmed = dto.getName().trim();
+            colorRepository.findByNameIgnoreCase(trimmed)
+                    .ifPresent(existing -> {
+                        if (!existing.getId().equals(id)) {
+                            throw new BusinessException("Tên màu '" + trimmed + "' đã tồn tại");
+                        }
+                    });
+            color.setName(trimmed);
+        }
+
+        if (dto.getHexCode() != null && !dto.getHexCode().isBlank()) {
+            color.setHexCode(dto.getHexCode().trim());
+        }
+
+        Color updated = colorRepository.save(color);
+        return CatalogDtos.ColorDto.builder().id(updated.getId()).name(updated.getName()).hexCode(updated.getHexCode()).build();
+    }
+
+    @Transactional
+    public void deleteColor(Long id) {
+        Color color = colorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy màu sắc"));
+        if (productColorRepository.existsByColorId(id)) {
+            throw new BusinessException("Không thể xóa màu '" + color.getName() + "' vì đang có sản phẩm sử dụng");
+        }
+        colorRepository.delete(color);
+    }
+
     @Transactional(readOnly = true)
     public List<CatalogDtos.SizeDto> getAllSizes() {
         return sizeRepository.findAllByOrderBySortOrderAscIdAsc().stream()
                 .map(s -> CatalogDtos.SizeDto.builder().id(s.getId()).name(s.getName()).sortOrder(s.getSortOrder()).build())
                 .toList();
+    }
+
+    @Transactional
+    public CatalogDtos.SizeDto createSize(CatalogDtos.SizeDto dto) {
+        if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
+            throw new BusinessException("Tên kích thước không được để trống");
+        }
+        String trimmed = dto.getName().trim().toUpperCase(Locale.ROOT);
+        if (sizeRepository.findByNameIgnoreCase(trimmed).isPresent()) {
+            throw new BusinessException("Kích thước '" + trimmed + "' đã tồn tại");
+        }
+        int order = dto.getSortOrder() > 0 ? dto.getSortOrder() : 10;
+        Size size = sizeRepository.save(Size.builder().name(trimmed).sortOrder(order).build());
+        return CatalogDtos.SizeDto.builder().id(size.getId()).name(size.getName()).sortOrder(size.getSortOrder()).build();
+    }
+
+    @Transactional
+    public CatalogDtos.SizeDto updateSize(Long id, CatalogDtos.SizeDto dto) {
+        Size size = sizeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy kích thước"));
+
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            String trimmed = dto.getName().trim().toUpperCase(Locale.ROOT);
+            sizeRepository.findByNameIgnoreCase(trimmed)
+                    .ifPresent(existing -> {
+                        if (!existing.getId().equals(id)) {
+                            throw new BusinessException("Tên kích thước '" + trimmed + "' đã tồn tại");
+                        }
+                    });
+            size.setName(trimmed);
+        }
+        if (dto.getSortOrder() > 0) {
+            size.setSortOrder(dto.getSortOrder());
+        }
+
+        Size updated = sizeRepository.save(size);
+        return CatalogDtos.SizeDto.builder().id(updated.getId()).name(updated.getName()).sortOrder(updated.getSortOrder()).build();
+    }
+
+    @Transactional
+    public void deleteSize(Long id) {
+        Size size = sizeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy kích thước"));
+        if (productVariantRepository.existsBySizeId(id)) {
+            throw new BusinessException("Không thể xóa kích thước '" + size.getName() + "' vì đang có biến thể sản phẩm sử dụng");
+        }
+        sizeRepository.delete(size);
     }
 
     @Transactional(readOnly = true)
@@ -145,6 +342,9 @@ public class CatalogService {
         Set<Long> matchingCategoryIds = resolveCategoryFilterIds(categorySlug);
         boolean filterNuNew = "hang-nu-moi-ve".equalsIgnoreCase(categorySlug);
         boolean filterNamNew = "hang-nam-moi-ve".equalsIgnoreCase(categorySlug);
+        boolean filterNuSale = "sale-nu".equalsIgnoreCase(categorySlug);
+        boolean filterNamSale = "sale-nam".equalsIgnoreCase(categorySlug);
+        boolean filterSaleAll = "sale".equalsIgnoreCase(categorySlug) || "san-pham-giam-gia".equalsIgnoreCase(categorySlug);
 
         List<CatalogDtos.ProductResponseDto> filtered = activeProducts.stream()
                 .filter(p -> {
@@ -153,6 +353,15 @@ public class CatalogService {
                     }
                     if (filterNamNew) {
                         return p.isNew() && belongsToRootSlug(p.getCategory(), "nam");
+                    }
+                    if (filterNuSale) {
+                        return p.getDiscountPercent() > 0 && belongsToRootSlug(p.getCategory(), "nu");
+                    }
+                    if (filterNamSale) {
+                        return p.getDiscountPercent() > 0 && belongsToRootSlug(p.getCategory(), "nam");
+                    }
+                    if (filterSaleAll) {
+                        return p.getDiscountPercent() > 0;
                     }
                     if (!matchingCategoryIds.isEmpty()) {
                         return matchingCategoryIds.contains(p.getCategory().getId());
@@ -371,6 +580,8 @@ public class CatalogService {
                 .basePrice(request.getPrice())
                 .discountPercent(discountPercent)
                 .description(request.getDescription())
+                .material(request.getMaterial())
+                .careInstructions(request.getCareInstructions())
                 .isNew(request.getIsNew() == null || request.getIsNew())
                 .isBestSeller(Boolean.TRUE.equals(request.getIsBestSeller()))
                 .isActive(active)
@@ -394,6 +605,8 @@ public class CatalogService {
             product.setDiscountPercent(Math.min(100, Math.max(0, request.getDiscountPercent())));
         }
         product.setDescription(request.getDescription());
+        product.setMaterial(request.getMaterial());
+        product.setCareInstructions(request.getCareInstructions());
         if (request.getBrand() != null && !request.getBrand().isBlank()) {
             product.setBrand(request.getBrand().trim());
         }
@@ -434,6 +647,36 @@ public class CatalogService {
         productRepository.save(product);
     }
 
+    private String extractOptionValue(Map<String, String> opts, String type) {
+        if (opts == null || opts.isEmpty()) return null;
+        for (Map.Entry<String, String> entry : opts.entrySet()) {
+            if (entry.getKey() == null || entry.getValue() == null) continue;
+            String lowerKey = entry.getKey().trim().toLowerCase(Locale.ROOT);
+            if ("color".equals(type)) {
+                if (lowerKey.contains("màu") || lowerKey.contains("mau") || lowerKey.contains("color")) {
+                    return entry.getValue().trim();
+                }
+            } else if ("size".equals(type)) {
+                if (lowerKey.contains("kích") || lowerKey.contains("kich") || lowerKey.contains("size")) {
+                    return entry.getValue().trim();
+                }
+            }
+        }
+        return null;
+    }
+
+    private List<String> findColorImagesCaseInsensitive(Map<String, List<String>> colorImages, String colorName) {
+        if (colorImages == null || colorName == null) return null;
+        List<String> exact = colorImages.get(colorName);
+        if (exact != null && !exact.isEmpty()) return exact;
+        for (Map.Entry<String, List<String>> entry : colorImages.entrySet()) {
+            if (entry.getKey() != null && entry.getKey().trim().equalsIgnoreCase(colorName.trim())) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     private void populateColorsAndVariants(Product product, CatalogDtos.AdminProductUpsertRequest request) {
         List<String> fallbackImages = (request.getImages() == null || request.getImages().isEmpty())
                 ? List.of("03321697-61dc-4f30-8da7-d25085a78741.webp", "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp")
@@ -463,13 +706,23 @@ public class CatalogService {
         int index = 1;
         for (CatalogDtos.AdminVariantPayloadDto vReq : request.getVariants()) {
             Map<String, String> opts = vReq.getOptions() == null ? Map.of() : vReq.getOptions();
-            String colorName = opts.getOrDefault("Màu sắc", opts.getOrDefault("Color", "Mặc định"));
-            String sizeName = opts.getOrDefault("Kích thước", opts.getOrDefault("Size", "Freesize"));
+            String extractedColor = extractOptionValue(opts, "color");
+            String colorName = (extractedColor != null && !extractedColor.isBlank()) ? extractedColor : "Mặc định";
+            String extractedSize = extractOptionValue(opts, "size");
+            String sizeName = (extractedSize != null && !extractedSize.isBlank()) ? extractedSize : "Freesize";
 
             ProductColor pc = colorGroupMap.computeIfAbsent(colorName, cn -> {
                 Color color = getOrCreateColor(cn);
                 ProductColor created = ProductColor.builder().color(color).isActive(true).build();
-                if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
+                List<String> specificImgs = findColorImagesCaseInsensitive(request.getColorImages(), cn);
+                if (specificImgs != null && !specificImgs.isEmpty()) {
+                    int ord = 0;
+                    for (String img : specificImgs) {
+                        if (img != null && !img.isBlank()) {
+                            created.addImage(ProductImage.builder().imageUrl(img.trim()).displayOrder(ord++).build());
+                        }
+                    }
+                } else if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
                     created.addImage(ProductImage.builder().imageUrl(vReq.getImage().trim()).displayOrder(0).build());
                 } else {
                     int ord = 0;
@@ -521,8 +774,10 @@ public class CatalogService {
         int index = 1;
         for (CatalogDtos.AdminVariantPayloadDto vReq : request.getVariants()) {
             Map<String, String> opts = vReq.getOptions() == null ? Map.of() : vReq.getOptions();
-            String colorName = opts.getOrDefault("Màu sắc", opts.getOrDefault("Color", "Mặc định")).trim();
-            String sizeName = opts.getOrDefault("Kích thước", opts.getOrDefault("Size", "Freesize")).trim();
+            String extractedColor = extractOptionValue(opts, "color");
+            String colorName = ((extractedColor != null && !extractedColor.isBlank()) ? extractedColor : "Mặc định").trim();
+            String extractedSize = extractOptionValue(opts, "size");
+            String sizeName = ((extractedSize != null && !extractedSize.isBlank()) ? extractedSize : "Freesize").trim();
             String colorKey = colorName.toLowerCase(Locale.ROOT);
 
             ProductColor pc = existingColorsByLowerName.get(colorKey);
@@ -530,7 +785,14 @@ public class CatalogService {
                 Color color = getOrCreateColor(colorName);
                 pc = ProductColor.builder().color(color).isActive(true).build();
                 int ord = 0;
-                if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
+                List<String> specificImgs = findColorImagesCaseInsensitive(request.getColorImages(), colorName);
+                if (specificImgs != null && !specificImgs.isEmpty()) {
+                    for (String img : specificImgs) {
+                        if (img != null && !img.isBlank()) {
+                            pc.addImage(ProductImage.builder().imageUrl(img.trim()).displayOrder(ord++).build());
+                        }
+                    }
+                } else if (vReq.getImage() != null && !vReq.getImage().isBlank()) {
                     pc.addImage(ProductImage.builder().imageUrl(vReq.getImage().trim()).displayOrder(ord++).build());
                 } else {
                     for (String img : fallbackImages) {
@@ -543,8 +805,16 @@ public class CatalogService {
             } else if (!updatedColorImages.contains(colorKey)) {
                 updatedColorImages.add(colorKey);
                 pc.setActive(true);
-                if (request.getImages() != null && !request.getImages().isEmpty()) {
+                List<String> specificImgs = findColorImagesCaseInsensitive(request.getColorImages(), colorName);
+                if (specificImgs != null && !specificImgs.isEmpty()) {
                     pc.getImages().clear();
+                    int ord = 0;
+                    for (String img : specificImgs) {
+                        if (img != null && !img.isBlank()) {
+                            pc.addImage(ProductImage.builder().imageUrl(img.trim()).displayOrder(ord++).build());
+                        }
+                    }
+                } else if (pc.getImages().isEmpty() && request.getImages() != null && !request.getImages().isEmpty()) {
                     int ord = 0;
                     for (String img : request.getImages()) {
                         if (img != null && !img.isBlank()) {
@@ -621,12 +891,88 @@ public class CatalogService {
         return candidate + "-" + (System.currentTimeMillis() % 10000);
     }
 
+    private String resolveColorHex(String name) {
+        if (name == null || name.isBlank()) return "#111111";
+        String clean = name.trim().toLowerCase(Locale.ROOT);
+        if (DEFAULT_COLOR_HEX.containsKey(clean)) {
+            return DEFAULT_COLOR_HEX.get(clean);
+        }
+
+        // 1. Be - Kem
+        if (clean.contains("be vàng") || clean.contains("be vang")) return "#E6C587";
+        if (clean.contains("be sữa") || clean.contains("be sua")) return "#EFE5D5";
+        if (clean.contains("kem") || clean.contains("cream")) return "#FFF4D4";
+        if (clean.contains("be") || clean.contains("beige")) return "#D8C7B0";
+
+        // 2. Đỏ - Hồng
+        if (clean.contains("đỏ đô") || clean.contains("do do") || clean.contains("ruby")) return "#800020";
+        if (clean.contains("đỏ mận") || clean.contains("do man") || clean.contains("rượu") || clean.contains("ruou")) return "#5B1E31";
+        if (clean.contains("hồng đất") || clean.contains("hong dat")) return "#B86B77";
+        if (clean.contains("hồng phấn") || clean.contains("hong phan")) return "#FFC0CB";
+        if (clean.contains("hồng pastel") || clean.contains("hong pastel")) return "#F9D5DC";
+        if (clean.contains("cánh sen") || clean.contains("canh sen")) return "#D81B60";
+        if (clean.contains("hồng") || clean.contains("hong") || clean.contains("pink")) return "#F2A6B3";
+        if (clean.contains("đỏ") || clean.contains("do") || clean.contains("red")) return "#C92A2A";
+
+        // 3. Xanh dương & Tối
+        if (clean.contains("xanh tím than") || clean.contains("xanh tim than")) return "#232B3E";
+        if (clean.contains("tím than") || clean.contains("tim than")) return "#3B234A";
+        if (clean.contains("xanh đen") || clean.contains("xanh den")) return "#0F172A";
+        if (clean.contains("navy")) return "#1B365D";
+        if (clean.contains("coban") || clean.contains("cobalt")) return "#0047AB";
+        if (clean.contains("da trời") || clean.contains("da troi") || clean.contains("baby")) return "#6BA4FF";
+
+        // 4. Xanh lá & Rêu
+        if (clean.contains("xanh bơ") || clean.contains("xanh bo")) return "#9DB672";
+        if (clean.contains("xanh mint") || clean.contains("mint")) return "#8FE3D4";
+        if (clean.contains("xanh ngọc") || clean.contains("ngoc")) return "#20B2AA";
+        if (clean.contains("rêu") || clean.contains("reu") || clean.contains("oliu")) return "#4A5D4E";
+        if (clean.contains("lá") || clean.contains("la")) return "#198754";
+        if (clean.contains("xanh") || clean.contains("blue")) return "#2563EB";
+
+        // 5. Nâu
+        if (clean.contains("nâu tây") || clean.contains("nau tay")) return "#A67B5B";
+        if (clean.contains("nâu bò") || clean.contains("nau bo")) return "#C17737";
+        if (clean.contains("socola") || clean.contains("chocolate")) return "#382216";
+        if (clean.contains("nâu") || clean.contains("nau") || clean.contains("brown")) return "#6F4E37";
+
+        // 6. Cam
+        if (clean.contains("cam cháy") || clean.contains("cam chay")) return "#BF4611";
+        if (clean.contains("cam đất") || clean.contains("cam dat")) return "#CF6943";
+        if (clean.contains("san hô") || clean.contains("san ho")) return "#FF7F66";
+        if (clean.contains("cam")) return "#FD7E14";
+
+        // 7. Vàng
+        if (clean.contains("chanh")) return "#F4E04D";
+        if (clean.contains("mù tạt") || clean.contains("mu tat")) return "#E1AD01";
+        if (clean.contains("vàng") || clean.contains("vang")) return "#F5C542";
+
+        // 8. Trắng, Đen, Xám
+        if (clean.contains("trắng sữa") || clean.contains("trang sua")) return "#F5F5F0";
+        if (clean.contains("trắng") || clean.contains("trang") || clean.contains("white")) return "#FFFFFF";
+        if (clean.contains("đen") || clean.contains("den") || clean.contains("black")) return "#111111";
+        if (clean.contains("xám đậm") || clean.contains("xam dam")) return "#374151";
+        if (clean.contains("xám nhạt") || clean.contains("xam nhat")) return "#E5E7EB";
+        if (clean.contains("xám") || clean.contains("xam") || clean.contains("ghi")) return "#9CA3AF";
+        if (clean.contains("tím") || clean.contains("tim")) return "#7952B3";
+
+        return "#8C8C8C";
+    }
+
     private Color getOrCreateColor(String name) {
         String trimmed = (name == null || name.isBlank()) ? "Đen" : name.trim();
         return colorRepository.findByNameIgnoreCase(trimmed)
+                .map(existing -> {
+                    String betterHex = resolveColorHex(trimmed);
+                    if (!betterHex.equalsIgnoreCase(existing.getHexCode())) {
+                        existing.setHexCode(betterHex);
+                        return colorRepository.save(existing);
+                    }
+                    return existing;
+                })
                 .orElseGet(() -> colorRepository.save(Color.builder()
                         .name(trimmed)
-                        .hexCode(DEFAULT_COLOR_HEX.getOrDefault(trimmed.toLowerCase(Locale.ROOT), "#221f20"))
+                        .hexCode(resolveColorHex(trimmed))
                         .build()));
     }
 
@@ -799,6 +1145,14 @@ public class CatalogService {
                 CatalogDtos.AdminOptionDto.builder().name("Kích thước").values(new ArrayList<>(sizeNames)).build()
         ) : List.of();
 
+        Map<String, List<String>> colorImagesMap = new LinkedHashMap<>();
+        for (CatalogDtos.ProductColorDto pcDto : colorDtos) {
+            if (pcDto.getColor() != null && pcDto.getColor().getName() != null) {
+                List<String> imgUrls = pcDto.getImages().stream().map(CatalogDtos.ProductImageDto::getImageUrl).toList();
+                colorImagesMap.put(pcDto.getColor().getName(), imgUrls);
+            }
+        }
+
         return CatalogDtos.ProductResponseDto.builder()
                 .id(p.getId())
                 .name(p.getName())
@@ -810,6 +1164,8 @@ public class CatalogService {
                 .formattedPrice(SlugUtils.formatVnd(p.getEffectivePrice()))
                 .discountPercent(p.getDiscountPercent())
                 .description(p.getDescription())
+                .material(p.getMaterial())
+                .careInstructions(p.getCareInstructions())
                 .isNew(p.isNew())
                 .isBestSeller(p.isBestSeller())
                 .isActive(p.isActive())
@@ -825,6 +1181,7 @@ public class CatalogService {
                         .build())
                 .productColors(colorDtos)
                 .images(new ArrayList<>(allImages))
+                .colorImages(colorImagesMap)
                 .options(adminOptions)
                 .adminVariants(adminVariants)
                 .build();
@@ -832,6 +1189,7 @@ public class CatalogService {
 
     private CatalogDtos.CategoryDto toCategoryTreeDto(Category c) {
         List<CatalogDtos.CategoryDto> children = c.getChildren().stream()
+                .filter(Category::isActive)
                 .map(this::toCategoryTreeDto)
                 .toList();
         long directCount = productRepository.countByCategoryId(c.getId());

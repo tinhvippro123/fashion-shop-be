@@ -119,6 +119,9 @@ public class Order extends BaseEntity {
             throw new BusinessException("Không thể chuyển trạng thái đơn hàng từ " + this.status + " sang " + nextStatus);
         }
         this.status = nextStatus;
+        if (nextStatus == OrderStatus.PROCESSING && (this.paymentMethod == PaymentMethod.BANK_TRANSFER || this.paymentMethod == PaymentMethod.VNPAY)) {
+            this.paymentStatus = PaymentStatus.PAID;
+        }
         if (nextStatus == OrderStatus.COMPLETED) {
             this.paymentStatus = PaymentStatus.PAID;
         }

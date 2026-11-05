@@ -2,6 +2,7 @@ package com.fashionshop.be.domain.enums;
 
 public enum PaymentMethod {
     COD,
-    BANK_TRANSFER
+    BANK_TRANSFER,
+    VNPAY
 }
 

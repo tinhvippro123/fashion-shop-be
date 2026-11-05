@@ -74,6 +74,50 @@ public class AdminController {
         return ApiResponse.ok(catalogService.getOptionSuggestions());
     }
 
+    // ================== COLORS & SIZES ==================
+
+    @GetMapping("/colors")
+    public ApiResponse<List<CatalogDtos.ColorDto>> getColors() {
+        return ApiResponse.ok(catalogService.getAllColors());
+    }
+
+    @PostMapping("/colors")
+    public ApiResponse<CatalogDtos.ColorDto> createColor(@RequestBody CatalogDtos.ColorDto dto) {
+        return ApiResponse.ok("Đã thêm màu sắc thành công", catalogService.createColor(dto));
+    }
+
+    @PutMapping("/colors/{id}")
+    public ApiResponse<CatalogDtos.ColorDto> updateColor(@PathVariable Long id, @RequestBody CatalogDtos.ColorDto dto) {
+        return ApiResponse.ok("Đã cập nhật màu sắc", catalogService.updateColor(id, dto));
+    }
+
+    @DeleteMapping("/colors/{id}")
+    public ApiResponse<Void> deleteColor(@PathVariable Long id) {
+        catalogService.deleteColor(id);
+        return ApiResponse.ok("Đã xóa màu sắc", null);
+    }
+
+    @GetMapping("/sizes")
+    public ApiResponse<List<CatalogDtos.SizeDto>> getSizes() {
+        return ApiResponse.ok(catalogService.getAllSizes());
+    }
+
+    @PostMapping("/sizes")
+    public ApiResponse<CatalogDtos.SizeDto> createSize(@RequestBody CatalogDtos.SizeDto dto) {
+        return ApiResponse.ok("Đã thêm kích thước thành công", catalogService.createSize(dto));
+    }
+
+    @PutMapping("/sizes/{id}")
+    public ApiResponse<CatalogDtos.SizeDto> updateSize(@PathVariable Long id, @RequestBody CatalogDtos.SizeDto dto) {
+        return ApiResponse.ok("Đã cập nhật kích thước", catalogService.updateSize(id, dto));
+    }
+
+    @DeleteMapping("/sizes/{id}")
+    public ApiResponse<Void> deleteSize(@PathVariable Long id) {
+        catalogService.deleteSize(id);
+        return ApiResponse.ok("Đã xóa kích thước", null);
+    }
+
     // ================== PRODUCTS & VARIANTS ==================
 
     @GetMapping("/products")

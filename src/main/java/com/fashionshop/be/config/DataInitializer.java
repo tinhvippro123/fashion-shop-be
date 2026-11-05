@@ -1,5 +1,7 @@
 package com.fashionshop.be.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fashionshop.be.domain.entity.Category;
 import com.fashionshop.be.domain.entity.Color;
 import com.fashionshop.be.domain.entity.Order;
@@ -35,18 +37,24 @@ import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
 import com.fashionshop.be.repository.WishlistRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -107,6 +115,7 @@ public class DataInitializer implements CommandLineRunner {
     private final WishlistRepository wishlistRepository;
     private final PasswordEncoder passwordEncoder;
     private final JdbcTemplate jdbcTemplate;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     @Transactional
@@ -185,20 +194,14 @@ public class DataInitializer implements CommandLineRunner {
                 .isDefault(true)
                 .build());
 
-        // 2. Seed Categories (Hierarchy Nam & Nữ)
+        // 2. Seed Categories (Hierarchy 3 Cấp: Root (Nam/Nữ) -> Level 2 (Áo, Quần, Đầm, Chân váy) -> Level 3 (Chi tiết theo IVY moda))
+        // --- LEVEL 1: ROOT ---
         Category catNu = categoryRepository.save(Category.builder()
                 .name("Thời trang Nữ")
                 .slug("nu")
                 .description("Bộ sưu tập thời trang công sở & dạo phố cao cấp dành cho phái đẹp")
                 .isActive(true)
                 .build());
-
-        Category catDam = categoryRepository.save(Category.builder()
-                .parent(catNu).name("Đầm thiết kế").slug("dam").description("Đầm lụa, đầm công sở thanh lịch").isActive(true).build());
-        Category catAoNu = categoryRepository.save(Category.builder()
-                .parent(catNu).name("Áo sơ mi & Kiểu Nữ").slug("ao-nu").description("Áo sơ mi lụa, áo kiểu tinh tế").isActive(true).build());
-        Category catQuanNu = categoryRepository.save(Category.builder()
-                .parent(catNu).name("Quần & Chân váy Nữ").slug("quan-nu").description("Quần âu ống suông, chân váy xếp ly").isActive(true).build());
 
         Category catNam = categoryRepository.save(Category.builder()
                 .name("Thời trang Nam")
@@ -207,20 +210,61 @@ public class DataInitializer implements CommandLineRunner {
                 .isActive(true)
                 .build());
 
+        // --- LEVEL 2: NHÓM DANH MỤC NỮ ---
+        Category catAoNu = categoryRepository.save(Category.builder()
+                .parent(catNu).name("Áo Nữ").slug("ao-nu").description("Áo sơ mi, áo khoác phái đẹp").isActive(true).build());
+        Category catDamNu = categoryRepository.save(Category.builder()
+                .parent(catNu).name("Đầm").slug("dam-nu").description("Đầm chữ A, đầm công sở thanh lịch").isActive(true).build());
+        Category catQuanNu = categoryRepository.save(Category.builder()
+                .parent(catNu).name("Quần Nữ").slug("quan-nu").description("Quần âu thanh lịch").isActive(true).build());
+        Category catChanVayNu = categoryRepository.save(Category.builder()
+                .parent(catNu).name("Chân Váy").slug("chan-vay-nu").description("Chân váy chữ A, chân váy xòe").isActive(true).build());
+
+        // --- LEVEL 3: CHI TIẾT DANH MỤC NỮ (Gắn sản phẩm) ---
+        Category catSoMiNu = categoryRepository.save(Category.builder()
+                .parent(catAoNu).name("Áo sơ mi").slug("ao-so-mi-nu").description("Áo sơ mi lụa, sơ mi công sở").isActive(true).build());
+        Category catKhoacNu = categoryRepository.save(Category.builder()
+                .parent(catAoNu).name("Áo khoác").slug("ao-khoac-nu").description("Áo khoác dạ tweed, áo jacket").isActive(true).build());
+
+        Category catDamXoeNu = categoryRepository.save(Category.builder()
+                .parent(catDamNu).name("Đầm chữ A").slug("dam-xoe-nu").description("Đầm chữ A xếp ly, dáng xòe bay bổng").isActive(true).build());
+        Category catDamCongSoNu = categoryRepository.save(Category.builder()
+                .parent(catDamNu).name("Đầm công sở").slug("dam-cong-so-nu").description("Đầm công sở thanh lịch, đầm lụa sang trọng").isActive(true).build());
+
+        Category catQuanAuNu = categoryRepository.save(Category.builder()
+                .parent(catQuanNu).name("Quần âu").slug("quan-au-nu").description("Quần âu ống loe, quần suông Tuytsi tôn dáng").isActive(true).build());
+
+        Category catChanVayANu = categoryRepository.save(Category.builder()
+                .parent(catChanVayNu).name("Chân váy chữ A").slug("chan-vay-a-nu").description("Chân váy chữ A, chân váy midi xẻ tà").isActive(true).build());
+        Category catChanVayXoeNu = categoryRepository.save(Category.builder()
+                .parent(catChanVayNu).name("Chân váy xòe").slug("chan-vay-xoe-nu").description("Chân váy xếp ly, ren hai lớp bồng bềnh").isActive(true).build());
+
+        // --- LEVEL 2: NHÓM DANH MỤC NAM ---
         Category catAoNam = categoryRepository.save(Category.builder()
-                .parent(catNam).name("Áo sơ mi & Polo Nam").slug("ao-nam").description("Áo sơ mi chống nhăn, áo polo cao cấp").isActive(true).build());
-        Category catKhoacNam = categoryRepository.save(Category.builder()
-                .parent(catNam).name("Áo Blazer & Khoác Nam").slug("ao-khoac-nam").description("Blazer, vest và áo khoác thu đông").isActive(true).build());
+                .parent(catNam).name("Áo Nam").slug("ao-nam").description("Áo sơ mi, áo polo và áo khoác nam").isActive(true).build());
         Category catQuanNam = categoryRepository.save(Category.builder()
-                .parent(catNam).name("Quần Âu & Khaki Nam").slug("quan-nam").description("Quần âu chuẩn phom công sở").isActive(true).build());
+                .parent(catNam).name("Quần Nam").slug("quan-nam").description("Quần dài và quần short chuẩn phom").isActive(true).build());
+
+        // --- LEVEL 3: CHI TIẾT DANH MỤC NAM (Gắn sản phẩm) ---
+        Category catPoloNam = categoryRepository.save(Category.builder()
+                .parent(catAoNam).name("Áo polo").slug("ao-polo-nam").description("Áo polo Cool Air, modal, len dệt kim").isActive(true).build());
+        Category catSoMiNam = categoryRepository.save(Category.builder()
+                .parent(catAoNam).name("Áo sơ mi").slug("ao-so-mi-nam").description("Áo sơ mi caro, denim và regular fit").isActive(true).build());
+        Category catKhoacNam = categoryRepository.save(Category.builder()
+                .parent(catAoNam).name("Áo khoác").slug("ao-khoac-nam").description("Áo khoác dạ lông cừu, bomber và áo nỉ").isActive(true).build());
+
+        Category catQuanDaiNam = categoryRepository.save(Category.builder()
+                .parent(catQuanNam).name("Quần dài").slug("quan-dai-nam").description("Quần dài kaki, quần âu chuẩn phom").isActive(true).build());
+        Category catQuanShortNam = categoryRepository.save(Category.builder()
+                .parent(catQuanNam).name("Quần short").slug("quan-short-nam").description("Quần short regular cotton thoải mái").isActive(true).build());
 
         // 3. Seed Colors & Sizes
-        Color cBlack = colorRepository.save(Color.builder().name("Đen").hexCode("#111111").build());
-        Color cWhite = colorRepository.save(Color.builder().name("Trắng").hexCode("#FFFFFF").build());
-        Color cBeige = colorRepository.save(Color.builder().name("Kem Be").hexCode("#E8DCC8").build());
-        Color cNavy = colorRepository.save(Color.builder().name("Xanh Navy").hexCode("#1B365D").build());
-        Color cRed = colorRepository.save(Color.builder().name("Đỏ Ruby").hexCode("#A61C1C").build());
-        Color cGrey = colorRepository.save(Color.builder().name("Xám Nhạt").hexCode("#D1D5DB").build());
+        colorRepository.save(Color.builder().name("Đen").hexCode("#111111").build());
+        colorRepository.save(Color.builder().name("Trắng").hexCode("#FFFFFF").build());
+        colorRepository.save(Color.builder().name("Kem Be").hexCode("#E8DCC8").build());
+        colorRepository.save(Color.builder().name("Xanh Navy").hexCode("#1B365D").build());
+        colorRepository.save(Color.builder().name("Đỏ Ruby").hexCode("#A61C1C").build());
+        colorRepository.save(Color.builder().name("Xám Nhạt").hexCode("#D1D5DB").build());
 
         Size sS = sizeRepository.save(Size.builder().name("S").sortOrder(1).build());
         Size sM = sizeRepository.save(Size.builder().name("M").sortOrder(2).build());
@@ -228,76 +272,34 @@ public class DataInitializer implements CommandLineRunner {
         Size sXL = sizeRepository.save(Size.builder().name("XL").sortOrder(4).build());
         List<Size> standardSizes = List.of(sS, sM, sL, sXL);
 
-        // 4. Seed 10 Realistic Fashion Products using 100% real studio .webp photos in /uploads
-        Product p1 = createSeedProduct(catDam, "Đầm Lụa Cổ V Dập Ly Thanh Lịch", "dam-lua-co-v-dap-ly", "LX-W001",
-                new BigDecimal("1250000"), 20, true, true,
-                "Đầm lụa dáng xòe nhẹ, cổ V tinh tế tôn dáng, tay ngắn thanh lịch, eo xếp ly khéo léo che khuyết điểm. Chất liệu lụa tơ nhân tạo mềm mịn, thoáng mát cả ngày.",
-                cBlack, List.of("03321697-61dc-4f30-8da7-d25085a78741.webp", "0b6e2df0-0401-4eb0-a440-1cbf06651b8d.webp"),
-                cWhite, List.of("121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp", "13dddff3-1a53-4b41-8b70-7c0b2ff37345.webp"),
-                standardSizes, 12);
+        // 4. Seed 41 Realistic Fashion Products across 12 Subcategories from IVY moda
+        Map<String, Category> catMap = Map.ofEntries(
+                Map.entry("ao-so-mi-nu", catSoMiNu),
+                Map.entry("ao-khoac-nu", catKhoacNu),
+                Map.entry("dam-xoe-nu", catDamXoeNu),
+                Map.entry("dam-cong-so-nu", catDamCongSoNu),
+                Map.entry("quan-au-nu", catQuanAuNu),
+                Map.entry("chan-vay-a-nu", catChanVayANu),
+                Map.entry("chan-vay-xoe-nu", catChanVayXoeNu),
+                Map.entry("ao-so-mi-nam", catSoMiNam),
+                Map.entry("ao-polo-nam", catPoloNam),
+                Map.entry("ao-khoac-nam", catKhoacNam),
+                Map.entry("quan-dai-nam", catQuanDaiNam),
+                Map.entry("quan-short-nam", catQuanShortNam)
+        );
+        List<Product> ivyProducts = seedProductsFromIvyJson(catMap, standardSizes);
 
-        Product p2 = createSeedProduct(catDam, "Đầm Midi Chiết Eo Phối Cúc Ngọc", "dam-midi-chiet-eo-cuc-ngoc", "LX-W002",
-                new BigDecimal("1450000"), 30, true, true,
-                "Thiết kế đầm midi công sở cao cấp với hàng cúc ngọc trai sang trọng, đường cắt may chuẩn xác tôn vòng eo thon gọn.",
-                cBeige, List.of("4c6dfad6-5fac-4bf0-a37e-11af96fb7191.webp", "501350eb-e04b-4abb-b6cf-58b1cb78373d.webp"),
-                cRed, List.of("837d3faa-4a85-4c73-9e48-94464f727606.webp", "82dbe045-9c96-4a78-b5fa-d69d30a1c16d.webp"),
-                standardSizes, 10);
-
-        Product p3 = createSeedProduct(catAoNu, "Áo Sơ Mi Lụa Cổ Đức Tay Phồng", "ao-so-mi-lua-co-duc-tay-phong", "LX-W003",
-                new BigDecimal("690000"), 0, true, true,
-                "Áo sơ mi lụa cao cấp ít nhăn, phom suông vừa dễ dàng sơ vin cùng quần âu hoặc chân váy công sở.",
-                cWhite, List.of("198b0924-f7c8-463c-9459-97caf17e0e80.webp", "1a273f13-e42b-4f39-a194-69123e2ad90e.webp"),
-                cBeige, List.of("2525fd0c-9394-410f-8bb0-8842184d6b60.webp", "273101e9-e223-4071-a410-5978071e1617.webp"),
-                standardSizes, 15);
-
-        createSeedProduct(catAoNu, "Áo Kiểu Cổ Nơ Chiffon Hàn Quốc", "ao-kieu-co-no-chiffon", "LX-W004",
-                new BigDecimal("750000"), 15, true, false,
-                "Áo kiểu chất liệu chiffon hai lớp mềm rũ, điểm nhấn cổ thắt nơ nữ tính phù hợp hội họp và sự kiện.",
-                cBeige, List.of("28b592b1-1c56-46a4-ab6c-3715c5f17fc4.webp", "2f287da2-2ced-4613-b9e8-7d95fe92f718.webp"),
-                cBlack, List.of("3142ae83-5757-43df-a666-da0566f44f25.webp", "3a33de02-d052-4e00-a0b5-a0df121d4209.webp"),
-                standardSizes, 8);
-
-        createSeedProduct(catQuanNu, "Quần Âu Nữ Ống Suông Cạp Cao", "quan-au-nu-ong-suong-cap-cao", "LX-W005",
-                new BigDecimal("890000"), 25, false, true,
-                "Quần âu ống suông lưng cao giúp kéo dài đôi chân, vải tuyết mưa dày dặn đứng phom không xù lông.",
-                cBlack, List.of("3b6096f2-377c-4e81-a4ce-ce42be1690c4.webp", "3ceebb27-34c3-4550-b1d9-059cf8a751d3.webp"),
-                cGrey, List.of("3ec1f27b-051c-4848-b60f-e9426f53fdd3.webp", "3ff1def3-4a16-4711-ab2d-1404932720fc.webp"),
-                standardSizes, 14);
-
-        createSeedProduct(catQuanNu, "Chân Váy Chữ A Xếp Ly Dáng Dài", "chan-vay-chu-a-xep-ly", "LX-W006",
-                new BigDecimal("790000"), 0, true, false,
-                "Chân váy chữ A cạp bản to che bụng hiệu quả, dễ phối cùng áo sơ mi hoặc áo thun tối giản.",
-                cBeige, List.of("41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp", "4df71260-f448-4ad5-acb4-c4602e8ea85c.webp"),
-                cBlack, List.of("4874cfa4-0d43-4455-a51b-a02f0d2b6505.webp", "48da95ec-5eb0-44ac-9845-d33d4c9c4cef.webp"),
-                standardSizes, 9);
-
-        Product p7 = createSeedProduct(catAoNam, "Áo Sơ Mi Nam Bamboo Chống Nhăn Slimfit", "ao-so-mi-nam-bamboo-slimfit", "LX-M001",
-                new BigDecimal("850000"), 20, true, true,
-                "Áo sơ mi sợi tre tự nhiên kháng khuẩn, thấm hút mồ hôi vượt trội, giữ phom phẳng phiu suốt ngày dài làm việc.",
-                cWhite, List.of("4f6a834a-c2a0-4783-9fd7-d124f25f4a88.webp", "502977aa-82e1-4697-919e-a2321b8a461e.webp"),
-                cNavy, List.of("566d6e59-052f-4745-abca-ce0a8f3ec970.webp", "60999c15-57aa-49be-9d92-a9c87cac20eb.webp"),
-                standardSizes, 16);
-
-        createSeedProduct(catAoNam, "Áo Polo Nam Dệt Kim Cổ Phối Viền", "ao-polo-nam-det-kim-phoi-vien", "LX-M002",
-                new BigDecimal("650000"), 0, true, true,
-                "Áo polo dệt kim thoáng khí, cổ bẻ cứng cáp mang phong cách Smart Casual trẻ trung, năng động.",
-                cNavy, List.of("631f63ec-1a0d-445a-bd29-b3b10427d726.webp", "66ec2e51-c749-4692-8d81-2fd1245ed298.webp"),
-                cBlack, List.of("677203a0-73b9-4d5d-8930-f528428c631b.webp", "6790a4ca-8a83-43be-b19f-026488664b53.webp"),
-                standardSizes, 12);
-
-        Product p9 = createSeedProduct(catKhoacNam, "Áo Khoác Blazer Nam 2 Khuy Hiện Đại", "ao-khoac-blazer-nam-2-khuy", "LX-M003",
-                new BigDecimal("1890000"), 30, true, true,
-                "Blazer nam phom Hàn Quốc 2 khuy lịch lãm, đệm vai nhẹ tự nhiên, lót lụa thoáng khí cao cấp.",
-                cBlack, List.of("684cdd93-350c-46a5-aff4-c30b6f0f0a83.webp", "6fc16a01-2f75-4b39-952f-e15db7883ed6.webp"),
-                cGrey, List.of("7041a9db-a348-4a9b-87aa-94db388766d4.webp", "7259b73a-2a9d-42c2-87f8-80d3e5e95d0f.webp"),
-                standardSizes, 4);
-
-        createSeedProduct(catQuanNam, "Quần Âu Nam Co Giãn Nhẹ Chuẩn Công Sở", "quan-au-nam-co-gian-cong-so", "LX-M004",
-                new BigDecimal("950000"), 0, true, false,
-                "Quần âu nam phom Regular Tapered gọn gàng, cạp ẩn co giãn thông minh tạo sự thoải mái tối đa khi ngồi làm việc.",
-                cBlack, List.of("8ca0fa01-3f9c-4d9e-ad52-4e4559f99695.webp", "8ff32ffa-bb3a-42fc-97bc-b15d94196fdb.webp"),
-                cNavy, List.of("9d02a2ea-f290-4ad6-b232-0d701ac8429a.webp", "9d4de7a2-cee8-429d-996f-3f3ad504115a.webp"),
-                standardSizes, 11);
+        Product p1 = ivyProducts.get(0);
+        Product p2 = ivyProducts.size() > 1 ? ivyProducts.get(1) : p1;
+        Product p3 = ivyProducts.size() > 2 ? ivyProducts.get(2) : p1;
+        Product p7 = ivyProducts.stream()
+                .filter(p -> p.getCategory() != null && "ao-so-mi-nam".equals(p.getCategory().getSlug()))
+                .findFirst()
+                .orElse(p1);
+        Product p9 = ivyProducts.stream()
+                .filter(p -> p.getCategory() != null && "ao-khoac-nam".equals(p.getCategory().getSlug()))
+                .findFirst()
+                .orElse(p7);
 
         // 5. Seed Stock Imports (Phiếu Nhập Kho) demonstrating OOP importStock
         ProductVariant v1 = p1.getProductColors().get(0).getVariants().get(0);
@@ -417,12 +419,14 @@ public class DataInitializer implements CommandLineRunner {
 
     private void sanitizeLegacyDataIfNeeded() {
         try {
-            jdbcTemplate.update("UPDATE orders SET payment_method = 'BANK_TRANSFER' WHERE payment_method = 'MOMO'");
-            jdbcTemplate.update("UPDATE users SET status = 'ACTIVE' WHERE status = 'UNVERIFIED'");
             jdbcTemplate.update("UPDATE users SET gender = 'FEMALE' WHERE gender IS NULL");
             jdbcTemplate.update("UPDATE users SET date_of_birth = DATE '2000-08-15' WHERE date_of_birth IS NULL");
             jdbcTemplate.execute("DROP TABLE IF EXISTS contact_messages");
+        } catch (Exception e) {
+            log.warn("Notice in user sanitize: {}", e.getMessage());
+        }
 
+        try {
             jdbcTemplate.query(
                     "SELECT id, image_url FROM product_images ORDER BY id ASC",
                     rs -> {
@@ -448,8 +452,291 @@ public class DataInitializer implements CommandLineRunner {
                         }
                     }
             );
-        } catch (Exception ignored) {
-            // Safe no-op if schema differs
+        } catch (Exception e) {
+            log.warn("Notice in webp image cleanup: {}", e.getMessage());
+        }
+
+        // Dọn dẹp an toàn size M2 và L2: gộp tồn kho biến thể M2 -> M, L2 -> L và xóa size M2, L2
+        try {
+            mergeAndRemoveSize("M2", "M");
+            mergeAndRemoveSize("L2", "L");
+        } catch (Exception e) {
+            log.warn("Notice in mergeAndRemoveSize: {}", e.getMessage());
+        }
+
+        // Chuẩn hóa tên màu sắc lạ trong bảng colors
+        try {
+            Map<String, String> colorFixes = Map.ofEntries(
+                    Map.entry("Xám đậm thanh lịch.", "Xám đậm"),
+                    Map.entry("Xám đậm thanh lịch", "Xám đậm"),
+                    Map.entry("Họa tiết Xanh bơ", "Xanh bơ"),
+                    Map.entry("Họa tiết Xanh bầu trời", "Xanh da trời"),
+                    Map.entry("Kẻ Bạc hà", "Bạc hà"),
+                    Map.entry("Kẻ Xanh cổ vịt đậm", "Xanh cổ vịt"),
+                    Map.entry("Khói đậm", "Xám khói"),
+                    Map.entry("Be vàng", "Be"),
+                    Map.entry("Ghi sáng", "Ghi"),
+                    Map.entry("Ghi khói", "Ghi"),
+                    Map.entry("Nâu rêu", "Nâu"),
+                    Map.entry("Nâu socola", "Nâu")
+            );
+            for (Map.Entry<String, String> entry : colorFixes.entrySet()) {
+                Optional<Color> badCol = colorRepository.findByNameIgnoreCase(entry.getKey());
+                if (badCol.isPresent()) {
+                    Optional<Color> goodCol = colorRepository.findByNameIgnoreCase(entry.getValue());
+                    if (goodCol.isPresent()) {
+                        try {
+                            jdbcTemplate.update("UPDATE product_colors SET color_id = ? WHERE color_id = ?", goodCol.get().getId(), badCol.get().getId());
+                            colorRepository.delete(badCol.get());
+                        } catch (Exception ignored) {}
+                    } else {
+                        Color col = badCol.get();
+                        col.setName(entry.getValue());
+                        colorRepository.save(col);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Notice in colorFixes: {}", e.getMessage());
+        }
+
+        // Đồng bộ toàn bộ mô tả HTML và hình ảnh đầy đủ từ ivy-products.json
+        try {
+            syncIvyProductsData();
+        } catch (Exception e) {
+            log.warn("Notice in syncIvyProductsData: {}", e.getMessage());
+        }
+
+        try {
+            if (productRepository.count() < 20) {
+                Map<String, Category> map = new java.util.HashMap<>();
+                categoryRepository.findAll().forEach(c -> map.put(c.getSlug(), c));
+                if (!map.isEmpty()) {
+                    List<Size> standardSizes = sizeRepository.findAllByOrderBySortOrderAscIdAsc();
+                    seedProductsFromIvyJson(map, standardSizes);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Notice in seedProductsFromIvyJson: {}", e.getMessage());
+        }
+    }
+
+    private void mergeAndRemoveSize(String fromSizeName, String toSizeName) {
+        try {
+            Optional<Size> fromOpt = sizeRepository.findByNameIgnoreCase(fromSizeName);
+            Optional<Size> toOpt = sizeRepository.findByNameIgnoreCase(toSizeName);
+            if (fromOpt.isEmpty()) {
+                jdbcTemplate.update("DELETE FROM sizes WHERE UPPER(name) = ?", fromSizeName.toUpperCase());
+                return;
+            }
+
+            Long fromId = fromOpt.get().getId();
+            if (toOpt.isPresent()) {
+                Long toId = toOpt.get().getId();
+                List<Map<String, Object>> fromVariants = jdbcTemplate.queryForList(
+                        "SELECT id, product_color_id, stock FROM product_variants WHERE size_id = ?", fromId);
+                for (Map<String, Object> fv : fromVariants) {
+                    Long fvId = ((Number) fv.get("id")).longValue();
+                    Long pcId = ((Number) fv.get("product_color_id")).longValue();
+                    int fvStock = ((Number) fv.get("stock")).intValue();
+
+                    List<Map<String, Object>> toVariants = jdbcTemplate.queryForList(
+                            "SELECT id, stock FROM product_variants WHERE product_color_id = ? AND size_id = ?", pcId, toId);
+                    if (!toVariants.isEmpty()) {
+                        Long targetId = ((Number) toVariants.get(0).get("id")).longValue();
+                        jdbcTemplate.update("UPDATE product_variants SET stock = stock + ? WHERE id = ?", fvStock, targetId);
+                        try {
+                            jdbcTemplate.update("UPDATE order_items SET variant_id = ? WHERE variant_id = ?", targetId, fvId);
+                        } catch (Exception ignored) {}
+                        try {
+                            jdbcTemplate.update("UPDATE stock_import_items SET variant_id = ? WHERE variant_id = ?", targetId, fvId);
+                        } catch (Exception ignored) {}
+                        jdbcTemplate.update("DELETE FROM product_variants WHERE id = ?", fvId);
+                    } else {
+                        jdbcTemplate.update("UPDATE product_variants SET size_id = ? WHERE id = ?", toId, fvId);
+                    }
+                }
+            }
+            jdbcTemplate.update("DELETE FROM sizes WHERE id = ?", fromId);
+            log.info("Successfully merged size {} into {} and removed {}", fromSizeName, toSizeName, fromSizeName);
+        } catch (Exception e) {
+            log.warn("Error merging size {} into {}: {}", fromSizeName, toSizeName, e.getMessage());
+        }
+    }
+
+    private void syncIvyProductsData() {
+        try (InputStream is = getClass().getResourceAsStream("/seed/ivy-products.json")) {
+            if (is == null) return;
+            JsonNode root = objectMapper.readTree(is);
+            if (!root.isArray() || root.isEmpty()) return;
+
+            for (JsonNode pNode : root) {
+                String slug = pNode.path("slug").asText();
+                String desc = pNode.path("description").asText("");
+
+                List<Long> productIds = jdbcTemplate.queryForList("SELECT id FROM products WHERE slug = ?", Long.class, slug);
+                if (productIds.isEmpty()) continue;
+                Long productId = productIds.get(0);
+
+                if (desc != null && !desc.isBlank()) {
+                    jdbcTemplate.update("UPDATE products SET description = ? WHERE id = ?", desc, productId);
+                }
+
+                JsonNode colorsNode = pNode.path("colors");
+                if (colorsNode.isArray()) {
+                    for (JsonNode cNode : colorsNode) {
+                        String colorName = cNode.path("name").asText("Mặc định").trim();
+                        JsonNode imagesNode = cNode.path("images");
+                        if (!imagesNode.isArray() || imagesNode.isEmpty()) continue;
+
+                        List<Long> pcIds = jdbcTemplate.queryForList(
+                                "SELECT pc.id FROM product_colors pc " +
+                                "JOIN colors c ON c.id = pc.color_id " +
+                                "WHERE pc.product_id = ? AND (LOWER(c.name) = LOWER(?) OR LOWER(c.name) LIKE LOWER(?))",
+                                Long.class, productId, colorName, colorName + "%");
+                        if (pcIds.isEmpty()) continue;
+
+                        Long pcId = pcIds.get(0);
+                        List<String> existingUrls = new java.util.ArrayList<>(jdbcTemplate.queryForList(
+                                "SELECT image_url FROM product_images WHERE product_color_id = ?",
+                                String.class, pcId));
+
+                        int sortOrder = existingUrls.size();
+                        for (JsonNode imgNode : imagesNode) {
+                            String imgUrl = imgNode.asText();
+                            if (!existingUrls.contains(imgUrl)) {
+                                jdbcTemplate.update(
+                                        "INSERT INTO product_images (product_color_id, image_url, display_order, created_at, updated_at) " +
+                                        "VALUES (?, ?, ?, NOW(), NOW())",
+                                        pcId, imgUrl, sortOrder++);
+                                existingUrls.add(imgUrl);
+                            }
+                        }
+                    }
+                }
+            }
+            log.info("Synchronized descriptions and all images from ivy-products.json into database via JDBC.");
+        } catch (Exception e) {
+            log.warn("Notice in syncIvyProductsData: {}", e.getMessage(), e);
+        }
+    }
+
+    private List<Product> seedProductsFromIvyJson(
+            Map<String, Category> catMap,
+            List<Size> defaultSizes
+    ) {
+        try (InputStream is = getClass().getResourceAsStream("/seed/ivy-products.json")) {
+            if (is == null) {
+                log.info("ivy-products.json not found on classpath, skipping IVY seed.");
+                return List.of();
+            }
+            JsonNode root = objectMapper.readTree(is);
+            if (!root.isArray() || root.isEmpty()) {
+                return List.of();
+            }
+
+            Category defaultCategory = catMap.values().stream().findFirst().orElse(null);
+
+            List<Product> seeded = new ArrayList<>();
+            for (JsonNode pNode : root) {
+                String name = pNode.path("name").asText();
+                String slug = pNode.path("slug").asText();
+                String sku = pNode.path("sku").asText();
+                String catKey = pNode.path("categoryKey").asText();
+                BigDecimal basePrice = new BigDecimal(pNode.path("basePrice").asText("0"));
+                int discount = pNode.path("discountPercent").asInt(0);
+                boolean isNew = pNode.path("isNew").asBoolean(false);
+                boolean isBestSeller = pNode.path("isBestSeller").asBoolean(false);
+                String desc = pNode.path("description").asText("");
+
+                if (productRepository.existsBySlug(slug)) {
+                    productRepository.findBySlug(slug).ifPresent(seeded::add);
+                    continue;
+                }
+
+                Category category = catMap.getOrDefault(catKey, defaultCategory);
+
+                Product product = Product.builder()
+                        .category(category)
+                        .name(name)
+                        .slug(slug)
+                        .skuPrefix(sku)
+                        .brand("IVY moda x LUXE")
+                        .basePrice(basePrice)
+                        .discountPercent(discount)
+                        .isNew(isNew)
+                        .isBestSeller(isBestSeller)
+                        .isActive(true)
+                        .description(formatDescriptionToHtml(desc, name))
+                        .build();
+
+                BigDecimal costPrice = basePrice.multiply(new BigDecimal("0.50"));
+
+                JsonNode colorsNode = pNode.path("colors");
+                int colorIndex = 1;
+                for (JsonNode cNode : colorsNode) {
+                    String rawColor = cNode.path("name").asText("Mặc định").trim();
+                    final String colorName = rawColor.endsWith(".") ? rawColor.substring(0, rawColor.length() - 1).trim() : rawColor;
+                    final String hex = cNode.path("hex").asText("#111111");
+
+                    Color color = colorRepository.findByNameIgnoreCase(colorName)
+                            .orElseGet(() -> colorRepository.save(Color.builder().name(colorName).hexCode(hex).build()));
+
+                    ProductColor pc = ProductColor.builder().color(color).isActive(true).build();
+
+                    JsonNode imagesNode = cNode.path("images");
+                    int imgOrder = 0;
+                    for (JsonNode imgNode : imagesNode) {
+                        pc.addImage(ProductImage.builder()
+                                .imageUrl(imgNode.asText())
+                                .displayOrder(imgOrder++)
+                                .build());
+                    }
+
+                    JsonNode sizesNode = cNode.path("sizes");
+                    if (sizesNode.isArray() && !sizesNode.isEmpty()) {
+                        for (JsonNode sNode : sizesNode) {
+                            String sName = sNode.path("name").asText("M").trim().toUpperCase(Locale.ROOT);
+                            if ("M2".equals(sName) || "L2".equals(sName)) {
+                                continue;
+                            }
+                            int stock = sNode.path("stock").asInt(10);
+                            final String finalSizeName = sName;
+                            Size size = sizeRepository.findByNameIgnoreCase(finalSizeName)
+                                    .orElseGet(() -> sizeRepository.save(Size.builder().name(finalSizeName).sortOrder(5).build()));
+
+                            pc.addVariant(ProductVariant.builder()
+                                    .size(size)
+                                    .sku(sku + "-C" + colorIndex + "-" + finalSizeName)
+                                    .price(basePrice)
+                                    .costPrice(costPrice)
+                                    .stock(stock)
+                                    .build());
+                        }
+                    } else {
+                        for (Size s : defaultSizes) {
+                            pc.addVariant(ProductVariant.builder()
+                                    .size(s)
+                                    .sku(sku + "-C" + colorIndex + "-" + s.getName())
+                                    .price(basePrice)
+                                    .costPrice(costPrice)
+                                    .stock(10)
+                                    .build());
+                        }
+                    }
+
+                    product.addProductColor(pc);
+                    colorIndex++;
+                }
+
+                seeded.add(productRepository.save(product));
+            }
+
+            log.info("Successfully seeded {} IVY moda products into catalog.", seeded.size());
+            return seeded;
+        } catch (Exception e) {
+            log.error("Failed to seed IVY moda products from json", e);
+            return List.of();
         }
     }
 
@@ -458,66 +745,10 @@ public class DataInitializer implements CommandLineRunner {
             return false;
         }
         String lower = url.trim().toLowerCase(Locale.ROOT);
-        if (lower.startsWith("http://") || lower.startsWith("https://")) {
+        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("ivy/")) {
             return false;
         }
         return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
-    }
-
-    private Product createSeedProduct(
-            Category category, String name, String slug, String skuPrefix,
-            BigDecimal basePrice, int discountPercent, boolean isNew, boolean isBestSeller, String description,
-            Color c1, List<String> imgs1,
-            Color c2, List<String> imgs2,
-            List<Size> sizes, int baseStock
-    ) {
-        Product product = Product.builder()
-                .category(category)
-                .name(name)
-                .slug(slug)
-                .skuPrefix(skuPrefix)
-                .brand("LUXE")
-                .basePrice(basePrice)
-                .discountPercent(discountPercent)
-                .isNew(isNew)
-                .isBestSeller(isBestSeller)
-                .isActive(true)
-                .description(description)
-                .build();
-
-        BigDecimal defaultCost = basePrice.multiply(new BigDecimal("0.50"));
-
-        ProductColor pc1 = ProductColor.builder().color(c1).isActive(true).build();
-        for (int i = 0; i < imgs1.size(); i++) {
-            pc1.addImage(ProductImage.builder().imageUrl(imgs1.get(i)).displayOrder(i).build());
-        }
-        for (Size s : sizes) {
-            pc1.addVariant(ProductVariant.builder()
-                    .size(s)
-                    .sku(skuPrefix + "-C1-" + s.getName())
-                    .price(basePrice)
-                    .costPrice(defaultCost)
-                    .stock(baseStock)
-                    .build());
-        }
-        product.addProductColor(pc1);
-
-        ProductColor pc2 = ProductColor.builder().color(c2).isActive(true).build();
-        for (int i = 0; i < imgs2.size(); i++) {
-            pc2.addImage(ProductImage.builder().imageUrl(imgs2.get(i)).displayOrder(i).build());
-        }
-        for (Size s : sizes) {
-            pc2.addVariant(ProductVariant.builder()
-                    .size(s)
-                    .sku(skuPrefix + "-C2-" + s.getName())
-                    .price(basePrice)
-                    .costPrice(defaultCost)
-                    .stock(Math.max(2, baseStock - 3))
-                    .build());
-        }
-        product.addProductColor(pc2);
-
-        return productRepository.save(product);
     }
 
     private void seedHistoricalOrder(
@@ -560,5 +791,89 @@ public class DataInitializer implements CommandLineRunner {
         order.recalculateTotals(new BigDecimal("30000"), discount);
         order.setCreatedAt(createdAt);
         orderRepository.save(order);
+    }
+
+    private String formatDescriptionToHtml(String raw, String productName) {
+        if (raw == null || raw.isBlank()) {
+            return "<p>" + productName + " mang phong cách thời trang thanh lịch, chất liệu cao cấp và tôn dáng hoàn hảo.</p>";
+        }
+        String text = raw.trim();
+
+        // Tách 'Lưu ý:'
+        String note = "";
+        int noteIdx = text.toLowerCase(Locale.ROOT).indexOf("lưu ý:");
+        if (noteIdx >= 0) {
+            note = text.substring(noteIdx + 6).trim();
+            text = text.substring(0, noteIdx).trim();
+        }
+
+        // Tách 'Thông tin mẫu:'
+        String modelInfo = "";
+        int modelIdx = text.toLowerCase(Locale.ROOT).indexOf("thông tin mẫu:");
+        if (modelIdx >= 0) {
+            modelInfo = text.substring(modelIdx + 14).trim();
+            text = text.substring(0, modelIdx).trim();
+        }
+
+        StringBuilder html = new StringBuilder();
+
+        // Tách gạch đầu dòng hoặc các tiêu chí
+        if (text.contains(" - ") || text.startsWith("- ")) {
+            String[] parts = text.split("(?:^|\\s+)-\\s+");
+            List<String> validParts = new ArrayList<>();
+            for (String part : parts) {
+                String trimmed = part.trim();
+                if (!trimmed.isEmpty()) {
+                    validParts.add(trimmed);
+                }
+            }
+            if (!validParts.isEmpty()) {
+                html.append("<p>").append(validParts.get(0)).append("</p>");
+                if (validParts.size() > 1) {
+                    html.append("<ul>");
+                    for (int i = 1; i < validParts.size(); i++) {
+                        html.append("<li>").append(validParts.get(i)).append("</li>");
+                    }
+                    html.append("</ul>");
+                }
+            }
+        } else if (text.contains("Phom dáng:")) {
+            int introEnd = text.indexOf("Phom dáng:");
+            if (introEnd > 0) {
+                html.append("<p>").append(text.substring(0, introEnd).trim()).append("</p>");
+            }
+            String specsText = text.substring(introEnd);
+            String[] specs = specsText.split("(?=(?:Phom dáng|Chi tiết|Chất liệu|Màu sắc|Phù hợp):)");
+            html.append("<ul>");
+            for (String s : specs) {
+                String trimmed = s.trim();
+                if (!trimmed.isEmpty()) {
+                    int colIdx = trimmed.indexOf(":");
+                    if (colIdx > 0) {
+                        html.append("<li><strong>")
+                                .append(trimmed.substring(0, colIdx + 1))
+                                .append("</strong> ")
+                                .append(trimmed.substring(colIdx + 1).trim())
+                                .append("</li>");
+                    } else {
+                        html.append("<li>").append(trimmed).append("</li>");
+                    }
+                }
+            }
+            html.append("</ul>");
+        } else if (!text.isEmpty()) {
+            html.append("<p>").append(text).append("</p>");
+        } else {
+            html.append("<p>").append(productName).append(" sở hữu thiết kế thời thượng, tôn dáng và mang lại sự tự tin cho người mặc.</p>");
+        }
+
+        if (!modelInfo.isEmpty()) {
+            html.append("<p><strong>Thông tin người mẫu:</strong> ").append(modelInfo).append("</p>");
+        }
+        if (!note.isEmpty()) {
+            html.append("<p><em>* Lưu ý: ").append(note).append("</em></p>");
+        }
+
+        return html.toString();
     }
 }

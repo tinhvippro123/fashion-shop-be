@@ -56,6 +56,12 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(length = 255)
+    private String material;
+
+    @Column(name = "care_instructions", columnDefinition = "TEXT")
+    private String careInstructions;
+
     @Column(name = "is_new", nullable = false)
     @Builder.Default
     private boolean isNew = false;
