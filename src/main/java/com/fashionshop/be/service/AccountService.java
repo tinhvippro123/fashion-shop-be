@@ -88,10 +88,18 @@ public class AccountService {
         }
 
         String fullAddr = buildFullAddress(request);
+        String phoneInput = request.getPhone() != null ? request.getPhone().trim() : "";
+
+        // Tự động cập nhật số điện thoại cho hồ sơ người dùng nếu tài khoản chưa có số điện thoại
+        if ((user.getPhone() == null || user.getPhone().isBlank()) && !phoneInput.isBlank()) {
+            user.setPhone(phoneInput);
+            userRepository.save(user);
+        }
+
         UserAddress address = UserAddress.builder()
                 .user(user)
                 .recipientName(request.getRecipientName().trim())
-                .phone(request.getPhone().trim())
+                .phone(phoneInput)
                 .province(request.getProvince())
                 .district(request.getDistrict())
                 .ward(request.getWard())

@@ -17,6 +17,7 @@ import com.fashionshop.be.pattern.discount.DiscountStrategy;
 import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
+import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
 import com.fashionshop.be.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class OrderService {
     private final DiscountStrategyFactory discountStrategyFactory;
     private final SecurityUtils securityUtils;
     private final PaymentService paymentService;
+    private final UserRepository userRepository;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -52,11 +54,19 @@ public class OrderService {
         String orderCode = "ORD-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd"))
                 + "-" + (1000 + (System.currentTimeMillis() % 9000));
 
+        String recipientPhone = request.getRecipientPhone() != null ? request.getRecipientPhone().trim() : "";
+
+        // Tự động cập nhật số điện thoại cho tài khoản người dùng nếu tài khoản chưa có số điện thoại
+        if (currentUser != null && (currentUser.getPhone() == null || currentUser.getPhone().isBlank()) && !recipientPhone.isBlank()) {
+            currentUser.setPhone(recipientPhone);
+            userRepository.save(currentUser);
+        }
+
         Order order = Order.builder()
                 .orderCode(orderCode)
                 .user(currentUser)
                 .recipientName(request.getRecipientName().trim())
-                .recipientPhone(request.getRecipientPhone().trim())
+                .recipientPhone(recipientPhone)
                 .recipientEmail(request.getRecipientEmail() != null && !request.getRecipientEmail().isBlank()
                         ? request.getRecipientEmail().trim()
                         : (currentUser == null ? null : currentUser.getEmail()))
