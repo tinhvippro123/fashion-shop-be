@@ -87,6 +87,9 @@ public class OrderService {
 
             ProductColor pc = variant.getProductColor();
             Product product = pc.getProduct();
+            if (!product.isActive()) {
+                throw new BusinessException("Sản phẩm '" + product.getName() + "' hiện đã ngừng kinh doanh");
+            }
             BigDecimal baseUnitPrice = (variant.getPrice() != null && variant.getPrice().compareTo(BigDecimal.ZERO) > 0)
                     ? variant.getPrice()
                     : product.getBasePrice();
