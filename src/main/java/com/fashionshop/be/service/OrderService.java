@@ -15,6 +15,7 @@ import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.pattern.discount.DiscountStrategy;
 import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
+import com.fashionshop.be.repository.CartRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.repository.UserRepository;
@@ -43,6 +44,7 @@ public class OrderService {
     private final SecurityUtils securityUtils;
     private final PaymentService paymentService;
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -135,6 +137,15 @@ public class OrderService {
 
         order.recalculateTotals(DEFAULT_SHIPPING_FEE, discountAmount);
         Order saved = orderRepository.save(order);
+
+        // Xóa giỏ hàng trên máy chủ nếu người dùng đã đăng nhập
+        if (currentUser != null) {
+            cartRepository.findByUserId(currentUser.getId()).ifPresent(c -> {
+                c.clear();
+                cartRepository.save(c);
+            });
+        }
+
         OrderDtos.OrderResponseDto dto = toOrderDto(saved);
         if (saved.getPaymentMethod() == PaymentMethod.VNPAY) {
             String vnpayUrl = paymentService.createVnPayPaymentUrl(saved, "127.0.0.1");
