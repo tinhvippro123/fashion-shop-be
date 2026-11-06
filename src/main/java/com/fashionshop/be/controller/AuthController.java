@@ -35,9 +35,28 @@ public class AuthController {
         return ApiResponse.ok("Đăng nhập thành công", authService.login(request));
     }
 
+    @PostMapping("/google")
+    public ApiResponse<AuthDtos.AuthResponse> loginWithGoogle(@Valid @RequestBody AuthDtos.GoogleLoginRequest request) {
+        return ApiResponse.ok("Đăng nhập Google thành công", authService.loginWithGoogle(request));
+    }
+
+    @PostMapping("/forgot-password/send-otp")
+    public ApiResponse<AuthDtos.SendOtpResponse> sendForgotPasswordOtp(
+            @Valid @RequestBody AuthDtos.ForgotPasswordSendOtpRequest request
+    ) {
+        return ApiResponse.ok("Đã gửi mã xác thực OTP khôi phục mật khẩu tới email", authService.sendForgotPasswordOtp(request));
+    }
+
+    @PostMapping("/forgot-password/reset")
+    public ApiResponse<Void> resetPassword(
+            @Valid @RequestBody AuthDtos.ForgotPasswordResetRequest request
+    ) {
+        authService.resetPassword(request);
+        return ApiResponse.ok("Đổi mật khẩu thành công. Vui lòng đăng nhập với mật khẩu mới", null);
+    }
+
     @GetMapping("/me")
     public ApiResponse<AuthDtos.UserDto> me() {
         return ApiResponse.ok(accountService.getProfile());
     }
 }
-

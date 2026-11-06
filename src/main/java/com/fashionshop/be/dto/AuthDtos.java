@@ -158,4 +158,37 @@ public class AuthDtos {
         @JsonProperty("isDefault")
         private boolean isDefault;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ForgotPasswordSendOtpRequest {
+        @NotBlank(message = "Email không được để trống")
+        @Email(message = "Email không hợp lệ")
+        private String email;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ForgotPasswordResetRequest {
+        @NotBlank(message = "Email không được để trống")
+        @Email(message = "Email không hợp lệ")
+        private String email;
+
+        @NotBlank(message = "Vui lòng nhập mã OTP xác thực")
+        private String otpCode;
+
+        @NotBlank(message = "Mật khẩu mới không được để trống")
+        @Size(min = 6, message = "Mật khẩu mới phải từ 6 ký tự trở lên")
+        private String newPassword;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GoogleLoginRequest {
+        @NotBlank(message = "Google Credential không được để trống")
+        private String credential;
+    }
 }
