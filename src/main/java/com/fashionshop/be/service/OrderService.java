@@ -118,7 +118,7 @@ public class OrderService {
 
         BigDecimal discountAmount = BigDecimal.ZERO;
         if (request.getVoucherCode() != null && !request.getVoucherCode().isBlank()) {
-            Voucher voucher = voucherRepository.findByCodeIgnoreCase(request.getVoucherCode().trim())
+            Voucher voucher = voucherRepository.findByCodeIgnoreCaseForUpdate(request.getVoucherCode().trim())
                     .orElseThrow(() -> new BusinessException("Mã giảm giá không tồn tại"));
 
             voucher.validateApplicable(order.getSubtotal(), LocalDateTime.now());

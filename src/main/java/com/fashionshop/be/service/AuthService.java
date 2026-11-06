@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthService {
 
     private static final int OTP_EXPIRY_SECONDS = 300;
+    private static final int OTP_RESEND_COOLDOWN_SECONDS = 60;
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private final UserRepository userRepository;
@@ -43,9 +44,18 @@ public class AuthService {
     private final Map<String, OtpEntry> otpStore = new ConcurrentHashMap<>();
     private final Map<String, OtpEntry> forgotOtpStore = new ConcurrentHashMap<>();
 
-    private record OtpEntry(String code, Instant expiresAt) {
+    private record OtpEntry(String code, Instant expiresAt, Instant createdAt) {
         boolean isExpired() {
             return Instant.now().isAfter(expiresAt);
+        }
+
+        boolean isInCooldown() {
+            return Instant.now().isBefore(createdAt.plusSeconds(OTP_RESEND_COOLDOWN_SECONDS));
+        }
+
+        long getRemainingCooldownSeconds() {
+            long remaining = createdAt.plusSeconds(OTP_RESEND_COOLDOWN_SECONDS).getEpochSecond() - Instant.now().getEpochSecond();
+            return Math.max(0, remaining);
         }
     }
 
@@ -58,8 +68,13 @@ public class AuthService {
             throw new BusinessException("Email này đã được đăng ký trong hệ thống");
         }
 
+        OtpEntry existing = otpStore.get(email);
+        if (existing != null && existing.isInCooldown()) {
+            throw new BusinessException(String.format("Vui lòng đợi %d giây trước khi yêu cầu gửi lại mã OTP", existing.getRemainingCooldownSeconds()));
+        }
+
         String code = String.format("%06d", RANDOM.nextInt(1_000_000));
-        otpStore.put(email, new OtpEntry(code, Instant.now().plusSeconds(OTP_EXPIRY_SECONDS)));
+        otpStore.put(email, new OtpEntry(code, Instant.now().plusSeconds(OTP_EXPIRY_SECONDS), Instant.now()));
 
         boolean sentRealEmail = emailService.sendOtpEmail(
                 email,
@@ -127,8 +142,13 @@ public class AuthService {
             throw new BusinessException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên");
         }
 
+        OtpEntry existing = forgotOtpStore.get(email);
+        if (existing != null && existing.isInCooldown()) {
+            throw new BusinessException(String.format("Vui lòng đợi %d giây trước khi yêu cầu gửi lại mã OTP", existing.getRemainingCooldownSeconds()));
+        }
+
         String code = String.format("%06d", RANDOM.nextInt(1_000_000));
-        forgotOtpStore.put(email, new OtpEntry(code, Instant.now().plusSeconds(OTP_EXPIRY_SECONDS)));
+        forgotOtpStore.put(email, new OtpEntry(code, Instant.now().plusSeconds(OTP_EXPIRY_SECONDS), Instant.now()));
 
         boolean sentRealEmail = emailService.sendOtpEmail(
                 email,
