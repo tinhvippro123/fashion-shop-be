@@ -30,6 +30,19 @@ public final class SlugUtils {
         return normalized.isBlank() ? "item-" + System.currentTimeMillis() : normalized;
     }
 
+    public static String normalizeSearchText(String input) {
+        if (input == null || input.isBlank()) {
+            return "";
+        }
+        return Normalizer.normalize(input.trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replace('đ', 'd')
+                .replace('Đ', 'd')
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
     public static String formatVnd(BigDecimal amount) {
         if (amount == null) {
             return "0 ₫";

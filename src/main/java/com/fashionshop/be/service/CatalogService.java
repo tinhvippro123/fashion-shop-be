@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -370,16 +371,31 @@ public class CatalogService {
                 })
                 .filter(p -> {
                     if (keyword == null || keyword.isBlank()) return true;
-                    String kw = keyword.trim().toLowerCase(Locale.ROOT);
-                    boolean matchName = p.getName().toLowerCase(Locale.ROOT).contains(kw);
-                    boolean matchCategory = p.getCategory() != null && p.getCategory().getName().toLowerCase(Locale.ROOT).contains(kw);
-                    boolean matchSku = p.getSkuPrefix() != null && p.getSkuPrefix().toLowerCase(Locale.ROOT).contains(kw);
-                    // Không tìm kiếm trong mô tả đối với từ khóa ngắn hoặc từ loại sản phẩm để tránh kết quả lẫn lộn (ví dụ: mô tả quần ghi "phối cùng áo...")
-                    boolean matchDesc = kw.length() >= 5
-                            && p.getDescription() != null
-                            && p.getDescription().toLowerCase(Locale.ROOT).contains(kw)
-                            && !isCommonCategoryWord(kw);
-                    return matchName || matchCategory || matchSku || matchDesc;
+                    String normKw = SlugUtils.normalizeSearchText(keyword);
+                    String normName = SlugUtils.normalizeSearchText(p.getName());
+                    String normCat = p.getCategory() != null ? SlugUtils.normalizeSearchText(p.getCategory().getName()) : "";
+                    String normSku = p.getSkuPrefix() != null ? p.getSkuPrefix().toLowerCase(Locale.ROOT) : "";
+
+                    // 1. Khớp cụm từ chính xác trong Tên sản phẩm, Tên danh mục hoặc Mã SKU
+                    if (normName.contains(normKw) || normCat.contains(normKw) || normSku.contains(normKw)) {
+                        return true;
+                    }
+
+                    // 2. Nếu từ khóa gồm nhiều từ (VD: "áo sơ mi trắng"): Tất cả các từ con phải cùng xuất hiện
+                    String[] tokens = normKw.split("\\s+");
+                    if (tokens.length > 1) {
+                        String combined = normName + " " + normCat;
+                        boolean allTokensMatch = true;
+                        for (String token : tokens) {
+                            if (!combined.contains(token)) {
+                                allTokensMatch = false;
+                                break;
+                            }
+                        }
+                        return allTokensMatch;
+                    }
+
+                    return false;
                 })
                 .filter(p -> {
                     if (color == null || color.isBlank()) return true;
@@ -398,7 +414,7 @@ public class CatalogService {
                 .filter(p -> isBestSeller == null || p.isBestSeller() == isBestSeller)
                 .filter(p -> onSale == null || (!onSale || p.getDiscountPercent() > 0))
                 .map(p -> toProductDto(p, false))
-                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if ("price_asc".equalsIgnoreCase(sort) || "price-asc".equalsIgnoreCase(sort)) {
             filtered.sort(Comparator.comparing(CatalogDtos.ProductResponseDto::getEffectivePrice));
@@ -407,29 +423,25 @@ public class CatalogService {
         } else if ("best_seller".equalsIgnoreCase(sort)) {
             filtered.sort(Comparator.comparingInt(CatalogDtos.ProductResponseDto::getSold).reversed());
         } else if (keyword != null && !keyword.isBlank()) {
-            final String kw = keyword.trim().toLowerCase(Locale.ROOT);
+            final String normKw = SlugUtils.normalizeSearchText(keyword);
             filtered.sort((a, b) -> {
-                boolean aName = a.getName().toLowerCase(Locale.ROOT).contains(kw);
-                boolean bName = b.getName().toLowerCase(Locale.ROOT).contains(kw);
-                if (aName && !bName) return -1;
-                if (!aName && bName) return 1;
+                String normA = SlugUtils.normalizeSearchText(a.getName());
+                String normB = SlugUtils.normalizeSearchText(b.getName());
+                boolean aExact = normA.contains(normKw);
+                boolean bExact = normB.contains(normKw);
+                if (aExact && !bExact) return -1;
+                if (!aExact && bExact) return 1;
+
+                boolean aStart = normA.startsWith(normKw);
+                boolean bStart = normB.startsWith(normKw);
+                if (aStart && !bStart) return -1;
+                if (!aStart && bStart) return 1;
+
                 return 0;
             });
         }
 
         return filtered;
-    }
-
-    private static boolean isCommonCategoryWord(String kw) {
-        if (kw == null) return false;
-        String normalized = kw.trim().toLowerCase(Locale.ROOT);
-        return normalized.equals("áo") || normalized.equals("ao")
-                || normalized.equals("quần") || normalized.equals("quan")
-                || normalized.equals("váy") || normalized.equals("vay")
-                || normalized.equals("đầm") || normalized.equals("dam")
-                || normalized.equals("khoác") || normalized.equals("khoac")
-                || normalized.equals("sơ mi") || normalized.equals("so mi")
-                || normalized.equals("set");
     }
 
     @Transactional(readOnly = true)

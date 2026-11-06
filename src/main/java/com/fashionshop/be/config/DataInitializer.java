@@ -52,6 +52,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -588,7 +589,7 @@ public class DataInitializer implements CommandLineRunner {
 
         try {
             if (productRepository.count() < 20) {
-                Map<String, Category> map = new java.util.HashMap<>();
+                Map<String, Category> map = new HashMap<>();
                 categoryRepository.findAll().forEach(c -> map.put(c.getSlug(), c));
                 if (!map.isEmpty()) {
                     List<Size> standardSizes = sizeRepository.findAllByOrderBySortOrderAscIdAsc();
@@ -676,7 +677,7 @@ public class DataInitializer implements CommandLineRunner {
                         if (pcIds.isEmpty()) continue;
 
                         Long pcId = pcIds.get(0);
-                        List<String> existingUrls = new java.util.ArrayList<>(jdbcTemplate.queryForList(
+                        List<String> existingUrls = new ArrayList<>(jdbcTemplate.queryForList(
                                 "SELECT image_url FROM product_images WHERE product_color_id = ?",
                                 String.class, pcId));
 

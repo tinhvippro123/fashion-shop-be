@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -97,7 +98,7 @@ public class OrderService {
                     : product.getBasePrice();
             BigDecimal effectiveUnitPrice = product.getDiscountPercent() > 0
                     ? baseUnitPrice.multiply(BigDecimal.valueOf(100 - product.getDiscountPercent()))
-                            .divide(BigDecimal.valueOf(100), 0, java.math.RoundingMode.HALF_UP)
+                            .divide(BigDecimal.valueOf(100), 0, RoundingMode.HALF_UP)
                     : baseUnitPrice;
 
             BigDecimal lineTotal = effectiveUnitPrice.multiply(BigDecimal.valueOf(itemReq.getQuantity()));
