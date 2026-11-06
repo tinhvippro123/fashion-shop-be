@@ -20,6 +20,7 @@ import com.fashionshop.be.pattern.discount.DiscountStrategy;
 import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
 import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
+import com.fashionshop.be.repository.OrderItemRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductColorRepository;
 import com.fashionshop.be.repository.ProductRepository;
@@ -166,6 +167,7 @@ public class CatalogService {
     private final ReviewRepository reviewRepository;
     private final VoucherRepository voucherRepository;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final DiscountStrategyFactory discountStrategyFactory;
     private final SecurityUtils securityUtils;
 
@@ -347,6 +349,9 @@ public class CatalogService {
         boolean filterNamSale = "sale-nam".equalsIgnoreCase(categorySlug);
         boolean filterSaleAll = "sale".equalsIgnoreCase(categorySlug) || "san-pham-giam-gia".equalsIgnoreCase(categorySlug);
 
+        Map<Long, ProductReviewStat> reviewStats = getReviewStatsMap();
+        Map<Long, Integer> soldMap = getSoldMap();
+
         List<CatalogDtos.ProductResponseDto> filtered = activeProducts.stream()
                 .filter(p -> {
                     if (filterNuNew) {
@@ -413,7 +418,12 @@ public class CatalogService {
                 .filter(p -> isNew == null || p.isNew() == isNew)
                 .filter(p -> isBestSeller == null || p.isBestSeller() == isBestSeller)
                 .filter(p -> onSale == null || (!onSale || p.getDiscountPercent() > 0))
-                .map(p -> toProductDto(p, false))
+                .map(p -> {
+                    ProductReviewStat stat = reviewStats.get(p.getId());
+                    double rating = stat != null ? stat.avgRating : 5.0;
+                    int count = stat != null ? stat.reviewCount : 0;
+                    return toProductDto(p, false, rating, count, soldMap.getOrDefault(p.getId(), 0));
+                })
                 .collect(Collectors.toCollection(ArrayList::new));
 
         if ("price_asc".equalsIgnoreCase(sort) || "price-asc".equalsIgnoreCase(sort)) {
@@ -508,9 +518,16 @@ public class CatalogService {
 
     @Transactional(readOnly = true)
     public List<CatalogDtos.ProductResponseDto> getAllAdminProducts() {
+        Map<Long, ProductReviewStat> reviewStats = getReviewStatsMap();
+        Map<Long, Integer> soldMap = getSoldMap();
         return productRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
-                .map(p -> toProductDto(p, true))
+                .map(p -> {
+                    ProductReviewStat stat = reviewStats.get(p.getId());
+                    double rating = stat != null ? stat.avgRating : 5.0;
+                    int count = stat != null ? stat.reviewCount : 0;
+                    return toProductDto(p, true, rating, count, soldMap.getOrDefault(p.getId(), 0));
+                })
                 .toList();
     }
 
@@ -1093,18 +1110,50 @@ public class CatalogService {
         return false;
     }
 
+    private static class ProductReviewStat {
+        final double avgRating;
+        final int reviewCount;
+
+        ProductReviewStat(double avgRating, int reviewCount) {
+            this.avgRating = avgRating;
+            this.reviewCount = reviewCount;
+        }
+    }
+
+    private Map<Long, ProductReviewStat> getReviewStatsMap() {
+        return reviewRepository.findReviewStatsGrouped().stream()
+                .filter(row -> row != null && row.length >= 3 && row[0] != null)
+                .collect(Collectors.toMap(
+                        row -> (Long) row[0],
+                        row -> {
+                            int count = row[1] != null ? ((Number) row[1]).intValue() : 0;
+                            double avg = row[2] != null ? Math.round(((Number) row[2]).doubleValue() * 10.0) / 10.0 : 5.0;
+                            return new ProductReviewStat(avg, count);
+                        },
+                        (existing, replacement) -> existing
+                ));
+    }
+
+    private Map<Long, Integer> getSoldMap() {
+        return orderItemRepository.findTotalSoldByProductGrouped(OrderStatus.CANCELLED).stream()
+                .filter(row -> row != null && row.length >= 2 && row[0] != null && row[1] != null)
+                .collect(Collectors.toMap(
+                        row -> (Long) row[0],
+                        row -> ((Number) row[1]).intValue(),
+                        (existing, replacement) -> existing
+                ));
+    }
+
     public CatalogDtos.ProductResponseDto toProductDto(Product p, boolean includeAdminPayload) {
-        List<Review> visibleReviews = reviewRepository.findByProductIdAndIsVisibleTrueOrderByCreatedAtDesc(p.getId());
-        double avgRating = visibleReviews.isEmpty() ? 5.0 :
-                Math.round(visibleReviews.stream().mapToInt(Review::getRating).average().orElse(5.0) * 10.0) / 10.0;
+        Double avg = reviewRepository.findAverageRatingByProductId(p.getId());
+        double avgRating = avg == null ? 5.0 : Math.round(avg * 10.0) / 10.0;
+        int reviewCount = (int) reviewRepository.countByProductIdAndIsVisibleTrue(p.getId());
+        Integer sold = orderItemRepository.findTotalSoldByProductId(p.getId(), OrderStatus.CANCELLED);
+        int soldCount = sold != null ? sold : 0;
+        return toProductDto(p, includeAdminPayload, avgRating, reviewCount, soldCount);
+    }
 
-        int soldCount = orderRepository.findAll().stream()
-                .filter(o -> o.getStatus() != OrderStatus.CANCELLED)
-                .flatMap(o -> o.getItems().stream())
-                .filter(oi -> p.getId().equals(oi.getProductId()))
-                .mapToInt(oi -> oi.getQuantity())
-                .sum();
-
+    public CatalogDtos.ProductResponseDto toProductDto(Product p, boolean includeAdminPayload, double avgRating, int reviewCount, int soldCount) {
         Set<String> allImages = new LinkedHashSet<>();
         Set<String> colorNames = new LinkedHashSet<>();
         Set<String> sizeNames = new LinkedHashSet<>();
@@ -1211,7 +1260,7 @@ public class CatalogService {
                 .totalStock(p.getTotalStock())
                 .sold(soldCount)
                 .rating(avgRating)
-                .reviewCount(visibleReviews.size())
+                .reviewCount(reviewCount)
                 .category(CatalogDtos.CategorySimpleDto.builder()
                         .id(cat.getId())
                         .name(cat.getName())

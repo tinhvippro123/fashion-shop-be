@@ -289,6 +289,12 @@ public class AuthService {
         return "FEMALE";
     }
 
+    public String getOtpForTesting(String email) {
+        if (email == null) return null;
+        OtpEntry e = otpStore.get(email.trim().toLowerCase());
+        return e != null ? e.code : null;
+    }
+
     public static AuthDtos.UserDto toUserDto(User user) {
         return AuthDtos.UserDto.builder()
                 .id(String.valueOf(user.getId()))
