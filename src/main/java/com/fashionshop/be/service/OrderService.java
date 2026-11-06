@@ -78,7 +78,7 @@ public class OrderService {
                 .build();
 
         for (OrderDtos.CreateOrderItemRequest itemReq : request.getItems()) {
-            ProductVariant variant = productVariantRepository.findById(itemReq.getVariantId())
+            ProductVariant variant = productVariantRepository.findByIdForUpdate(itemReq.getVariantId())
                     .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy biến thể sản phẩm #" + itemReq.getVariantId()));
 
             // OOP Encapsulation: ProductVariant validates & deducts its own stock
