@@ -127,7 +127,7 @@ public class AdminController {
 
     @GetMapping("/products/{id}")
     public ApiResponse<CatalogDtos.ProductResponseDto> getProductById(@PathVariable Long id) {
-        return ApiResponse.ok(catalogService.getProductDetail(String.valueOf(id)));
+        return ApiResponse.ok(catalogService.getProductById(id));
     }
 
     @PostMapping("/products")

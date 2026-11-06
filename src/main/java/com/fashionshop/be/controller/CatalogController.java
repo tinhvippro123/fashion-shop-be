@@ -57,9 +57,9 @@ public class CatalogController {
         ));
     }
 
-    @GetMapping("/products/{idOrSlug}")
-    public ApiResponse<CatalogDtos.ProductResponseDto> getProductDetail(@PathVariable String idOrSlug) {
-        return ApiResponse.ok(catalogService.getProductDetail(idOrSlug));
+    @GetMapping("/products/{slug}")
+    public ApiResponse<CatalogDtos.ProductResponseDto> getProductDetail(@PathVariable String slug) {
+        return ApiResponse.ok(catalogService.getProductBySlug(slug));
     }
 
     @GetMapping("/products/{id}/reviews")

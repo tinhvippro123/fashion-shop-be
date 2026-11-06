@@ -5,6 +5,7 @@ import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
+import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.service.AnalyticsService;
 import com.fashionshop.be.service.AuthService;
@@ -25,6 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -146,8 +148,13 @@ class FashionBeApiIntegrationTest {
         ProductVariant afterImport = productVariantRepository.findById(variantId).orElseThrow();
         assertEquals(initialStock + 15, afterImport.getStock());
 
-        // 5b. Admin updates an ordered & stock-imported product in-place (must not violate FK constraints)
-        CatalogDtos.ProductResponseDto existingProd = catalogService.getProductDetail(String.valueOf(products.get(0).getId()));
+        // 5b. Verify slug-only public product route & Admin updates an ordered & stock-imported product in-place
+        assertNotNull(products.get(0).getSlug());
+        CatalogDtos.ProductResponseDto publicProdBySlug = catalogService.getProductBySlug(products.get(0).getSlug());
+        assertEquals(products.get(0).getId(), publicProdBySlug.getId());
+        assertThrows(ResourceNotFoundException.class, () -> catalogService.getProductBySlug(String.valueOf(products.get(0).getId())));
+
+        CatalogDtos.ProductResponseDto existingProd = catalogService.getProductById(products.get(0).getId());
         CatalogDtos.AdminProductUpsertRequest updateReq = new CatalogDtos.AdminProductUpsertRequest(
                 existingProd.getName(),
                 existingProd.getDescription(),
