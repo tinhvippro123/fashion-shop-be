@@ -3,6 +3,7 @@ package com.fashionshop.be.domain.entity;
 import com.fashionshop.be.domain.enums.DiscountType;
 import com.fashionshop.be.domain.enums.VoucherStatus;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -66,28 +67,28 @@ public class Voucher extends BaseEntity {
 
     public void validateApplicable(BigDecimal orderSubtotal, LocalDateTime now) {
         if (this.status == VoucherStatus.CANCELLED) {
-            throw new BusinessException("Mã giảm giá " + this.code + " đã bị hủy");
+            throw new BusinessException(ErrorCode.VOUCHER_CANCELLED);
         }
         if (this.status == VoucherStatus.EXPIRED || (this.endDate != null && now.isAfter(this.endDate))) {
-            throw new BusinessException("Mã giảm giá " + this.code + " đã hết hạn");
+            throw new BusinessException(ErrorCode.VOUCHER_EXPIRED);
         }
         if (this.status == VoucherStatus.SCHEDULED && this.startDate != null && now.isBefore(this.startDate)) {
-            throw new BusinessException("Mã giảm giá " + this.code + " chưa đến thời gian áp dụng");
+            throw new BusinessException(ErrorCode.VOUCHER_NOT_YET_ACTIVE);
         }
         if (this.startDate != null && now.isBefore(this.startDate)) {
-            throw new BusinessException("Mã giảm giá " + this.code + " chưa có hiệu lực");
+            throw new BusinessException(ErrorCode.VOUCHER_NOT_YET_ACTIVE);
         }
         if (this.usageLimit != null && this.usedCount >= this.usageLimit) {
-            throw new BusinessException("Mã giảm giá " + this.code + " đã hết lượt sử dụng");
+            throw new BusinessException(ErrorCode.VOUCHER_USAGE_LIMIT);
         }
         if (this.minOrderValue != null && orderSubtotal.compareTo(this.minOrderValue) < 0) {
-            throw new BusinessException("Đơn hàng chưa đạt giá trị tối thiểu để áp dụng mã " + this.code);
+            throw new BusinessException(ErrorCode.VOUCHER_MIN_ORDER);
         }
     }
 
     public void consumeUsage() {
         if (this.usageLimit != null && this.usedCount >= this.usageLimit) {
-            throw new BusinessException("Mã giảm giá " + this.code + " đã hết lượt sử dụng");
+            throw new BusinessException(ErrorCode.VOUCHER_USAGE_LIMIT);
         }
         this.usedCount += 1;
         if (this.usageLimit != null && this.usedCount >= this.usageLimit) {

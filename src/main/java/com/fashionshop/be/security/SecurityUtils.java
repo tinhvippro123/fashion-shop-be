@@ -2,6 +2,7 @@ package com.fashionshop.be.security;
 
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ public class SecurityUtils {
 
     public User getCurrentUserRequired() {
         return getCurrentUserOptional()
-                .orElseThrow(() -> new BusinessException("Vui lòng đăng nhập để thực hiện chức năng này"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHENTICATED));
     }
 }
 

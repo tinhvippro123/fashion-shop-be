@@ -3,6 +3,7 @@ package com.fashionshop.be.service;
 import com.fashionshop.be.domain.entity.Banner;
 import com.fashionshop.be.domain.enums.BannerPosition;
 import com.fashionshop.be.dto.BannerDtos;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.BannerRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class BannerService {
     @Transactional(readOnly = true)
     public BannerDtos.BannerResponseDto getBannerById(Long id) {
         Banner banner = bannerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy banner với ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BANNER_NOT_FOUND));
         return mapToDto(banner);
     }
 
@@ -61,7 +62,7 @@ public class BannerService {
     @Transactional
     public BannerDtos.BannerResponseDto updateBanner(Long id, BannerDtos.UpdateBannerRequest request) {
         Banner banner = bannerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy banner với ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BANNER_NOT_FOUND));
 
         if (request.getTitle() != null && !request.getTitle().isBlank()) {
             banner.setTitle(request.getTitle().trim());
@@ -92,7 +93,7 @@ public class BannerService {
     @Transactional
     public BannerDtos.BannerResponseDto toggleBannerStatus(Long id) {
         Banner banner = bannerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy banner với ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BANNER_NOT_FOUND));
         banner.setActive(!banner.isActive());
         Banner updated = bannerRepository.save(banner);
         return mapToDto(updated);
@@ -101,7 +102,7 @@ public class BannerService {
     @Transactional
     public void deleteBanner(Long id) {
         Banner banner = bannerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy banner với ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BANNER_NOT_FOUND));
         bannerRepository.delete(banner);
     }
 

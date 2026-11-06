@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MissingServletRequestParameterException.class, MissingServletRequestPartException.class,
             MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ApiResponse<Object>> handleMalformedRequest(Exception ex) {
-        return ResponseEntity.badRequest().body(ApiResponse.error("INVALID_INPUT", "Dữ liệu yêu cầu không hợp lệ"));
+        return ResponseEntity.badRequest().body(ApiResponse.error("INVALID_INPUT", ErrorCode.INVALID_INPUT.getMessage()));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
@@ -40,37 +40,37 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.error(ex.getErrorCode() != null ? ex.getErrorCode().name() : "RESOURCE_NOT_FOUND", ex.getMessage()));
+                .body(ApiResponse.error(ex.getErrorCode().name(), ex.getMessage()));
     }
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ApiResponse<Object>> handleForbiddenException(ForbiddenException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.error(ex.getErrorCode() != null ? ex.getErrorCode().name() : "FORBIDDEN", ex.getMessage()));
+                .body(ApiResponse.error(ex.getErrorCode().name(), ex.getMessage()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse<Object>> handleAccessDeniedException(AccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.error("FORBIDDEN", "Bạn không có quyền thực hiện hành động này"));
+                .body(ApiResponse.error(ErrorCode.FORBIDDEN.name(), ErrorCode.FORBIDDEN.getMessage()));
     }
 
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<ApiResponse<Object>> handleBusinessRuleException(BusinessRuleException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(ex.getErrorCode() != null ? ex.getErrorCode().name() : "INVALID_KEY", ex.getMessage()));
+                .body(ApiResponse.error(ex.getErrorCode().name(), ex.getMessage()));
     }
 
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<ApiResponse<Object>> handleDomainException(DomainException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(ex.getErrorCode() != null ? ex.getErrorCode().name() : "INVALID_KEY", ex.getMessage()));
+                .body(ApiResponse.error(ex.getErrorCode().name(), ex.getMessage()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error("INVALID_KEY", ex.getMessage()));
+                .body(ApiResponse.error(ErrorCode.INVALID_KEY.name(), ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -95,12 +95,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiResponse<Object>> handleAuthenticationException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error("UNAUTHORIZED", "Email hoặc mật khẩu không chính xác"));
+                .body(ApiResponse.error(ErrorCode.INVALID_CREDENTIALS.name(), ErrorCode.INVALID_CREDENTIALS.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("INTERNAL_SERVER_ERROR", "Đã xảy ra lỗi hệ thống: " + ex.getMessage()));
+                .body(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR.name(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage()));
     }
 }

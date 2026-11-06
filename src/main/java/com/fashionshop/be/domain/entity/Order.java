@@ -4,6 +4,7 @@ import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.PaymentMethod;
 import com.fashionshop.be.domain.enums.PaymentStatus;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -116,7 +117,7 @@ public class Order extends BaseEntity {
 
     public void transitionTo(OrderStatus nextStatus, String reason) {
         if (!this.status.canTransitionTo(nextStatus)) {
-            throw new BusinessException("Không thể chuyển trạng thái đơn hàng từ " + this.status + " sang " + nextStatus);
+            throw new BusinessException(ErrorCode.ORDER_STATUS_INVALID);
         }
         this.status = nextStatus;
         if (nextStatus == OrderStatus.PROCESSING && (this.paymentMethod == PaymentMethod.BANK_TRANSFER || this.paymentMethod == PaymentMethod.VNPAY)) {

@@ -5,6 +5,7 @@ import com.fashionshop.be.domain.entity.Order;
 import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.PaymentStatus;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.OrderRepository;
 import lombok.Builder;
@@ -47,7 +48,7 @@ public class PaymentService {
 
     public String createVnPayPaymentUrl(Order order, String ipAddress) {
         if (order == null || order.getTotalAmount() == null) {
-            throw new BusinessException("Đơn hàng không hợp lệ để tạo liên kết thanh toán VNPay");
+            throw new BusinessException(ErrorCode.PAYMENT_INVALID);
         }
 
         long amount = order.getTotalAmount().longValue() * 100L;
@@ -109,7 +110,7 @@ public class PaymentService {
     public VnPayCallbackResult verifyVnPayCallback(Map<String, String> queryParams) {
         String secureHash = queryParams.get("vnp_SecureHash");
         if (secureHash == null || secureHash.isBlank()) {
-            throw new BusinessException("Thiếu chữ ký số bảo mật từ VNPay");
+            throw new BusinessException(ErrorCode.VNPAY_SIGNATURE_MISSING);
         }
 
         Map<String, String> fields = new HashMap<>();
@@ -124,7 +125,7 @@ public class PaymentService {
         String calculatedHash = vnPayConfig.hashAllFields(fields);
         if (!calculatedHash.equalsIgnoreCase(secureHash)) {
             log.error("VNPay Hash mismatch! calculated={}, received={}", calculatedHash, secureHash);
-            throw new BusinessException("Chữ ký số VNPay không hợp lệ (Dữ liệu có thể đã bị can thiệp)!");
+            throw new BusinessException(ErrorCode.VNPAY_SIGNATURE_INVALID);
         }
 
         String orderCode = queryParams.get("vnp_TxnRef");
@@ -142,7 +143,7 @@ public class PaymentService {
         }
 
         Order order = orderRepository.findByOrderCodeIgnoreCase(orderCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng: " + orderCode));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ORDER_NOT_FOUND));
 
         boolean isSuccess = "00".equals(responseCode);
 
@@ -173,10 +174,10 @@ public class PaymentService {
     @Transactional
     public VnPayCallbackResult markDirectPaymentSuccess(String orderCode, String bankCode) {
         if (orderCode == null || orderCode.isBlank()) {
-            throw new BusinessException("Mã đơn hàng không hợp lệ");
+            throw new BusinessException(ErrorCode.ORDER_CODE_EMPTY);
         }
         Order order = orderRepository.findByOrderCodeIgnoreCase(orderCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng: " + orderCode));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ORDER_NOT_FOUND));
 
         order.setPaymentStatus(PaymentStatus.PAID);
         if (order.getStatus() == OrderStatus.PENDING) {

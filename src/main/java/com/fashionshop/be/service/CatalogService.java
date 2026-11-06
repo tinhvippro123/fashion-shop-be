@@ -14,7 +14,6 @@ import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.VoucherStatus;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
-import com.fashionshop.be.exception.AppException;
 import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
@@ -212,11 +211,11 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.ColorDto createColor(CatalogDtos.ColorDto dto) {
         if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BusinessException("Tên màu không được để trống");
+            throw new BusinessException(ErrorCode.COLOR_NAME_EMPTY);
         }
         String trimmed = dto.getName().trim();
         if (colorRepository.findByNameIgnoreCase(trimmed).isPresent()) {
-            throw new BusinessException("Màu sắc '" + trimmed + "' đã tồn tại");
+            throw new BusinessException(ErrorCode.COLOR_ALREADY_EXISTS);
         }
         String hex = (dto.getHexCode() != null && !dto.getHexCode().isBlank())
                 ? dto.getHexCode().trim()
@@ -232,14 +231,14 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.ColorDto updateColor(Long id, CatalogDtos.ColorDto dto) {
         Color color = colorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy màu sắc"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.COLOR_NOT_FOUND));
 
         if (dto.getName() != null && !dto.getName().isBlank()) {
             String trimmed = dto.getName().trim();
             colorRepository.findByNameIgnoreCase(trimmed)
                     .ifPresent(existing -> {
                         if (!existing.getId().equals(id)) {
-                            throw new BusinessException("Tên màu '" + trimmed + "' đã tồn tại");
+                            throw new BusinessException(ErrorCode.COLOR_ALREADY_EXISTS);
                         }
                     });
             color.setName(trimmed);
@@ -256,9 +255,9 @@ public class CatalogService {
     @Transactional
     public void deleteColor(Long id) {
         Color color = colorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy màu sắc"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.COLOR_NOT_FOUND));
         if (productColorRepository.existsByColorId(id)) {
-            throw new BusinessException("Không thể xóa màu '" + color.getName() + "' vì đang có sản phẩm sử dụng");
+            throw new BusinessException(ErrorCode.COLOR_IN_USE);
         }
         colorRepository.delete(color);
     }
@@ -273,11 +272,11 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.SizeDto createSize(CatalogDtos.SizeDto dto) {
         if (dto == null || dto.getName() == null || dto.getName().isBlank()) {
-            throw new BusinessException("Tên kích thước không được để trống");
+            throw new BusinessException(ErrorCode.SIZE_NAME_EMPTY);
         }
         String trimmed = dto.getName().trim().toUpperCase(Locale.ROOT);
         if (sizeRepository.findByNameIgnoreCase(trimmed).isPresent()) {
-            throw new BusinessException("Kích thước '" + trimmed + "' đã tồn tại");
+            throw new BusinessException(ErrorCode.SIZE_ALREADY_EXISTS);
         }
         int order = dto.getSortOrder() > 0 ? dto.getSortOrder() : 10;
         Size size = sizeRepository.save(Size.builder().name(trimmed).sortOrder(order).build());
@@ -287,14 +286,14 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.SizeDto updateSize(Long id, CatalogDtos.SizeDto dto) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy kích thước"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.SIZE_NOT_FOUND));
 
         if (dto.getName() != null && !dto.getName().isBlank()) {
             String trimmed = dto.getName().trim().toUpperCase(Locale.ROOT);
             sizeRepository.findByNameIgnoreCase(trimmed)
                     .ifPresent(existing -> {
                         if (!existing.getId().equals(id)) {
-                            throw new BusinessException("Tên kích thước '" + trimmed + "' đã tồn tại");
+                            throw new BusinessException(ErrorCode.SIZE_ALREADY_EXISTS);
                         }
                     });
             size.setName(trimmed);
@@ -310,9 +309,9 @@ public class CatalogService {
     @Transactional
     public void deleteSize(Long id) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy kích thước"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.SIZE_NOT_FOUND));
         if (productVariantRepository.existsBySizeId(id)) {
-            throw new BusinessException("Không thể xóa kích thước '" + size.getName() + "' vì đang có biến thể sản phẩm sử dụng");
+            throw new BusinessException(ErrorCode.SIZE_IN_USE);
         }
         sizeRepository.delete(size);
     }
@@ -490,7 +489,7 @@ public class CatalogService {
     public CatalogDtos.ReviewDto addProductReview(Long productId, CatalogDtos.CreateReviewRequest request) {
         User user = securityUtils.getCurrentUserRequired();
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
         Review review = Review.builder()
                 .user(user)
@@ -518,7 +517,7 @@ public class CatalogService {
     @Transactional(readOnly = true)
     public OrderDtos.ValidateVoucherResponse validateVoucher(OrderDtos.ValidateVoucherRequest request) {
         Voucher voucher = voucherRepository.findByCodeIgnoreCase(request.getCode().trim())
-                .orElseThrow(() -> new BusinessException("Mã giảm giá không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VOUCHER_NOT_FOUND));
 
         voucher.validateApplicable(request.getSubtotal(), LocalDateTime.now());
         DiscountStrategy strategy = discountStrategyFactory.getStrategy(voucher.getDiscountType());
@@ -583,7 +582,7 @@ public class CatalogService {
         }
         Category parent = request.getParentId() == null ? null :
                 categoryRepository.findById(request.getParentId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục cha"));
+                        .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PARENT_CATEGORY_NOT_FOUND));
 
         Category category = Category.builder()
                 .name(request.getName().trim())
@@ -599,7 +598,7 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.CategoryDto updateCategory(Long id, CatalogDtos.CategoryUpsertRequest request) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
         category.setName(request.getName().trim());
         if (request.getSlug() != null && !request.getSlug().isBlank()) {
             category.setSlug(SlugUtils.toSlug(request.getSlug()));
@@ -607,7 +606,7 @@ public class CatalogService {
         category.setDescription(request.getDescription());
         if (request.getParentId() != null && !request.getParentId().equals(id)) {
             Category parent = categoryRepository.findById(request.getParentId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục cha"));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PARENT_CATEGORY_NOT_FOUND));
             category.setParent(parent);
         } else if (request.getParentId() == null) {
             category.setParent(null);
@@ -621,12 +620,12 @@ public class CatalogService {
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
         if (category.getChildren() != null && !category.getChildren().isEmpty()) {
-            throw new BusinessException("Không thể xóa danh mục cha đang có danh mục con. Vui lòng xóa danh mục con trước");
+            throw new BusinessException(ErrorCode.CATEGORY_HAS_CHILDREN);
         }
         if (productRepository.countByCategoryId(id) > 0) {
-            throw new BusinessException("Không thể xóa danh mục đang chứa sản phẩm");
+            throw new BusinessException(ErrorCode.CATEGORY_HAS_PRODUCTS);
         }
         categoryRepository.delete(category);
     }
@@ -669,7 +668,7 @@ public class CatalogService {
     @Transactional
     public CatalogDtos.ProductResponseDto updateAdminProduct(Long id, CatalogDtos.AdminProductUpsertRequest request) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
         Category category = resolveCategoryByIdOrSlug(request.getCategory());
         product.setCategory(category);
@@ -716,7 +715,7 @@ public class CatalogService {
     @Transactional
     public void deleteAdminProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         product.setActive(false);
         productRepository.save(product);
     }
@@ -1070,19 +1069,19 @@ public class CatalogService {
     private Category resolveCategoryByIdOrSlug(String idOrSlug) {
         if (idOrSlug == null || idOrSlug.isBlank()) {
             return categoryRepository.findAllByOrderByIdAsc().stream().findFirst()
-                    .orElseThrow(() -> new BusinessException("Hệ thống chưa có danh mục sản phẩm"));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
         }
         try {
             Long id = Long.parseLong(idOrSlug.trim());
             return categoryRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục #" + id));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
         } catch (NumberFormatException ignored) {
             return categoryRepository.findBySlug(idOrSlug.trim())
                     .orElseGet(() -> categoryRepository.findAllByOrderByIdAsc().stream()
                             .filter(c -> c.getName().equalsIgnoreCase(idOrSlug.trim()))
                             .findFirst()
                             .orElseGet(() -> categoryRepository.findAllByOrderByIdAsc().stream().findFirst()
-                                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục: " + idOrSlug))));
+                                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND))));
         }
     }
 
@@ -1090,10 +1089,10 @@ public class CatalogService {
         try {
             Long id = Long.parseLong(idOrSlug.trim());
             return productRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm #" + id));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         } catch (NumberFormatException ignored) {
             return productRepository.findBySlug(idOrSlug.trim())
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm: " + idOrSlug));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         }
     }
 

@@ -12,6 +12,8 @@ import com.fashionshop.be.domain.enums.PaymentMethod;
 import com.fashionshop.be.domain.enums.PaymentStatus;
 import com.fashionshop.be.dto.OrderDtos;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
+import com.fashionshop.be.exception.ForbiddenException;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.pattern.discount.DiscountStrategy;
 import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
@@ -82,7 +84,7 @@ public class OrderService {
 
         for (OrderDtos.CreateOrderItemRequest itemReq : request.getItems()) {
             ProductVariant variant = productVariantRepository.findByIdForUpdate(itemReq.getVariantId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy biến thể sản phẩm #" + itemReq.getVariantId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VARIANT_NOT_FOUND));
 
             // OOP Encapsulation: ProductVariant validates & deducts its own stock
             variant.deductStock(itemReq.getQuantity());
@@ -91,7 +93,7 @@ public class OrderService {
             ProductColor pc = variant.getProductColor();
             Product product = pc.getProduct();
             if (!product.isActive()) {
-                throw new BusinessException("Sản phẩm '" + product.getName() + "' hiện đã ngừng kinh doanh");
+                throw new BusinessException(ErrorCode.PRODUCT_STOPPED_BUSINESS);
             }
             BigDecimal baseUnitPrice = (variant.getPrice() != null && variant.getPrice().compareTo(BigDecimal.ZERO) > 0)
                     ? variant.getPrice()
@@ -125,7 +127,7 @@ public class OrderService {
         BigDecimal discountAmount = BigDecimal.ZERO;
         if (request.getVoucherCode() != null && !request.getVoucherCode().isBlank()) {
             Voucher voucher = voucherRepository.findByCodeIgnoreCaseForUpdate(request.getVoucherCode().trim())
-                    .orElseThrow(() -> new BusinessException("Mã giảm giá không tồn tại"));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VOUCHER_NOT_FOUND));
 
             voucher.validateApplicable(order.getSubtotal(), LocalDateTime.now());
             // OOP Polymorphism via Strategy + Factory Pattern
@@ -170,14 +172,14 @@ public class OrderService {
         User currentUser = securityUtils.getCurrentUserOptional().orElse(null);
         if (currentUser == null) {
             if (!order.getOrderCode().equalsIgnoreCase(idOrCode.trim())) {
-                throw new BusinessException("Vui lòng đăng nhập hoặc sử dụng mã đơn hàng để xem chi tiết");
+                throw new BusinessException(ErrorCode.UNAUTHENTICATED);
             }
             return toOrderDto(order);
         }
         if (!currentUser.isAdmin()
                 && order.getUser() != null
                 && !order.getUser().getId().equals(currentUser.getId())) {
-            throw new BusinessException("Bạn không có quyền xem đơn hàng này");
+            throw new ForbiddenException(ErrorCode.FORBIDDEN);
         }
         return toOrderDto(order);
     }
@@ -185,15 +187,15 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderDtos.OrderResponseDto trackOrder(String orderCode, String phone) {
         if (orderCode == null || orderCode.isBlank()) {
-            throw new BusinessException("Vui lòng nhập mã đơn hàng");
+            throw new BusinessException(ErrorCode.ORDER_CODE_EMPTY);
         }
         if (phone == null || phone.isBlank()) {
-            throw new BusinessException("Vui lòng nhập số điện thoại nhận hàng để tra cứu");
+            throw new BusinessException(ErrorCode.ORDER_PHONE_EMPTY);
         }
         Order order = orderRepository.findByOrderCodeIgnoreCase(orderCode.trim())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng với mã: " + orderCode));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ORDER_NOT_FOUND));
         if (!order.getRecipientPhone().equals(phone.trim())) {
-            throw new BusinessException("Số điện thoại không khớp với mã đơn hàng");
+            throw new BusinessException(ErrorCode.ORDER_PHONE_MISMATCH);
         }
         return toOrderDto(order);
     }
@@ -203,10 +205,10 @@ public class OrderService {
         User currentUser = securityUtils.getCurrentUserRequired();
         Order order = resolveOrder(idOrCode);
         if (order.getUser() == null || !order.getUser().getId().equals(currentUser.getId())) {
-            throw new BusinessException("Bạn không có quyền hủy đơn hàng này");
+            throw new ForbiddenException(ErrorCode.FORBIDDEN);
         }
         if (order.getStatus() != OrderStatus.PENDING) {
-            throw new BusinessException("Chỉ có thể hủy đơn hàng khi đang ở trạng thái Chờ xử lý");
+            throw new BusinessException(ErrorCode.CANNOT_CANCEL_ORDER);
         }
         return transitionOrderInternal(order, OrderStatus.CANCELLED,
                 (reason == null || reason.isBlank()) ? "Khách hàng yêu cầu hủy đơn" : reason.trim());
@@ -227,7 +229,7 @@ public class OrderService {
         try {
             targetStatus = OrderStatus.valueOf(request.getStatus().trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ex) {
-            throw new BusinessException("Trạng thái đơn hàng không hợp lệ: " + request.getStatus());
+            throw new BusinessException(ErrorCode.ORDER_STATUS_INVALID);
         }
         return transitionOrderInternal(order, targetStatus, request.getReason());
     }
@@ -254,7 +256,7 @@ public class OrderService {
 
     public Order resolveOrder(String idOrCode) {
         if (idOrCode == null || idOrCode.isBlank()) {
-            throw new BusinessException("Mã đơn hàng không hợp lệ");
+            throw new BusinessException(ErrorCode.ORDER_CODE_EMPTY);
         }
         String trimmed = idOrCode.trim();
         return orderRepository.findByOrderCodeIgnoreCase(trimmed)
@@ -262,9 +264,9 @@ public class OrderService {
                     try {
                         Long id = Long.parseLong(trimmed);
                         return orderRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng #" + id));
+                                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ORDER_NOT_FOUND));
                     } catch (NumberFormatException ex) {
-                        throw new ResourceNotFoundException("Không tìm thấy đơn hàng: " + trimmed);
+                        throw new ResourceNotFoundException(ErrorCode.ORDER_NOT_FOUND);
                     }
                 });
     }

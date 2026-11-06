@@ -6,6 +6,7 @@ import com.fashionshop.be.domain.entity.StockImport;
 import com.fashionshop.be.domain.entity.StockImportItem;
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.dto.AdminDtos;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.repository.StockImportRepository;
@@ -38,7 +39,7 @@ public class StockImportService {
     @Transactional(readOnly = true)
     public AdminDtos.StockImportResponseDto getStockImportById(Long id) {
         StockImport stockImport = stockImportRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiếu nhập kho #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.STOCK_IMPORT_NOT_FOUND));
         return toDto(stockImport);
     }
 
@@ -60,7 +61,7 @@ public class StockImportService {
 
         for (AdminDtos.StockImportItemRequest itemReq : request.getItems()) {
             ProductVariant variant = productVariantRepository.findById(itemReq.getVariantId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy biến thể #" + itemReq.getVariantId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VARIANT_NOT_FOUND));
 
             // OOP Encapsulation: ProductVariant updates its own stock & weighted-average costPrice
             variant.importStock(itemReq.getQuantity(), itemReq.getUnitCost());

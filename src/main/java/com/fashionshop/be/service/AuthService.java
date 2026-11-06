@@ -7,6 +7,7 @@ import com.fashionshop.be.domain.enums.Role;
 import com.fashionshop.be.domain.enums.UserStatus;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -65,12 +66,12 @@ public class AuthService {
     public AuthDtos.SendOtpResponse sendRegisterOtp(AuthDtos.SendOtpRequest request) {
         String email = request.getEmail().trim().toLowerCase();
         if (userRepository.existsByEmailIgnoreCase(email)) {
-            throw new BusinessException("Email này đã được đăng ký trong hệ thống");
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
         OtpEntry existing = otpStore.get(email);
         if (existing != null && existing.isInCooldown()) {
-            throw new BusinessException(String.format("Vui lòng đợi %d giây trước khi yêu cầu gửi lại mã OTP", existing.getRemainingCooldownSeconds()));
+            throw new BusinessException(ErrorCode.OTP_COOLDOWN);
         }
 
         String code = String.format("%06d", RANDOM.nextInt(1_000_000));
@@ -95,17 +96,17 @@ public class AuthService {
     public AuthDtos.AuthResponse register(AuthDtos.RegisterRequest request) {
         String email = request.getEmail().trim().toLowerCase();
         if (userRepository.existsByEmailIgnoreCase(email)) {
-            throw new BusinessException("Email này đã được đăng ký trong hệ thống");
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
         String submittedOtp = request.getOtpCode() == null ? "" : request.getOtpCode().trim();
         OtpEntry otpEntry = otpStore.get(email);
         if (otpEntry == null || otpEntry.isExpired()) {
             otpStore.remove(email);
-            throw new BusinessException("Mã OTP đã hết hạn hoặc chưa được gửi. Vui lòng nhấn 'Gửi mã xác thực'");
+            throw new BusinessException(ErrorCode.OTP_EXPIRED);
         }
         if (!otpEntry.code().equals(submittedOtp)) {
-            throw new BusinessException("Mã OTP xác thực không chính xác");
+            throw new BusinessException(ErrorCode.OTP_INVALID);
         }
         otpStore.remove(email);
 
@@ -136,15 +137,15 @@ public class AuthService {
     public AuthDtos.SendOtpResponse sendForgotPasswordOtp(AuthDtos.ForgotPasswordSendOtpRequest request) {
         String email = request.getEmail().trim().toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new BusinessException("Không tìm thấy tài khoản liên kết với email: " + email));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         if (user.getStatus() == UserStatus.BANNED) {
-            throw new BusinessException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên");
+            throw new BusinessException(ErrorCode.ACCOUNT_LOCKED);
         }
 
         OtpEntry existing = forgotOtpStore.get(email);
         if (existing != null && existing.isInCooldown()) {
-            throw new BusinessException(String.format("Vui lòng đợi %d giây trước khi yêu cầu gửi lại mã OTP", existing.getRemainingCooldownSeconds()));
+            throw new BusinessException(ErrorCode.OTP_COOLDOWN);
         }
 
         String code = String.format("%06d", RANDOM.nextInt(1_000_000));
@@ -169,16 +170,16 @@ public class AuthService {
     public void resetPassword(AuthDtos.ForgotPasswordResetRequest request) {
         String email = request.getEmail().trim().toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new BusinessException("Không tìm thấy tài khoản liên kết với email: " + email));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         String submittedOtp = request.getOtpCode() == null ? "" : request.getOtpCode().trim();
         OtpEntry otpEntry = forgotOtpStore.get(email);
         if (otpEntry == null || otpEntry.isExpired()) {
             forgotOtpStore.remove(email);
-            throw new BusinessException("Mã OTP đã hết hạn hoặc chưa được gửi. Vui lòng nhấn 'Gửi mã xác thực'");
+            throw new BusinessException(ErrorCode.OTP_EXPIRED);
         }
         if (!otpEntry.code().equals(submittedOtp)) {
-            throw new BusinessException("Mã OTP xác thực không chính xác");
+            throw new BusinessException(ErrorCode.OTP_INVALID);
         }
         forgotOtpStore.remove(email);
 
@@ -193,13 +194,13 @@ public class AuthService {
     public AuthDtos.AuthResponse loginWithGoogle(AuthDtos.GoogleLoginRequest request) {
         String credential = request.getCredential();
         if (credential == null || credential.isBlank()) {
-            throw new BusinessException("Mã xác thực Google không hợp lệ");
+            throw new BusinessException(ErrorCode.GOOGLE_AUTH_FAILED);
         }
 
         try {
             String[] parts = credential.split("\\.");
             if (parts.length < 2) {
-                throw new BusinessException("Định dạng Google Token không hợp lệ");
+                throw new BusinessException(ErrorCode.GOOGLE_AUTH_FAILED);
             }
 
             String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
@@ -210,14 +211,14 @@ public class AuthService {
             String picture = payload.path("picture").asText(null);
 
             if (email.isBlank()) {
-                throw new BusinessException("Không thể lấy địa chỉ email từ tài khoản Google");
+                throw new BusinessException(ErrorCode.GOOGLE_EMAIL_NOT_FOUND);
             }
 
             User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
 
             if (user != null) {
                 if (user.getStatus() == UserStatus.BANNED) {
-                    throw new BusinessException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên");
+                    throw new BusinessException(ErrorCode.ACCOUNT_LOCKED);
                 }
                 // Cập nhật avatar nếu trước đó chưa có
                 if ((user.getAvatarUrl() == null || user.getAvatarUrl().isBlank()) && picture != null) {
@@ -249,7 +250,7 @@ public class AuthService {
             throw be;
         } catch (Exception e) {
             log.error("[LUXE GOOGLE LOGIN] Lỗi giải mã Google Token: {}", e.getMessage(), e);
-            throw new BusinessException("Đăng nhập bằng Google thất bại: " + e.getMessage());
+            throw new BusinessException(ErrorCode.GOOGLE_AUTH_FAILED);
         }
     }
 
@@ -259,10 +260,10 @@ public class AuthService {
     public AuthDtos.AuthResponse login(AuthDtos.LoginRequest request) {
         String email = request.getEmail().trim().toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new BusinessException("Email hoặc mật khẩu không chính xác"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_CREDENTIALS));
 
         if (user.getStatus() == UserStatus.BANNED) {
-            throw new BusinessException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên");
+            throw new BusinessException(ErrorCode.ACCOUNT_LOCKED);
         }
 
         authenticationManager.authenticate(

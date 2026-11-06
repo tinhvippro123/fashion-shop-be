@@ -8,6 +8,7 @@ import com.fashionshop.be.domain.entity.ProductVariant;
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.dto.CartDtos;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.CartItemRepository;
 import com.fashionshop.be.repository.CartRepository;
@@ -52,15 +53,15 @@ public class CartService {
         Cart cart = getOrCreateCart(user);
 
         ProductVariant variant = productVariantRepository.findById(request.getVariantId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy biến thể sản phẩm #" + request.getVariantId()));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VARIANT_NOT_FOUND));
 
         Product product = variant.getProductColor().getProduct();
         if (!product.isActive()) {
-            throw new BusinessException("Sản phẩm '" + product.getName() + "' hiện đã ngừng kinh doanh");
+            throw new BusinessException(ErrorCode.PRODUCT_STOPPED_BUSINESS);
         }
 
         if (variant.getStock() <= 0) {
-            throw new BusinessException("Sản phẩm này tạm thời đã hết hàng");
+            throw new BusinessException(ErrorCode.INSUFFICIENT_STOCK);
         }
 
         CartItem existingItem = cartItemRepository.findByCartIdAndVariantId(cart.getId(), variant.getId())
@@ -91,10 +92,10 @@ public class CartService {
         Cart cart = getOrCreateCart(user);
 
         CartItem item = cartItemRepository.findById(itemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm trong giỏ hàng"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         if (!item.getCart().getId().equals(cart.getId())) {
-            throw new BusinessException("Bạn không có quyền thao tác trên giỏ hàng này");
+            throw new BusinessException(ErrorCode.FORBIDDEN);
         }
 
         if (request.getQuantity() <= 0) {
@@ -115,10 +116,10 @@ public class CartService {
         Cart cart = getOrCreateCart(user);
 
         CartItem item = cartItemRepository.findById(itemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm trong giỏ hàng"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         if (!item.getCart().getId().equals(cart.getId())) {
-            throw new BusinessException("Bạn không có quyền thao tác trên giỏ hàng này");
+            throw new BusinessException(ErrorCode.FORBIDDEN);
         }
 
         cart.removeItem(item);

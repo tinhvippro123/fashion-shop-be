@@ -7,6 +7,7 @@ import com.fashionshop.be.domain.entity.Wishlist;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.UserAddressRepository;
@@ -62,7 +63,7 @@ public class AccountService {
     public void changePassword(AuthDtos.ChangePasswordRequest request) {
         User user = securityUtils.getCurrentUserRequired();
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
-            throw new BusinessException("Mật khẩu hiện tại không chính xác");
+            throw new BusinessException(ErrorCode.CURRENT_PASSWORD_INCORRECT);
         }
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
@@ -115,7 +116,7 @@ public class AccountService {
     public AuthDtos.AddressDto updateAddress(Long id, AuthDtos.AddressUpsertRequest request) {
         User user = securityUtils.getCurrentUserRequired();
         UserAddress address = userAddressRepository.findByIdAndUserId(id, user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ADDRESS_NOT_FOUND));
 
         List<UserAddress> existing = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
         if (request.isDefault() || existing.size() == 1) {
@@ -147,7 +148,7 @@ public class AccountService {
     public void deleteAddress(Long id) {
         User user = securityUtils.getCurrentUserRequired();
         UserAddress address = userAddressRepository.findByIdAndUserId(id, user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy địa chỉ"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ADDRESS_NOT_FOUND));
         boolean wasDefault = address.isDefault();
         userAddressRepository.delete(address);
         userAddressRepository.flush();
@@ -174,7 +175,7 @@ public class AccountService {
     public boolean toggleWishlist(Long productId) {
         User user = securityUtils.getCurrentUserRequired();
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sản phẩm"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
         return wishlistRepository.findByUserIdAndProductId(user.getId(), productId)
                 .map(existing -> {
@@ -197,7 +198,7 @@ public class AccountService {
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("");
         if (joined.isBlank()) {
-            throw new BusinessException("Địa chỉ chi tiết không được để trống");
+            throw new BusinessException(ErrorCode.ADDRESS_DETAIL_EMPTY);
         }
         return joined;
     }

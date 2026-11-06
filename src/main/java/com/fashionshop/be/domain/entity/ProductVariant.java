@@ -1,6 +1,7 @@
 package com.fashionshop.be.domain.entity;
 
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,10 +55,10 @@ public class ProductVariant extends BaseEntity {
 
     public void importStock(int quantity, BigDecimal unitCost) {
         if (quantity <= 0) {
-            throw new BusinessException("Số lượng nhập kho phải lớn hơn 0");
+            throw new BusinessException(ErrorCode.INVALID_QUANTITY);
         }
         if (unitCost == null || unitCost.compareTo(BigDecimal.ZERO) < 0) {
-            throw new BusinessException("Giá vốn nhập kho không được âm");
+            throw new BusinessException(ErrorCode.INVALID_COST_PRICE);
         }
 
         BigDecimal currentTotalValue = (this.costPrice == null ? BigDecimal.ZERO : this.costPrice)
@@ -72,17 +73,17 @@ public class ProductVariant extends BaseEntity {
 
     public void deductStock(int quantity) {
         if (quantity <= 0) {
-            throw new BusinessException("Số lượng đặt mua phải lớn hơn 0");
+            throw new BusinessException(ErrorCode.INVALID_QUANTITY);
         }
         if (this.stock < quantity) {
-            throw new BusinessException("Biến thể " + this.sku + " không đủ số lượng tồn kho (còn " + this.stock + ")");
+            throw new BusinessException(ErrorCode.INSUFFICIENT_STOCK);
         }
         this.stock -= quantity;
     }
 
     public void restoreStock(int quantity) {
         if (quantity <= 0) {
-            throw new BusinessException("Số lượng hoàn kho phải lớn hơn 0");
+            throw new BusinessException(ErrorCode.INVALID_QUANTITY);
         }
         this.stock += quantity;
     }

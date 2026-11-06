@@ -5,7 +5,6 @@ import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
-import com.fashionshop.be.exception.AppException;
 import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductVariantRepository;

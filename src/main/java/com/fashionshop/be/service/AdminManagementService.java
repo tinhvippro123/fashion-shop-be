@@ -13,6 +13,7 @@ import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ReviewRepository;
@@ -53,14 +54,14 @@ public class AdminManagementService {
     public OrderDtos.VoucherDto createVoucher(OrderDtos.VoucherUpsertRequest request) {
         String code = request.getCode().trim().toUpperCase(Locale.ROOT);
         if (voucherRepository.existsByCodeIgnoreCase(code)) {
-            throw new BusinessException("Mã giảm giá " + code + " đã tồn tại");
+            throw new BusinessException(ErrorCode.VOUCHER_ALREADY_EXISTS);
         }
         DiscountType type = DiscountType.valueOf(request.getDiscountType().trim().toUpperCase(Locale.ROOT));
         validateVoucherPayload(type, request);
         LocalDateTime start = request.getStartDate() == null ? LocalDateTime.now() : request.getStartDate();
         LocalDateTime end = request.getEndDate() == null ? start.plusDays(30) : request.getEndDate();
         if (end.isBefore(start)) {
-            throw new BusinessException("Ngày kết thúc phải sau ngày bắt đầu");
+            throw new BusinessException(ErrorCode.VOUCHER_DATE_INVALID);
         }
         LocalDateTime now = LocalDateTime.now();
         VoucherStatus initialStatus = end.isBefore(now)
@@ -87,12 +88,12 @@ public class AdminManagementService {
     @Transactional
     public OrderDtos.VoucherDto updateVoucher(Long id, OrderDtos.VoucherUpsertRequest request) {
         Voucher voucher = voucherRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy mã giảm giá #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VOUCHER_NOT_FOUND));
         String code = request.getCode().trim().toUpperCase(Locale.ROOT);
         voucherRepository.findByCodeIgnoreCase(code)
                 .filter(existing -> !existing.getId().equals(id))
                 .ifPresent(existing -> {
-                    throw new BusinessException("Mã giảm giá " + code + " đã tồn tại");
+                    throw new BusinessException(ErrorCode.VOUCHER_ALREADY_EXISTS);
                 });
         DiscountType type = DiscountType.valueOf(request.getDiscountType().trim().toUpperCase(Locale.ROOT));
         validateVoucherPayload(type, request);
@@ -100,7 +101,7 @@ public class AdminManagementService {
         LocalDateTime start = request.getStartDate() != null ? request.getStartDate() : voucher.getStartDate();
         LocalDateTime end = request.getEndDate() != null ? request.getEndDate() : voucher.getEndDate();
         if (start != null && end != null && end.isBefore(start)) {
-            throw new BusinessException("Ngày kết thúc phải sau ngày bắt đầu");
+            throw new BusinessException(ErrorCode.VOUCHER_DATE_INVALID);
         }
 
         voucher.setCode(code);
@@ -132,22 +133,22 @@ public class AdminManagementService {
 
     private void validateVoucherPayload(DiscountType type, OrderDtos.VoucherUpsertRequest request) {
         if (request.getDiscountValue() == null || request.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BusinessException("Mức giảm giá phải lớn hơn 0");
+            throw new BusinessException(ErrorCode.VOUCHER_DISCOUNT_INVALID);
         }
         if (type == DiscountType.PERCENTAGE && request.getDiscountValue().compareTo(new BigDecimal("100")) > 0) {
-            throw new BusinessException("Mức giảm theo phần trăm không được vượt quá 100%");
+            throw new BusinessException(ErrorCode.VOUCHER_DISCOUNT_INVALID);
         }
     }
 
     @Transactional
     public OrderDtos.VoucherDto changeVoucherAction(Long id, String action) {
         Voucher voucher = voucherRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy mã giảm giá #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VOUCHER_NOT_FOUND));
         switch (action.trim().toUpperCase(Locale.ROOT)) {
             case "START_NOW" -> voucher.startNow();
             case "END_EARLY" -> voucher.endEarly();
             case "CANCEL" -> voucher.cancel();
-            default -> throw new BusinessException("Thao tác mã giảm giá không hợp lệ: " + action);
+            default -> throw new BusinessException(ErrorCode.INVALID_KEY);
         }
         return CatalogService.toVoucherDto(voucherRepository.save(voucher));
     }
@@ -165,14 +166,14 @@ public class AdminManagementService {
     @Transactional(readOnly = true)
     public AdminDtos.CustomerDto getCustomerDetail(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách hàng #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         return toCustomerDto(user, true);
     }
 
     @Transactional
     public AdminDtos.CustomerDto toggleCustomerStatus(Long id, String status) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách hàng #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         if ("BANNED".equalsIgnoreCase(status)) {
             user.lockAccount();
         } else {
@@ -248,7 +249,7 @@ public class AdminManagementService {
     @Transactional
     public CatalogDtos.ReviewDto replyReview(Long id, String reply) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đánh giá #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REVIEW_NOT_FOUND));
         review.setAdminReply(reply.trim());
         return catalogService.toReviewDto(reviewRepository.save(review));
     }
@@ -256,7 +257,7 @@ public class AdminManagementService {
     @Transactional
     public CatalogDtos.ReviewDto toggleReviewVisibility(Long id) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đánh giá #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REVIEW_NOT_FOUND));
         review.setVisible(!review.isVisible());
         return catalogService.toReviewDto(reviewRepository.save(review));
     }
@@ -264,7 +265,7 @@ public class AdminManagementService {
     @Transactional
     public void deleteReview(Long id) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đánh giá #" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REVIEW_NOT_FOUND));
         reviewRepository.delete(review);
     }
 }

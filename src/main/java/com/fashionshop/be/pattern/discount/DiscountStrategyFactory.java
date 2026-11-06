@@ -2,6 +2,7 @@ package com.fashionshop.be.pattern.discount;
 
 import com.fashionshop.be.domain.enums.DiscountType;
 import com.fashionshop.be.exception.BusinessException;
+import com.fashionshop.be.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ public class DiscountStrategyFactory {
 
     public DiscountStrategy getStrategy(DiscountType discountType) {
         if (discountType == null) {
-            throw new BusinessException("Loại khuyến mãi không được để trống");
+            throw new BusinessException(ErrorCode.INVALID_KEY);
         }
         return switch (discountType) {
             case PERCENTAGE -> percentageDiscountStrategy;
