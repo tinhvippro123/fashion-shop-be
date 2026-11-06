@@ -34,6 +34,9 @@ public class OrderItem extends BaseEntity {
     @Column(name = "product_id")
     private Long productId;
 
+    @Column(name = "product_slug", length = 280)
+    private String productSlug;
+
     @Column(name = "product_name", nullable = false, length = 255)
     private String productName;
 

@@ -19,6 +19,7 @@ import com.fashionshop.be.pattern.discount.DiscountStrategy;
 import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
 import com.fashionshop.be.repository.CartRepository;
 import com.fashionshop.be.repository.OrderRepository;
+import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
@@ -48,6 +49,7 @@ public class OrderService {
     private final PaymentService paymentService;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -109,6 +111,7 @@ public class OrderService {
             order.addItem(OrderItem.builder()
                     .variant(variant)
                     .productId(product.getId())
+                    .productSlug(product.getSlug())
                     .productName(product.getName())
                     .colorName(pc.getColor().getName())
                     .sizeName(variant.getSize().getName())
@@ -162,7 +165,7 @@ public class OrderService {
         User user = securityUtils.getCurrentUserRequired();
         return orderRepository.findByUserIdOrderByCreatedAtDesc(user.getId())
                 .stream()
-                .map(OrderService::toOrderDto)
+                .map(this::toOrderDto)
                 .toList();
     }
 
@@ -218,7 +221,7 @@ public class OrderService {
     public List<OrderDtos.OrderResponseDto> getAllAdminOrders() {
         return orderRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
-                .map(OrderService::toOrderDto)
+                .map(this::toOrderDto)
                 .toList();
     }
 
@@ -282,7 +285,7 @@ public class OrderService {
         }
     }
 
-    public static OrderDtos.OrderResponseDto toOrderDto(Order order) {
+    public OrderDtos.OrderResponseDto toOrderDto(Order order) {
         String methodLabel = switch (order.getPaymentMethod()) {
             case BANK_TRANSFER -> "Chuyển khoản";
             case VNPAY -> "VNPay";
@@ -304,6 +307,7 @@ public class OrderService {
                         .id(String.valueOf(i.getId()))
                         .variantId(i.getVariant() == null ? null : i.getVariant().getId())
                         .productId(i.getProductId())
+                        .productSlug(resolveProductSlug(i))
                         .name(i.getProductName())
                         .image(i.getImageUrl() == null ? "" : i.getImageUrl())
                         .variantInfo("Màu: " + i.getColorName() + " | Size: " + i.getSizeName())
@@ -364,6 +368,20 @@ public class OrderService {
                         .code("LX" + String.format("%06d", order.getId() == null ? 1 : order.getId()))
                         .build())
                 .build();
+    }
+
+    private String resolveProductSlug(OrderItem item) {
+        if (item.getProductSlug() != null && !item.getProductSlug().isBlank()) {
+            return item.getProductSlug();
+        }
+        if (item.getVariant() != null && item.getVariant().getProductColor() != null
+                && item.getVariant().getProductColor().getProduct() != null) {
+            return item.getVariant().getProductColor().getProduct().getSlug();
+        }
+        if (item.getProductId() != null) {
+            return productRepository.findById(item.getProductId()).map(Product::getSlug).orElse(null);
+        }
+        return null;
     }
 }
 

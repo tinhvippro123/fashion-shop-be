@@ -126,6 +126,7 @@ public class OrderDtos {
         private String id;
         private Long variantId;
         private Long productId;
+        private String productSlug;
         private String name;
         private String image;
         private String variantInfo;
