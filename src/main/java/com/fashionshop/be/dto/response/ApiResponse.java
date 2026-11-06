@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private boolean success;
-    private Integer code;
+    private String code;
     private String message;
     private T data;
 
     public static <T> ApiResponse<T> ok(T data) {
         return ApiResponse.<T>builder()
                 .success(true)
-                .code(200)
+                .code("SUCCESS")
                 .message("Thành công")
                 .data(data)
                 .build();
@@ -29,7 +29,7 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> ok(String message, T data) {
         return ApiResponse.<T>builder()
                 .success(true)
-                .code(200)
+                .code("SUCCESS")
                 .message(message)
                 .data(data)
                 .build();
@@ -38,13 +38,13 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> error(String message) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .code(400)
+                .code("ERROR")
                 .message(message)
                 .data(null)
                 .build();
     }
 
-    public static <T> ApiResponse<T> error(int code, String message) {
+    public static <T> ApiResponse<T> error(String code, String message) {
         return ApiResponse.<T>builder()
                 .success(false)
                 .code(code)

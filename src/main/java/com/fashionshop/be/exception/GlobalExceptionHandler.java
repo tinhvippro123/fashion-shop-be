@@ -1,7 +1,6 @@
 package com.fashionshop.be.exception;
 
 import com.fashionshop.be.dto.response.ApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -15,22 +14,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException ex) {
-        ErrorCode ec = ex.getErrorCode();
-        HttpStatus status = ec != null ? ec.getHttpStatus() : HttpStatus.BAD_REQUEST;
-        int code = ec != null ? ec.getCode() : HttpStatus.BAD_REQUEST.value();
-        return ResponseEntity.status(status)
-                .body(ApiResponse.error(code, ex.getMessage()));
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(ResourceNotFoundException ex) {
-        ErrorCode ec = ex.getErrorCode();
-        HttpStatus status = ec != null ? ec.getHttpStatus() : HttpStatus.NOT_FOUND;
-        int code = ec != null ? ec.getCode() : HttpStatus.NOT_FOUND.value();
-        return ResponseEntity.status(status)
-                .body(ApiResponse.error(code, ex.getMessage()));
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode.name(), ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -38,25 +26,29 @@ public class GlobalExceptionHandler {
         String msg = ex.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining("; "));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(ErrorCode.INVALID_REQUEST.getCode(), msg.isBlank() ? "Dữ liệu đầu vào không hợp lệ" : msg));
+        ErrorCode errorCode = ErrorCode.INVALID_KEY;
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode.name(), msg.isBlank() ? errorCode.getMessage() : msg));
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error(ErrorCode.INVALID_CREDENTIALS.getCode(), "Email hoặc mật khẩu không chính xác, hoặc phiên đăng nhập đã hết hạn"));
+        ErrorCode errorCode = ErrorCode.INVALID_CREDENTIALS;
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode.name(), errorCode.getMessage()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(AccessDeniedException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.error(ErrorCode.UNAUTHORIZED.getCode(), "Bạn không có quyền thực hiện thao tác này"));
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode.name(), errorCode.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode(), "Lỗi hệ thống: " + ex.getMessage()));
+        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+        return ResponseEntity.status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode.name(), errorCode.getMessage()));
     }
 }

@@ -5,6 +5,8 @@ import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
+import com.fashionshop.be.exception.AppException;
+import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.service.AnalyticsService;
@@ -152,7 +154,8 @@ class FashionBeApiIntegrationTest {
         assertNotNull(products.get(0).getSlug());
         CatalogDtos.ProductResponseDto publicProdBySlug = catalogService.getProductBySlug(products.get(0).getSlug());
         assertEquals(products.get(0).getId(), publicProdBySlug.getId());
-        assertThrows(ResourceNotFoundException.class, () -> catalogService.getProductBySlug(String.valueOf(products.get(0).getId())));
+        AppException ex = assertThrows(AppException.class, () -> catalogService.getProductBySlug(String.valueOf(products.get(0).getId())));
+        assertEquals(ErrorCode.INVALID_PRODUCT_SLUG, ex.getErrorCode());
 
         CatalogDtos.ProductResponseDto existingProd = catalogService.getProductById(products.get(0).getId());
         CatalogDtos.AdminProductUpsertRequest updateReq = new CatalogDtos.AdminProductUpsertRequest(

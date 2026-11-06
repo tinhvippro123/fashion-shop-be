@@ -14,6 +14,7 @@ import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.VoucherStatus;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
+import com.fashionshop.be.exception.AppException;
 import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
@@ -458,17 +459,17 @@ public class CatalogService {
     @Transactional(readOnly = true)
     public CatalogDtos.ProductResponseDto getProductBySlug(String slug) {
         if (slug == null || slug.isBlank() || slug.trim().matches("^\\d+$")) {
-            throw new ResourceNotFoundException(ErrorCode.INVALID_PRODUCT_SLUG, "Đường dẫn sản phẩm không hợp lệ: " + slug);
+            throw new AppException(ErrorCode.INVALID_PRODUCT_SLUG);
         }
         Product product = productRepository.findBySlug(slug.trim())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND, "Không tìm thấy sản phẩm với slug: " + slug));
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         return toProductDto(product, true);
     }
 
     @Transactional(readOnly = true)
     public CatalogDtos.ProductResponseDto getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND, "Không tìm thấy sản phẩm #" + id));
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         return toProductDto(product, true);
     }
 
