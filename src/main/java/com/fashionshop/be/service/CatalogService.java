@@ -371,9 +371,15 @@ public class CatalogService {
                 .filter(p -> {
                     if (keyword == null || keyword.isBlank()) return true;
                     String kw = keyword.trim().toLowerCase(Locale.ROOT);
-                    return p.getName().toLowerCase(Locale.ROOT).contains(kw)
-                            || (p.getDescription() != null && p.getDescription().toLowerCase(Locale.ROOT).contains(kw))
-                            || (p.getSkuPrefix() != null && p.getSkuPrefix().toLowerCase(Locale.ROOT).contains(kw));
+                    boolean matchName = p.getName().toLowerCase(Locale.ROOT).contains(kw);
+                    boolean matchCategory = p.getCategory() != null && p.getCategory().getName().toLowerCase(Locale.ROOT).contains(kw);
+                    boolean matchSku = p.getSkuPrefix() != null && p.getSkuPrefix().toLowerCase(Locale.ROOT).contains(kw);
+                    // Không tìm kiếm trong mô tả đối với từ khóa ngắn hoặc từ loại sản phẩm để tránh kết quả lẫn lộn (ví dụ: mô tả quần ghi "phối cùng áo...")
+                    boolean matchDesc = kw.length() >= 5
+                            && p.getDescription() != null
+                            && p.getDescription().toLowerCase(Locale.ROOT).contains(kw)
+                            && !isCommonCategoryWord(kw);
+                    return matchName || matchCategory || matchSku || matchDesc;
                 })
                 .filter(p -> {
                     if (color == null || color.isBlank()) return true;
@@ -400,9 +406,30 @@ public class CatalogService {
             filtered.sort(Comparator.comparing(CatalogDtos.ProductResponseDto::getEffectivePrice).reversed());
         } else if ("best_seller".equalsIgnoreCase(sort)) {
             filtered.sort(Comparator.comparingInt(CatalogDtos.ProductResponseDto::getSold).reversed());
+        } else if (keyword != null && !keyword.isBlank()) {
+            final String kw = keyword.trim().toLowerCase(Locale.ROOT);
+            filtered.sort((a, b) -> {
+                boolean aName = a.getName().toLowerCase(Locale.ROOT).contains(kw);
+                boolean bName = b.getName().toLowerCase(Locale.ROOT).contains(kw);
+                if (aName && !bName) return -1;
+                if (!aName && bName) return 1;
+                return 0;
+            });
         }
 
         return filtered;
+    }
+
+    private static boolean isCommonCategoryWord(String kw) {
+        if (kw == null) return false;
+        String normalized = kw.trim().toLowerCase(Locale.ROOT);
+        return normalized.equals("áo") || normalized.equals("ao")
+                || normalized.equals("quần") || normalized.equals("quan")
+                || normalized.equals("váy") || normalized.equals("vay")
+                || normalized.equals("đầm") || normalized.equals("dam")
+                || normalized.equals("khoác") || normalized.equals("khoac")
+                || normalized.equals("sơ mi") || normalized.equals("so mi")
+                || normalized.equals("set");
     }
 
     @Transactional(readOnly = true)

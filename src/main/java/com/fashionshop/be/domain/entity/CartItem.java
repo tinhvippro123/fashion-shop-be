@@ -33,3 +33,4 @@ public class CartItem extends BaseEntity {
     @Builder.Default
     private int quantity = 1;
 }
+

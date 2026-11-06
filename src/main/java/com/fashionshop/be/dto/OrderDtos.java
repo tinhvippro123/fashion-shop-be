@@ -143,6 +143,7 @@ public class OrderDtos {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CustomerInfoDto {
+        private String id;
         private String name;
         private String type;
         private String email;

@@ -87,7 +87,7 @@ public class AuthService {
                 .email(email)
                 .expiresInSeconds(OTP_EXPIRY_SECONDS)
                 .sentViaSmtp(sentRealEmail)
-                .otpCode(code)
+                .otpCode(null)
                 .build();
     }
 
@@ -161,7 +161,7 @@ public class AuthService {
                 .email(email)
                 .expiresInSeconds(OTP_EXPIRY_SECONDS)
                 .sentViaSmtp(sentRealEmail)
-                .otpCode(code)
+                .otpCode(null)
                 .build();
     }
 

@@ -349,6 +349,7 @@ public class OrderService {
                 .items(items)
                 .appliedPromotions(appliedPromotions)
                 .customer(OrderDtos.CustomerInfoDto.builder()
+                        .id(order.getUser() == null ? null : String.valueOf(order.getUser().getId()))
                         .name(order.getRecipientName())
                         .type(order.getUser() == null ? "Khách vãng lai" : "Thành viên LUXE")
                         .email(order.getRecipientEmail() == null ? "—" : order.getRecipientEmail())
