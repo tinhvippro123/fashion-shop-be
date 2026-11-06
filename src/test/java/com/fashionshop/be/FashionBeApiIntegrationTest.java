@@ -154,7 +154,7 @@ class FashionBeApiIntegrationTest {
         assertNotNull(products.get(0).getSlug());
         CatalogDtos.ProductResponseDto publicProdBySlug = catalogService.getProductBySlug(products.get(0).getSlug());
         assertEquals(products.get(0).getId(), publicProdBySlug.getId());
-        AppException ex = assertThrows(AppException.class, () -> catalogService.getProductBySlug(String.valueOf(products.get(0).getId())));
+        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> catalogService.getProductBySlug(String.valueOf(products.get(0).getId())));
         assertEquals(ErrorCode.INVALID_PRODUCT_SLUG, ex.getErrorCode());
 
         CatalogDtos.ProductResponseDto existingProd = catalogService.getProductById(products.get(0).getId());

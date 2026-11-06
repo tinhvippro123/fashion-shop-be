@@ -459,17 +459,17 @@ public class CatalogService {
     @Transactional(readOnly = true)
     public CatalogDtos.ProductResponseDto getProductBySlug(String slug) {
         if (slug == null || slug.isBlank() || slug.trim().matches("^\\d+$")) {
-            throw new AppException(ErrorCode.INVALID_PRODUCT_SLUG);
+            throw new ResourceNotFoundException(ErrorCode.INVALID_PRODUCT_SLUG);
         }
         Product product = productRepository.findBySlug(slug.trim())
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         return toProductDto(product, true);
     }
 
     @Transactional(readOnly = true)
     public CatalogDtos.ProductResponseDto getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         return toProductDto(product, true);
     }
 

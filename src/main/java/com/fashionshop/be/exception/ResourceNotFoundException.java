@@ -1,10 +1,6 @@
 package com.fashionshop.be.exception;
 
-import lombok.Getter;
-
-@Getter
-public class ResourceNotFoundException extends AppException {
-
+public class ResourceNotFoundException extends DomainException {
     public ResourceNotFoundException(ErrorCode errorCode) {
         super(errorCode);
     }
@@ -13,7 +9,7 @@ public class ResourceNotFoundException extends AppException {
         super(ErrorCode.RESOURCE_NOT_FOUND, message);
     }
 
-    public ResourceNotFoundException(ErrorCode errorCode, String customMessage) {
-        super(errorCode, customMessage);
+    public ResourceNotFoundException(ErrorCode errorCode, String message) {
+        super(errorCode, message);
     }
 }
