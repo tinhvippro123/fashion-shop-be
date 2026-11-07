@@ -217,6 +217,16 @@ public class OrderService {
                 (reason == null || reason.isBlank()) ? "Khách hàng yêu cầu hủy đơn" : reason.trim());
     }
 
+    @Transactional
+    public OrderDtos.OrderResponseDto cancelUnpaidOrder(String idOrCode, String reason) {
+        Order order = resolveOrder(idOrCode);
+        if (order.getStatus() != OrderStatus.PENDING || order.getPaymentStatus() == PaymentStatus.PAID) {
+            throw new BusinessException(ErrorCode.CANNOT_CANCEL_ORDER);
+        }
+        return transitionOrderInternal(order, OrderStatus.CANCELLED,
+                (reason == null || reason.isBlank()) ? "Khách hàng hủy thanh toán hoặc thay đổi đơn hàng" : reason.trim());
+    }
+
     @Transactional(readOnly = true)
     public List<OrderDtos.OrderResponseDto> getAllAdminOrders() {
         return orderRepository.findAllByOrderByCreatedAtDesc()

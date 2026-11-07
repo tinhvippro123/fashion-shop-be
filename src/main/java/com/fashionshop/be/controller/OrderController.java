@@ -55,5 +55,14 @@ public class OrderController {
         String reason = body == null ? null : body.get("reason");
         return ApiResponse.ok("Đã hủy đơn hàng thành công", orderService.cancelMyOrder(idOrCode, reason));
     }
+
+    @PutMapping("/{idOrCode}/cancel-unpaid")
+    public ApiResponse<OrderDtos.OrderResponseDto> cancelUnpaidOrder(
+            @PathVariable String idOrCode,
+            @RequestBody(required = false) Map<String, String> body
+    ) {
+        String reason = body == null ? null : body.get("reason");
+        return ApiResponse.ok("Đã hủy đơn hàng chưa thanh toán thành công", orderService.cancelUnpaidOrder(idOrCode, reason));
+    }
 }
 
