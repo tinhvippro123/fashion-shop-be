@@ -22,7 +22,6 @@ import com.fashionshop.be.pattern.discount.DiscountStrategyFactory;
 import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
 import com.fashionshop.be.repository.OrderItemRepository;
-import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductColorRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
