@@ -275,4 +275,15 @@ public class CatalogDtos {
         @NotBlank(message = "Nội dung đánh giá không được để trống")
         private String comment;
     }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewEligibilityDto {
+        private boolean canReview;
+        private boolean purchased;
+        private boolean reviewed;
+        private String reason; // "NOT_LOGGED_IN", "NOT_PURCHASED", "ALREADY_REVIEWED", null
+    }
 }

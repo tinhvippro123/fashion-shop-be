@@ -1,10 +1,12 @@
 package com.fashionshop.be;
 
 import com.fashionshop.be.domain.entity.ProductVariant;
+import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.dto.OrderDtos;
+import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
 import com.fashionshop.be.repository.ProductVariantRepository;
@@ -181,6 +183,98 @@ class FashionBeApiIntegrationTest {
         AdminDtos.DashboardResponseDto dashboard = analyticsService.getDashboardAndReports();
         assertTrue(dashboard.getStats().getTotalRevenue().compareTo(BigDecimal.ZERO) > 0);
         assertEquals(6, dashboard.getChartData().size());
+
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    void reviewOnlyAllowedAfterProductPurchasedAndCompleted() {
+        List<CatalogDtos.ProductResponseDto> products = catalogService.filterPublicProducts(
+                null, null, null, null, null, null, null, null, null, null
+        );
+        Long productId = products.get(1).getId();
+
+        // 1. Unauthenticated -> NOT_LOGGED_IN
+        SecurityContextHolder.clearContext();
+        CatalogDtos.ReviewEligibilityDto unauthEligible = catalogService.getReviewEligibility(productId);
+        assertFalse(unauthEligible.isCanReview());
+        assertEquals("NOT_LOGGED_IN", unauthEligible.getReason());
+
+        // 2. Customer login who hasn't purchased product -> NOT_PURCHASED
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        "khachhang@gmail.com", null, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"))
+                )
+        );
+        CatalogDtos.ReviewEligibilityDto notPurchasedEligible = catalogService.getReviewEligibility(productId);
+        assertFalse(notPurchasedEligible.isCanReview());
+        assertEquals("NOT_PURCHASED", notPurchasedEligible.getReason());
+
+        BusinessException notPurchasedEx = assertThrows(
+                BusinessException.class,
+                () -> catalogService.addProductReview(productId, new CatalogDtos.CreateReviewRequest(5, "Rất đẹp"))
+        );
+        assertEquals(ErrorCode.REVIEW_PURCHASE_REQUIRED, notPurchasedEx.getErrorCode());
+
+        // 3. Customer places order for product 1's variant
+        Long variantId = products.get(1).getProductColors().get(0).getVariants().get(0).getId();
+        OrderDtos.CreateOrderRequest orderReq = new OrderDtos.CreateOrderRequest(
+                "Nguyễn Minh Anh",
+                "0901234567",
+                "khachhang@gmail.com",
+                "68 Nguyễn Huệ, Quận 1, TP.HCM",
+                "COD",
+                null,
+                "Giao nhanh",
+                List.of(new OrderDtos.CreateOrderItemRequest(variantId, 1))
+        );
+        OrderDtos.OrderResponseDto order = orderService.createOrder(orderReq);
+
+        // While order is PENDING, review is still NOT allowed
+        CatalogDtos.ReviewEligibilityDto pendingEligible = catalogService.getReviewEligibility(productId);
+        assertFalse(pendingEligible.isCanReview());
+        assertEquals("NOT_PURCHASED", pendingEligible.getReason());
+
+        // 4. Admin transitions order to PROCESSING -> SHIPPING -> COMPLETED
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        "admin@luxe.vn", null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+                )
+        );
+        orderService.updateAdminOrderStatus(order.getOrderCode(), new OrderDtos.UpdateOrderStatusRequest("PROCESSING", null));
+        orderService.updateAdminOrderStatus(order.getOrderCode(), new OrderDtos.UpdateOrderStatusRequest("SHIPPING", null));
+        orderService.updateAdminOrderStatus(order.getOrderCode(), new OrderDtos.UpdateOrderStatusRequest("COMPLETED", null));
+
+        // 5. Customer now eligible to review
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        "khachhang@gmail.com", null, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"))
+                )
+        );
+        CatalogDtos.ReviewEligibilityDto eligible = catalogService.getReviewEligibility(productId);
+        assertTrue(eligible.isCanReview());
+        assertTrue(eligible.isPurchased());
+        assertFalse(eligible.isReviewed());
+
+        // Review succeeds
+        CatalogDtos.ReviewDto review = catalogService.addProductReview(
+                productId,
+                new CatalogDtos.CreateReviewRequest(5, "Chất vải tuyệt vời, mặc rất vừa vặn!")
+        );
+        assertNotNull(review.getId());
+        assertEquals(5, review.getRating());
+
+        // 6. Cannot review again -> ALREADY_REVIEWED
+        CatalogDtos.ReviewEligibilityDto alreadyEligible = catalogService.getReviewEligibility(productId);
+        assertFalse(alreadyEligible.isCanReview());
+        assertTrue(alreadyEligible.isReviewed());
+        assertEquals("ALREADY_REVIEWED", alreadyEligible.getReason());
+
+        BusinessException alreadyEx = assertThrows(
+                BusinessException.class,
+                () -> catalogService.addProductReview(productId, new CatalogDtos.CreateReviewRequest(4, "Đánh giá lần 2"))
+        );
+        assertEquals(ErrorCode.REVIEW_ALREADY_EXISTS, alreadyEx.getErrorCode());
 
         SecurityContextHolder.clearContext();
     }

@@ -67,6 +67,11 @@ public class CatalogController {
         return ApiResponse.ok(catalogService.getProductReviews(id));
     }
 
+    @GetMapping("/products/{id}/review-eligibility")
+    public ApiResponse<CatalogDtos.ReviewEligibilityDto> getReviewEligibility(@PathVariable Long id) {
+        return ApiResponse.ok(catalogService.getReviewEligibility(id));
+    }
+
     @PostMapping("/products/{id}/reviews")
     public ApiResponse<CatalogDtos.ReviewDto> addReview(
             @PathVariable Long id,

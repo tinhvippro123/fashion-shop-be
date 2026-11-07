@@ -18,5 +18,14 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     @Query("SELECT COALESCE(SUM(oi.quantity), 0) FROM OrderItem oi " +
             "WHERE oi.productId = :productId AND oi.order.status != :cancelledStatus")
     Integer findTotalSoldByProductId(@Param("productId") Long productId, @Param("cancelledStatus") OrderStatus cancelledStatus);
+
+    @Query("SELECT COUNT(oi) > 0 FROM OrderItem oi " +
+            "WHERE oi.order.user.id = :userId " +
+            "AND oi.productId = :productId " +
+            "AND oi.order.status = :status")
+    boolean hasUserPurchasedProduct(
+            @Param("userId") Long userId,
+            @Param("productId") Long productId,
+            @Param("status") OrderStatus status);
 }
 

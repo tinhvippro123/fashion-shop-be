@@ -515,11 +515,61 @@ public class CatalogService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public CatalogDtos.ReviewEligibilityDto getReviewEligibility(Long productId) {
+        Optional<User> userOpt = securityUtils.getCurrentUserOptional();
+        if (userOpt.isEmpty()) {
+            return CatalogDtos.ReviewEligibilityDto.builder()
+                    .canReview(false)
+                    .purchased(false)
+                    .reviewed(false)
+                    .reason("NOT_LOGGED_IN")
+                    .build();
+        }
+        User user = userOpt.get();
+        boolean reviewed = reviewRepository.existsByUserIdAndProductId(user.getId(), productId);
+        if (reviewed) {
+            return CatalogDtos.ReviewEligibilityDto.builder()
+                    .canReview(false)
+                    .purchased(true)
+                    .reviewed(true)
+                    .reason("ALREADY_REVIEWED")
+                    .build();
+        }
+
+        boolean purchased = orderItemRepository.hasUserPurchasedProduct(user.getId(), productId, OrderStatus.COMPLETED);
+        if (!purchased) {
+            return CatalogDtos.ReviewEligibilityDto.builder()
+                    .canReview(false)
+                    .purchased(false)
+                    .reviewed(false)
+                    .reason("NOT_PURCHASED")
+                    .build();
+        }
+
+        return CatalogDtos.ReviewEligibilityDto.builder()
+                .canReview(true)
+                .purchased(true)
+                .reviewed(false)
+                .reason(null)
+                .build();
+    }
+
     @Transactional
     public CatalogDtos.ReviewDto addProductReview(Long productId, CatalogDtos.CreateReviewRequest request) {
         User user = securityUtils.getCurrentUserRequired();
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        boolean purchased = orderItemRepository.hasUserPurchasedProduct(user.getId(), productId, OrderStatus.COMPLETED);
+        if (!purchased) {
+            throw new BusinessException(ErrorCode.REVIEW_PURCHASE_REQUIRED);
+        }
+
+        boolean reviewed = reviewRepository.existsByUserIdAndProductId(user.getId(), productId);
+        if (reviewed) {
+            throw new BusinessException(ErrorCode.REVIEW_ALREADY_EXISTS);
+        }
 
         Review review = Review.builder()
                 .user(user)

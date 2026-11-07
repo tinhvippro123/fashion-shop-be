@@ -77,6 +77,8 @@ public enum ErrorCode {
     // --- Nhập kho & Đánh giá & Banner & Thanh toán ---
     STOCK_IMPORT_NOT_FOUND("Phiếu nhập kho không tồn tại"),
     REVIEW_NOT_FOUND("Đánh giá không tồn tại"),
+    REVIEW_PURCHASE_REQUIRED("Bạn chỉ có thể đánh giá sản phẩm sau khi đã mua và nhận hàng thành công"),
+    REVIEW_ALREADY_EXISTS("Bạn đã đánh giá sản phẩm này rồi"),
     BANNER_NOT_FOUND("Banner không tồn tại"),
     PAYMENT_INVALID("Đơn hàng không hợp lệ để tạo liên kết thanh toán"),
     VNPAY_SIGNATURE_MISSING("Thiếu chữ ký số bảo mật từ VNPay"),
