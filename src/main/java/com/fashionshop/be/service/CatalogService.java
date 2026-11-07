@@ -43,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -455,13 +456,44 @@ public class CatalogService {
         return filtered;
     }
 
+    public static String buildProductSlug(Product p) {
+        if (p == null) return "";
+        String baseSlug = p.getSlug() != null ? p.getSlug().trim() : "";
+        if (p.getSkuPrefix() != null && !p.getSkuPrefix().isBlank()) {
+            String cleanSku = p.getSkuPrefix().trim().toLowerCase().replaceAll("[^a-z0-9_-]", "");
+            return baseSlug + "-ms-" + cleanSku;
+        }
+        return baseSlug;
+    }
+
     @Transactional(readOnly = true)
     public CatalogDtos.ProductResponseDto getProductBySlug(String slug) {
         if (slug == null || slug.isBlank() || slug.trim().matches("^\\d+$")) {
             throw new ResourceNotFoundException(ErrorCode.INVALID_PRODUCT_SLUG);
         }
-        Product product = productRepository.findBySlug(slug.trim())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        String clean = slug.trim().toLowerCase();
+
+        // 1. Thử tìm chính xác theo slug
+        Optional<Product> productOpt = productRepository.findBySlug(clean);
+
+        // 2. Nếu slug có dạng [base-slug]-ms-[sku] (chuẩn IVY moda)
+        if (productOpt.isEmpty() && clean.contains("-ms-")) {
+            int msIdx = clean.lastIndexOf("-ms-");
+            String baseSlug = clean.substring(0, msIdx);
+            String skuPart = clean.substring(msIdx + 4);
+
+            productOpt = productRepository.findBySlug(baseSlug);
+            if (productOpt.isEmpty() && !skuPart.isBlank()) {
+                productOpt = productRepository.findFirstBySkuPrefixIgnoreCase(skuPart);
+            }
+        }
+
+        // 3. Nếu vẫn không thấy, thử tìm theo SKU trực tiếp
+        if (productOpt.isEmpty()) {
+            productOpt = productRepository.findFirstBySkuPrefixIgnoreCase(clean);
+        }
+
+        Product product = productOpt.orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         return toProductDto(product, true);
     }
 
@@ -1261,7 +1293,7 @@ public class CatalogService {
         return CatalogDtos.ProductResponseDto.builder()
                 .id(p.getId())
                 .name(p.getName())
-                .slug(p.getSlug())
+                .slug(buildProductSlug(p))
                 .sku(p.getSkuPrefix())
                 .brand(p.getBrand())
                 .basePrice(p.getBasePrice())

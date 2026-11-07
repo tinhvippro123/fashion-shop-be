@@ -111,7 +111,7 @@ public class OrderService {
             order.addItem(OrderItem.builder()
                     .variant(variant)
                     .productId(product.getId())
-                    .productSlug(product.getSlug())
+                    .productSlug(CatalogService.buildProductSlug(product))
                     .productName(product.getName())
                     .colorName(pc.getColor().getName())
                     .sizeName(variant.getSize().getName())
@@ -376,10 +376,10 @@ public class OrderService {
         }
         if (item.getVariant() != null && item.getVariant().getProductColor() != null
                 && item.getVariant().getProductColor().getProduct() != null) {
-            return item.getVariant().getProductColor().getProduct().getSlug();
+            return CatalogService.buildProductSlug(item.getVariant().getProductColor().getProduct());
         }
         if (item.getProductId() != null) {
-            return productRepository.findById(item.getProductId()).map(Product::getSlug).orElse(null);
+            return productRepository.findById(item.getProductId()).map(CatalogService::buildProductSlug).orElse(null);
         }
         return null;
     }

@@ -11,6 +11,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"category"})
     Optional<Product> findBySlug(String slug);
 
+    @EntityGraph(attributePaths = {"category"})
+    Optional<Product> findFirstBySkuPrefixIgnoreCase(String skuPrefix);
+
     boolean existsBySlug(String slug);
 
     @EntityGraph(attributePaths = {"category"})
