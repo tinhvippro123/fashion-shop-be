@@ -60,7 +60,7 @@ public class StockImportService {
                 .build();
 
         for (AdminDtos.StockImportItemRequest itemReq : request.getItems()) {
-            ProductVariant variant = productVariantRepository.findById(itemReq.getVariantId())
+            ProductVariant variant = productVariantRepository.findByIdForUpdate(itemReq.getVariantId())
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.VARIANT_NOT_FOUND));
 
             // OOP Encapsulation: ProductVariant updates its own stock & weighted-average costPrice
