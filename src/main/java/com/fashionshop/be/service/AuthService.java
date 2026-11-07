@@ -53,11 +53,6 @@ public class AuthService {
         boolean isInCooldown() {
             return Instant.now().isBefore(createdAt.plusSeconds(OTP_RESEND_COOLDOWN_SECONDS));
         }
-
-        long getRemainingCooldownSeconds() {
-            long remaining = createdAt.plusSeconds(OTP_RESEND_COOLDOWN_SECONDS).getEpochSecond() - Instant.now().getEpochSecond();
-            return Math.max(0, remaining);
-        }
     }
 
     // ================= REGISTER & REGISTER OTP =================

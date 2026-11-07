@@ -168,7 +168,6 @@ public class CatalogService {
     private final ProductVariantRepository productVariantRepository;
     private final ReviewRepository reviewRepository;
     private final VoucherRepository voucherRepository;
-    private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final DiscountStrategyFactory discountStrategyFactory;
     private final SecurityUtils securityUtils;
@@ -1114,17 +1113,6 @@ public class CatalogService {
                             .findFirst()
                             .orElseGet(() -> categoryRepository.findAllByOrderByIdAsc().stream().findFirst()
                                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND))));
-        }
-    }
-
-    private Product findProductByIdOrSlug(String idOrSlug) {
-        try {
-            Long id = Long.parseLong(idOrSlug.trim());
-            return productRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
-        } catch (NumberFormatException ignored) {
-            return productRepository.findBySlug(idOrSlug.trim())
-                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         }
     }
 
