@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -102,6 +103,7 @@ public class OrderDtos {
         private String recipientName;
 
         @NotBlank(message = "Số điện thoại người nhận không được để trống")
+        @Pattern(regexp = "^(0|\\+84)[35789]\\d{8}$", message = "Số điện thoại người nhận không hợp lệ (gồm 10 số, bắt đầu bằng 03, 05, 07, 08 hoặc 09)")
         private String recipientPhone;
 
         private String recipientEmail;
