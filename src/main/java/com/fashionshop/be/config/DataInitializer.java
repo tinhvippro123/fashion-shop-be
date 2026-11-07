@@ -32,6 +32,7 @@ import com.fashionshop.be.repository.CategoryRepository;
 import com.fashionshop.be.repository.ColorRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductRepository;
+import com.fashionshop.be.repository.ProductVariantRepository;
 import com.fashionshop.be.repository.ReviewRepository;
 import com.fashionshop.be.repository.SizeRepository;
 import com.fashionshop.be.repository.StockImportRepository;
@@ -49,14 +50,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -112,6 +117,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
     private final ProductRepository productRepository;
+    private final ProductVariantRepository productVariantRepository;
     private final StockImportRepository stockImportRepository;
     private final VoucherRepository voucherRepository;
     private final OrderRepository orderRepository;
@@ -598,6 +604,89 @@ public class DataInitializer implements CommandLineRunner {
             }
         } catch (Exception e) {
             log.warn("Notice in seedProductsFromIvyJson: {}", e.getMessage());
+        }
+
+        // Tạo phiếu nhập kho toàn diện cho tất cả các sản phẩm chưa có chứng từ nhập kho
+        seedStockImportsForAllProductsIfNeeded();
+    }
+
+    private void seedStockImportsForAllProductsIfNeeded() {
+        try {
+            List<Long> importedVariantIds = jdbcTemplate.queryForList(
+                    "SELECT DISTINCT variant_id FROM stock_import_items", Long.class);
+            Set<Long> importedSet = new HashSet<>(importedVariantIds);
+
+            List<ProductVariant> allVariants = productVariantRepository.findAll();
+            List<ProductVariant> unimportedVariants = allVariants.stream()
+                    .filter(v -> !importedSet.contains(v.getId()))
+                    .toList();
+
+            if (unimportedVariants.isEmpty()) {
+                log.info("All product variants already have corresponding stock import receipts.");
+                return;
+            }
+
+            log.info("Found {} product variants without stock import receipts. Creating batch stock import receipts...", unimportedVariants.size());
+
+            String[] suppliers = {
+                    "Xưởng May Thời Trang Cao Cấp Đông Á",
+                    "Công ty Dệt May Sài Gòn LUXE",
+                    "Xưởng May Veston & Dạ Hà Nội",
+                    "Nhà Cung Cấp Phụ Kiện & Thiết Kế LUXE Prime"
+            };
+            String[] notes = {
+                    "Nhập lô hàng thời trang công sở Nữ Thu Đông đợt 1",
+                    "Nhập lô hàng thời trang Nam cao cấp (Polo, Sơ mi, Quần âu)",
+                    "Nhập bộ sưu tập Áo khoác & Đầm thiết kế cao cấp",
+                    "Nhập bổ sung toàn bộ size và màu các mẫu thiết kế mới"
+            };
+
+            int batchSize = (int) Math.ceil((double) unimportedVariants.size() / suppliers.length);
+            for (int i = 0; i < suppliers.length; i++) {
+                int fromIndex = i * batchSize;
+                if (fromIndex >= unimportedVariants.size()) break;
+                int toIndex = Math.min(fromIndex + batchSize, unimportedVariants.size());
+                List<ProductVariant> batch = unimportedVariants.subList(fromIndex, toIndex);
+                if (batch.isEmpty()) continue;
+
+                String code = "NK-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) + "-" + (2001 + i);
+                StockImport receipt = StockImport.builder()
+                        .importCode(code)
+                        .supplierName(suppliers[i])
+                        .note(notes[i])
+                        .createdByEmail("admin@luxe.vn")
+                        .build();
+
+                for (ProductVariant v : batch) {
+                    int qty = v.getStock() > 0 ? v.getStock() : 20;
+                    BigDecimal cost = (v.getCostPrice() != null && v.getCostPrice().compareTo(BigDecimal.ZERO) > 0)
+                            ? v.getCostPrice()
+                            : (v.getPrice() != null && v.getPrice().compareTo(BigDecimal.ZERO) > 0
+                                ? v.getPrice().multiply(new BigDecimal("0.55")).setScale(0, RoundingMode.HALF_UP)
+                                : new BigDecimal("450000"));
+
+                    if (v.getStock() <= 0) {
+                        v.setStock(qty);
+                    }
+                    if (v.getCostPrice() == null || v.getCostPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                        v.setCostPrice(cost);
+                    }
+                    productVariantRepository.save(v);
+
+                    StockImportItem item = StockImportItem.builder()
+                            .variant(v)
+                            .quantity(qty)
+                            .unitCost(cost)
+                            .subtotal(cost.multiply(BigDecimal.valueOf(qty)))
+                            .build();
+                    receipt.addItem(item);
+                }
+
+                stockImportRepository.save(receipt);
+            }
+            log.info("Successfully seeded stock import receipts covering all {} product variants.", unimportedVariants.size());
+        } catch (Exception e) {
+            log.warn("Notice in seedStockImportsForAllProductsIfNeeded: {}", e.getMessage(), e);
         }
     }
 
