@@ -3,11 +3,13 @@ package com.fashionshop.be.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fashionshop.be.domain.entity.User;
+import com.fashionshop.be.domain.entity.UserAddress;
 import com.fashionshop.be.domain.enums.Role;
 import com.fashionshop.be.domain.enums.UserStatus;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ErrorCode;
+import com.fashionshop.be.repository.UserAddressRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +40,7 @@ public class AuthService {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private final UserRepository userRepository;
+    private final UserAddressRepository userAddressRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -119,6 +124,32 @@ public class AuthService {
                 .build();
 
         User saved = userRepository.save(user);
+
+        // Tự động lưu sổ địa chỉ mặc định đầu tiên nếu đăng ký có điền địa chỉ
+        if (request.getProvince() != null && !request.getProvince().isBlank()) {
+            String street = request.getStreetAddress() != null ? request.getStreetAddress().trim() : "";
+            String ward = request.getWard() != null ? request.getWard().trim() : "";
+            String district = request.getDistrict() != null ? request.getDistrict().trim() : "";
+            String province = request.getProvince().trim();
+
+            String fullAddr = Stream.of(street, ward, district, province)
+                    .filter(s -> !s.isBlank())
+                    .collect(Collectors.joining(", "));
+
+            UserAddress address = UserAddress.builder()
+                    .user(saved)
+                    .recipientName(saved.getFullName())
+                    .phone(saved.getPhone() != null && !saved.getPhone().isBlank() ? saved.getPhone() : "0900000000")
+                    .province(province)
+                    .district(district)
+                    .ward(ward)
+                    .streetAddress(street)
+                    .fullAddress(fullAddr.isBlank() ? province : fullAddr)
+                    .isDefault(true)
+                    .build();
+            userAddressRepository.save(address);
+        }
+
         String token = jwtTokenProvider.generateToken(saved);
         return AuthDtos.AuthResponse.builder()
                 .token(token)

@@ -71,6 +71,11 @@ public class AuthDtos {
         @NotBlank(message = "Mật khẩu không được để trống")
         @Size(min = 6, message = "Mật khẩu phải từ 6 ký tự trở lên")
         private String password;
+
+        private String province;
+        private String district;
+        private String ward;
+        private String streetAddress;
     }
 
     @Data
