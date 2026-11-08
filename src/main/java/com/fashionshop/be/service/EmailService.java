@@ -1,5 +1,6 @@
 package com.fashionshop.be.service;
 
+import jakarta.annotation.PreDestroy;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,36 +26,55 @@ public class EmailService {
     @Value("${spring.mail.username:}")
     private String fromEmail;
 
+    private final ExecutorService mailExecutor = Executors.newFixedThreadPool(4, r -> {
+        Thread thread = new Thread(r, "luxe-mail-sender");
+        thread.setDaemon(true);
+        return thread;
+    });
+
+    @PreDestroy
+    public void shutdown() {
+        mailExecutor.shutdown();
+    }
+
+    public boolean isSmtpConfigured() {
+        return mailSender != null && fromEmail != null && !fromEmail.isBlank();
+    }
+
     /**
-     * Gửi email OTP xác thực cho Đăng ký hoặc Quên mật khẩu.
-     * @return true nếu gửi SMTP thật thành công, false nếu chạy chế độ fallback/mô phỏng.
+     * Gửi email OTP xác thực cho Đăng ký hoặc Quên mật khẩu bất đồng bộ (non-blocking).
+     * Phản hồi ngay lập tức cho client mà không bắt người dùng phải đợi SMTP handshake 3-5s.
+     * @return true nếu hệ thống SMTP đã cấu hình sẵn sàng gửi ngầm, false nếu chạy chế độ fallback/mô phỏng.
      */
     public boolean sendOtpEmail(String toEmail, String otpCode, String actionTitle, String actionDesc) {
-        log.info("[LUXE EMAIL OTP] Mã xác thực {} cho {} là: {}", actionTitle, toEmail, otpCode);
+        log.info("[LUXE EMAIL OTP] Đã phát sinh mã {} cho {} là: {}", actionTitle, toEmail, otpCode);
 
-        if (mailSender == null || fromEmail == null || fromEmail.isBlank()) {
+        if (!isSmtpConfigured()) {
             log.warn("[LUXE EMAIL] Chưa cấu hình spring.mail.username, chạy chế độ mô phỏng OTP");
             return false;
         }
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        // Bất đồng bộ: Đẩy công việc gửi SMTP vào background thread pool, giải phóng ngay luồng HTTP
+        CompletableFuture.runAsync(() -> {
+            try {
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            helper.setFrom(new InternetAddress(fromEmail, "LUXE Fashion"));
-            helper.setTo(toEmail);
-            helper.setSubject("[LUXE Fashion] " + actionTitle + " - Mã OTP: " + otpCode);
+                helper.setFrom(new InternetAddress(fromEmail, "LUXE Fashion"));
+                helper.setTo(toEmail);
+                helper.setSubject("[LUXE Fashion] " + actionTitle + " - Mã OTP: " + otpCode);
 
-            String htmlContent = buildOtpHtmlContent(toEmail, otpCode, actionTitle, actionDesc);
-            helper.setText(htmlContent, true);
+                String htmlContent = buildOtpHtmlContent(toEmail, otpCode, actionTitle, actionDesc);
+                helper.setText(htmlContent, true);
 
-            mailSender.send(message);
-            log.info("[LUXE EMAIL] Đã gửi email OTP thành công tới: {}", toEmail);
-            return true;
-        } catch (Exception e) {
-            log.error("[LUXE EMAIL] Lỗi khi gửi email thật qua SMTP: {}. Hệ thống tiếp tục với mã OTP fallback.", e.getMessage());
-            return false;
-        }
+                mailSender.send(message);
+                log.info("[LUXE EMAIL] Đã gửi email OTP thành công tới: {}", toEmail);
+            } catch (Exception e) {
+                log.error("[LUXE EMAIL] Lỗi khi gửi email thật qua SMTP tới {}: {}", toEmail, e.getMessage());
+            }
+        }, mailExecutor);
+
+        return true;
     }
 
     private String buildOtpHtmlContent(String toEmail, String otpCode, String actionTitle, String actionDesc) {
