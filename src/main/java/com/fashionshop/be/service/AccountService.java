@@ -1,5 +1,6 @@
 package com.fashionshop.be.service;
 
+import com.fashionshop.be.domain.entity.Order;
 import com.fashionshop.be.domain.entity.Product;
 import com.fashionshop.be.domain.entity.User;
 import com.fashionshop.be.domain.entity.UserAddress;
@@ -9,6 +10,7 @@ import com.fashionshop.be.dto.CatalogDtos;
 import com.fashionshop.be.exception.BusinessException;
 import com.fashionshop.be.exception.ErrorCode;
 import com.fashionshop.be.exception.ResourceNotFoundException;
+import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.UserAddressRepository;
 import com.fashionshop.be.repository.UserRepository;
@@ -29,6 +31,7 @@ public class AccountService {
     private final SecurityUtils securityUtils;
     private final UserRepository userRepository;
     private final UserAddressRepository userAddressRepository;
+    private final OrderRepository orderRepository;
     private final WishlistRepository wishlistRepository;
     private final ProductRepository productRepository;
     private final CatalogService catalogService;
@@ -69,11 +72,43 @@ public class AccountService {
         userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<AuthDtos.AddressDto> getMyAddresses() {
         User user = securityUtils.getCurrentUserRequired();
-        return userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId())
-                .stream()
+        List<UserAddress> addresses = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+        if (addresses.isEmpty()) {
+            List<Order> userOrders = orderRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
+            for (Order o : userOrders) {
+                if (o.getShippingAddress() != null && !o.getShippingAddress().isBlank()) {
+                    String norm = AddressUtils.normalize(o.getShippingAddress());
+                    boolean already = addresses.stream().anyMatch(a -> a.getFullAddress() != null && AddressUtils.normalize(a.getFullAddress()).equals(norm));
+                    if (!already) {
+                        AddressUtils.ParsedAddress parsed = AddressUtils.parseAddress(o.getShippingAddress());
+                        String recipientName = o.getRecipientName() != null && !o.getRecipientName().isBlank() ? o.getRecipientName().trim() : user.getFullName();
+                        String phone = o.getRecipientPhone() != null && !o.getRecipientPhone().isBlank() ? o.getRecipientPhone().trim() : (user.getPhone() != null ? user.getPhone() : "0900000000");
+
+                        UserAddress newAddr = UserAddress.builder()
+                                .user(user)
+                                .recipientName(recipientName)
+                                .phone(phone)
+                                .province(parsed.getProvince())
+                                .district(parsed.getDistrict())
+                                .ward(parsed.getWard())
+                                .streetAddress(parsed.getStreetAddress())
+                                .fullAddress(parsed.getFullAddress())
+                                .isDefault(addresses.isEmpty())
+                                .build();
+                        addresses.add(userAddressRepository.save(newAddr));
+
+                        if ((user.getPhone() == null || user.getPhone().isBlank()) && !phone.isBlank()) {
+                            user.setPhone(phone);
+                            userRepository.save(user);
+                        }
+                    }
+                }
+            }
+        }
+        return addresses.stream()
                 .map(this::toAddressDto)
                 .toList();
     }

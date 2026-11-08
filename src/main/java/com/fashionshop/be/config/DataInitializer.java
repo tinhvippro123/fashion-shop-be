@@ -40,6 +40,7 @@ import com.fashionshop.be.repository.UserAddressRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
 import com.fashionshop.be.repository.WishlistRepository;
+import com.fashionshop.be.service.AddressUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -608,6 +609,78 @@ public class DataInitializer implements CommandLineRunner {
 
         // Tạo phiếu nhập kho toàn diện cho tất cả các sản phẩm chưa có chứng từ nhập kho
         seedStockImportsForAllProductsIfNeeded();
+
+        // Đồng bộ tự động các địa chỉ từ đơn hàng vào sổ địa chỉ người dùng nếu chưa có
+        syncAddressesFromOrders();
+    }
+
+    private void syncAddressesFromOrders() {
+        try {
+            List<Order> orders = orderRepository.findAll();
+            int count = 0;
+            for (Order order : orders) {
+                User user = order.getUser();
+                if (user == null && order.getRecipientEmail() != null && !order.getRecipientEmail().isBlank()) {
+                    user = userRepository.findByEmailIgnoreCase(order.getRecipientEmail().trim()).orElse(null);
+                    if (user != null) {
+                        order.setUser(user);
+                        orderRepository.save(order);
+                    }
+                }
+                if (user == null) {
+                    continue;
+                }
+
+                String shippingAddr = order.getShippingAddress();
+                if (shippingAddr == null || shippingAddr.isBlank()) {
+                    continue;
+                }
+
+                List<UserAddress> existingAddresses = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+                String normalizedTarget = AddressUtils.normalize(shippingAddr);
+
+                boolean alreadyExists = existingAddresses.stream().anyMatch(a ->
+                        a.getFullAddress() != null && AddressUtils.normalize(a.getFullAddress()).equals(normalizedTarget)
+                );
+
+                if (!alreadyExists) {
+                    AddressUtils.ParsedAddress parsed = AddressUtils.parseAddress(shippingAddr);
+                    String recipientName = (order.getRecipientName() != null && !order.getRecipientName().isBlank())
+                            ? order.getRecipientName().trim()
+                            : (user.getFullName() != null && !user.getFullName().isBlank() ? user.getFullName() : "Khách hàng");
+                    String phone = (order.getRecipientPhone() != null && !order.getRecipientPhone().isBlank())
+                            ? order.getRecipientPhone().trim()
+                            : (user.getPhone() != null && !user.getPhone().isBlank() ? user.getPhone() : "0900000000");
+
+                    boolean isDefault = existingAddresses.isEmpty();
+                    UserAddress newAddress = UserAddress.builder()
+                            .user(user)
+                            .recipientName(recipientName)
+                            .phone(phone)
+                            .province(parsed.getProvince())
+                            .district(parsed.getDistrict())
+                            .ward(parsed.getWard())
+                            .streetAddress(parsed.getStreetAddress())
+                            .fullAddress(parsed.getFullAddress())
+                            .isDefault(isDefault)
+                            .build();
+
+                    userAddressRepository.save(newAddress);
+                    count++;
+                    log.info("Synced address from order {} for user {}: {}", order.getOrderCode(), user.getEmail(), parsed.getFullAddress());
+
+                    if ((user.getPhone() == null || user.getPhone().isBlank()) && !phone.isBlank()) {
+                        user.setPhone(phone);
+                        userRepository.save(user);
+                    }
+                }
+            }
+            if (count > 0) {
+                log.info("Finished syncing {} addresses from orders into user address books.", count);
+            }
+        } catch (Exception e) {
+            log.warn("Notice in syncAddressesFromOrders: {}", e.getMessage(), e);
+        }
     }
 
     private void seedStockImportsForAllProductsIfNeeded() {

@@ -6,6 +6,7 @@ import com.fashionshop.be.domain.entity.Product;
 import com.fashionshop.be.domain.entity.ProductColor;
 import com.fashionshop.be.domain.entity.ProductVariant;
 import com.fashionshop.be.domain.entity.User;
+import com.fashionshop.be.domain.entity.UserAddress;
 import com.fashionshop.be.domain.entity.Voucher;
 import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.domain.enums.PaymentMethod;
@@ -21,6 +22,7 @@ import com.fashionshop.be.repository.CartRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
+import com.fashionshop.be.repository.UserAddressRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
 import com.fashionshop.be.security.SecurityUtils;
@@ -50,6 +52,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final UserAddressRepository userAddressRepository;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -67,6 +70,11 @@ public class OrderService {
         if (currentUser != null && (currentUser.getPhone() == null || currentUser.getPhone().isBlank()) && !recipientPhone.isBlank()) {
             currentUser.setPhone(recipientPhone);
             userRepository.save(currentUser);
+        }
+
+        // Tự động lưu địa chỉ giao hàng vào sổ địa chỉ nếu tài khoản chưa có địa chỉ này
+        if (currentUser != null && request.getShippingAddress() != null && !request.getShippingAddress().isBlank()) {
+            saveShippingAddressToUserBookIfNotExists(currentUser, request.getRecipientName(), recipientPhone, request.getShippingAddress());
         }
 
         Order order = Order.builder()
@@ -378,6 +386,31 @@ public class OrderService {
                         .code("LX" + String.format("%06d", order.getId() == null ? 1 : order.getId()))
                         .build())
                 .build();
+    }
+
+    private void saveShippingAddressToUserBookIfNotExists(User user, String recipientName, String phone, String shippingAddress) {
+        try {
+            List<UserAddress> existing = userAddressRepository.findByUserIdOrderByIsDefaultDescIdDesc(user.getId());
+            String normalizedTarget = AddressUtils.normalize(shippingAddress);
+            boolean exists = existing.stream().anyMatch(a ->
+                    a.getFullAddress() != null && AddressUtils.normalize(a.getFullAddress()).equals(normalizedTarget)
+            );
+            if (!exists) {
+                AddressUtils.ParsedAddress parsed = AddressUtils.parseAddress(shippingAddress);
+                UserAddress newAddr = UserAddress.builder()
+                        .user(user)
+                        .recipientName(recipientName != null && !recipientName.isBlank() ? recipientName.trim() : user.getFullName())
+                        .phone(phone != null && !phone.isBlank() ? phone.trim() : (user.getPhone() != null ? user.getPhone() : "0900000000"))
+                        .province(parsed.getProvince())
+                        .district(parsed.getDistrict())
+                        .ward(parsed.getWard())
+                        .streetAddress(parsed.getStreetAddress())
+                        .fullAddress(parsed.getFullAddress())
+                        .isDefault(existing.isEmpty())
+                        .build();
+                userAddressRepository.save(newAddr);
+            }
+        } catch (Exception ignored) {}
     }
 
     private String resolveProductSlug(OrderItem item) {
