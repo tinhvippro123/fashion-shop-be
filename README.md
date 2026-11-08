@@ -1,6 +1,6 @@
 # Fashion Shop Backend (`fashion-be`) — Đồ án Phát triển Phần mềm Hướng Đối Tượng
 
-Backend RESTful API xây dựng bằng **Java 17**, **Spring Boot 4**, **Gradle**, **Spring Data JPA**, **Spring Security (JWT)** cho đề tài **Website Quản lý Bán Quần Áo**.
+Backend RESTful API xây dựng bằng **Java 21 LTS**, **Spring Boot 4**, **Gradle**, **Spring Data JPA**, **Spring Security (JWT)** cho đề tài **Website Quản lý Bán Quần Áo**.
 
 ## 1. Điểm nhấn Thiết kế Hướng Đối Tượng (OOP & Design Patterns)
 
