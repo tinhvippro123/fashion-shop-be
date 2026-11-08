@@ -9,8 +9,11 @@ version = '0.0.1-SNAPSHOT'
 description = 'Website Quan Ly Ban Quan Ao - Do An PTPM Huong Doi Tuong'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
