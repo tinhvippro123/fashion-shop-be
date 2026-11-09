@@ -1286,7 +1286,9 @@ public class CatalogService {
 
             String primaryImg = imgs.isEmpty() ? null : imgs.get(0).getImageUrl();
 
-            List<CatalogDtos.VariantDto> variants = pc.getVariants().stream().map(v -> {
+            List<CatalogDtos.VariantDto> variants = pc.getVariants().stream()
+                    .sorted(Comparator.comparingInt(v -> v.getSize() != null && v.getSize().getSortOrder() > 0 ? v.getSize().getSortOrder() : 999))
+                    .map(v -> {
                 sizeNames.add(v.getSize().getName());
                 if (includeAdminPayload) {
                     Map<String, String> optMap = new LinkedHashMap<>();
