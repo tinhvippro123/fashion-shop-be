@@ -50,8 +50,15 @@ public class EmailService {
         log.info("[LUXE EMAIL OTP] Đã phát sinh mã {} cho {} là: {}", actionTitle, toEmail, otpCode);
 
         if (!isSmtpConfigured()) {
-            log.warn("[LUXE EMAIL] Chưa cấu hình spring.mail.username, chạy chế độ mô phỏng OTP");
+            log.info("[LUXE EMAIL] Chưa cấu hình spring.mail.username hoặc đang chạy TEST, mô phỏng phát sinh OTP: {}", otpCode);
             return false;
+        }
+
+        // Bỏ qua gửi SMTP thực tế cho các email test nội bộ (ví dụ: newmember@luxe.vn) để tránh lỗi Mail Delivery Subsystem
+        String lowerEmail = toEmail != null ? toEmail.trim().toLowerCase() : "";
+        if (lowerEmail.endsWith("@luxe.vn") || lowerEmail.endsWith("@example.com") || lowerEmail.endsWith("@test.com")) {
+            log.info("[LUXE EMAIL] Bỏ qua gửi SMTP thực tế cho domain test nội bộ: {}", toEmail);
+            return true;
         }
 
         // Bất đồng bộ: Đẩy công việc gửi SMTP vào background thread pool, giải phóng ngay luồng HTTP
