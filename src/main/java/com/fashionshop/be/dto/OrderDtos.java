@@ -1,5 +1,6 @@
 package com.fashionshop.be.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -139,7 +140,14 @@ public class OrderDtos {
         private BigDecimal costPrice;
         private int quantity;
         private BigDecimal totalPrice;
+
+        @JsonProperty("isReviewed")
         private boolean isReviewed;
+
+        @JsonProperty("reviewed")
+        public boolean isReviewedField() {
+            return isReviewed;
+        }
     }
 
     @Data
