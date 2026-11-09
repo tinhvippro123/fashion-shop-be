@@ -209,6 +209,16 @@ public class AddressSyncTest {
                 }
             }
             System.out.println("SUCCESSFULLY SYNCED " + insertedCount + " ADDRESSES DIRECTLY INTO FASHIONDB FILE DATABASE!");
+
+            // 3. Xóa đơn hàng chưa thanh toán ORD-261109-9981 tạo nhầm khi đóng popup
+            try (java.sql.PreparedStatement delItems = conn.prepareStatement(
+                    "DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE order_code = 'ORD-261109-9981')");
+                 java.sql.PreparedStatement delOrder = conn.prepareStatement(
+                    "DELETE FROM orders WHERE order_code = 'ORD-261109-9981'")) {
+                int itemsDeleted = delItems.executeUpdate();
+                int ordersDeleted = delOrder.executeUpdate();
+                System.out.println("Cleaned up orphaned test order ORD-261109-9981: deleted " + itemsDeleted + " items, " + ordersDeleted + " orders.");
+            }
         } catch (Exception e) {
             System.out.println("Notice in syncActualFileDatabaseDirectly: " + e.getMessage());
         }
