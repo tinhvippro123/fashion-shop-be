@@ -385,12 +385,17 @@ public class OrderService {
             cancelledAt = SlugUtils.formatDateTime(order.getUpdatedAt() != null ? order.getUpdatedAt() : order.getCreatedAt());
         }
 
+        String resolvedEmail = order.getRecipientEmail();
+        if (resolvedEmail == null && order.getUser() != null) {
+            resolvedEmail = order.getUser().getEmail();
+        }
+
         return OrderDtos.OrderResponseDto.builder()
                 .id(order.getOrderCode())
                 .numericId(order.getId())
                 .orderCode(order.getOrderCode())
                 .customerName(order.getRecipientName())
-                .customerEmail(order.getRecipientEmail() == null ? "khachhang@luxe.vn" : order.getRecipientEmail())
+                .customerEmail(resolvedEmail)
                 .customerPhone(order.getRecipientPhone())
                 .date(SlugUtils.formatDate(order.getCreatedAt()))
                 .createdAt(SlugUtils.formatDateTime(order.getCreatedAt()))
@@ -418,7 +423,7 @@ public class OrderService {
                         .id(order.getUser() == null ? null : String.valueOf(order.getUser().getId()))
                         .name(order.getRecipientName())
                         .type(order.getUser() == null ? "Khách vãng lai" : "Thành viên LUXE")
-                        .email(order.getRecipientEmail() == null ? "—" : order.getRecipientEmail())
+                        .email(resolvedEmail == null ? "—" : resolvedEmail)
                         .phone(order.getRecipientPhone())
                         .build())
                 .shipping(OrderDtos.ShippingInfoDto.builder()
