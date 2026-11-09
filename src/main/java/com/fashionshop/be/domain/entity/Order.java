@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +95,18 @@ public class Order extends BaseEntity {
     @Column(name = "cancel_reason", columnDefinition = "TEXT")
     private String cancelReason;
 
+    @Column(name = "confirmed_at")
+    private LocalDateTime confirmedAt;
+
+    @Column(name = "shipping_at")
+    private LocalDateTime shippingAt;
+
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
+
+    @Column(name = "cancelled_at")
+    private LocalDateTime cancelledAt;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @Builder.Default
@@ -120,13 +133,25 @@ public class Order extends BaseEntity {
             throw new BusinessException(ErrorCode.ORDER_STATUS_INVALID);
         }
         this.status = nextStatus;
-        if (nextStatus == OrderStatus.PROCESSING && (this.paymentMethod == PaymentMethod.BANK_TRANSFER || this.paymentMethod == PaymentMethod.VNPAY)) {
-            this.paymentStatus = PaymentStatus.PAID;
+        LocalDateTime now = LocalDateTime.now();
+        if (nextStatus == OrderStatus.PROCESSING) {
+            if (this.confirmedAt == null) this.confirmedAt = now;
+            if (this.paymentMethod == PaymentMethod.BANK_TRANSFER || this.paymentMethod == PaymentMethod.VNPAY) {
+                this.paymentStatus = PaymentStatus.PAID;
+            }
+        }
+        if (nextStatus == OrderStatus.SHIPPING) {
+            if (this.confirmedAt == null) this.confirmedAt = this.getCreatedAt() != null ? this.getCreatedAt() : now;
+            if (this.shippingAt == null) this.shippingAt = now;
         }
         if (nextStatus == OrderStatus.COMPLETED) {
+            if (this.confirmedAt == null) this.confirmedAt = this.getCreatedAt() != null ? this.getCreatedAt() : now;
+            if (this.shippingAt == null) this.shippingAt = now;
+            if (this.completedAt == null) this.completedAt = now;
             this.paymentStatus = PaymentStatus.PAID;
         }
         if (nextStatus == OrderStatus.CANCELLED) {
+            if (this.cancelledAt == null) this.cancelledAt = now;
             this.cancelReason = (reason == null || reason.isBlank()) ? "Hủy đơn hàng" : reason;
             if (this.paymentStatus == PaymentStatus.PAID) {
                 this.paymentStatus = PaymentStatus.REFUNDED;

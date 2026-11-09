@@ -365,6 +365,26 @@ public class OrderService {
                         .build())
                         : List.of();
 
+        String confirmedAt = order.getConfirmedAt() != null ? SlugUtils.formatDateTime(order.getConfirmedAt()) : null;
+        String shippingAt = order.getShippingAt() != null ? SlugUtils.formatDateTime(order.getShippingAt()) : null;
+        String completedAt = order.getCompletedAt() != null ? SlugUtils.formatDateTime(order.getCompletedAt()) : null;
+        String cancelledAt = order.getCancelledAt() != null ? SlugUtils.formatDateTime(order.getCancelledAt()) : null;
+
+        if (confirmedAt == null && (order.getStatus() == OrderStatus.PROCESSING || order.getStatus() == OrderStatus.SHIPPING || order.getStatus() == OrderStatus.COMPLETED)) {
+            confirmedAt = (order.getStatus() == OrderStatus.PROCESSING && order.getUpdatedAt() != null)
+                    ? SlugUtils.formatDateTime(order.getUpdatedAt())
+                    : SlugUtils.formatDateTime(order.getCreatedAt());
+        }
+        if (shippingAt == null && (order.getStatus() == OrderStatus.SHIPPING || order.getStatus() == OrderStatus.COMPLETED)) {
+            shippingAt = SlugUtils.formatDateTime(order.getUpdatedAt() != null ? order.getUpdatedAt() : order.getCreatedAt());
+        }
+        if (completedAt == null && order.getStatus() == OrderStatus.COMPLETED) {
+            completedAt = SlugUtils.formatDateTime(order.getUpdatedAt() != null ? order.getUpdatedAt() : order.getCreatedAt());
+        }
+        if (cancelledAt == null && order.getStatus() == OrderStatus.CANCELLED) {
+            cancelledAt = SlugUtils.formatDateTime(order.getUpdatedAt() != null ? order.getUpdatedAt() : order.getCreatedAt());
+        }
+
         return OrderDtos.OrderResponseDto.builder()
                 .id(order.getOrderCode())
                 .numericId(order.getId())
@@ -375,6 +395,10 @@ public class OrderService {
                 .date(SlugUtils.formatDate(order.getCreatedAt()))
                 .createdAt(SlugUtils.formatDateTime(order.getCreatedAt()))
                 .updatedAt(order.getUpdatedAt() != null ? SlugUtils.formatDateTime(order.getUpdatedAt()) : SlugUtils.formatDateTime(order.getCreatedAt()))
+                .confirmedAt(confirmedAt)
+                .shippingAt(shippingAt)
+                .completedAt(completedAt)
+                .cancelledAt(cancelledAt)
                 .status(order.getStatus().name())
                 .paymentStatus(order.getPaymentStatus().name())
                 .paymentMethod(order.getPaymentMethod().name())

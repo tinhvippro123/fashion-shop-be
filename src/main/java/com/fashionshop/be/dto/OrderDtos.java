@@ -197,6 +197,10 @@ public class OrderDtos {
         private String date;
         private String createdAt;
         private String updatedAt;
+        private String confirmedAt;
+        private String shippingAt;
+        private String completedAt;
+        private String cancelledAt;
         private String status;
         private String paymentStatus;
         private String paymentMethod;
