@@ -53,6 +53,7 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final UserAddressRepository userAddressRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -272,7 +273,13 @@ public class OrderService {
                         });
             }
         }
-        return toOrderDto(orderRepository.save(order));
+        Order saved = orderRepository.save(order);
+        try {
+            notificationService.createOrderNotification(saved, targetStatus);
+        } catch (Exception ex) {
+            // Keep transition successful even if notification fails
+        }
+        return toOrderDto(saved);
     }
 
     public Order resolveOrder(String idOrCode) {
