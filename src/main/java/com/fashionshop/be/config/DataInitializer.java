@@ -69,49 +69,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private static final List<String> CLEAN_WEBP_IMAGES = List.of(
-            "03321697-61dc-4f30-8da7-d25085a78741.webp",
-            "0b6e2df0-0401-4eb0-a440-1cbf06651b8d.webp",
-            "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp",
-            "13dddff3-1a53-4b41-8b70-7c0b2ff37345.webp",
-            "4c6dfad6-5fac-4bf0-a37e-11af96fb7191.webp",
-            "501350eb-e04b-4abb-b6cf-58b1cb78373d.webp",
-            "837d3faa-4a85-4c73-9e48-94464f727606.webp",
-            "82dbe045-9c96-4a78-b5fa-d69d30a1c16d.webp",
-            "198b0924-f7c8-463c-9459-97caf17e0e80.webp",
-            "1a273f13-e42b-4f39-a194-69123e2ad90e.webp",
-            "2525fd0c-9394-410f-8bb0-8842184d6b60.webp",
-            "273101e9-e223-4071-a410-5978071e1617.webp",
-            "28b592b1-1c56-46a4-ab6c-3715c5f17fc4.webp",
-            "2f287da2-2ced-4613-b9e8-7d95fe92f718.webp",
-            "3142ae83-5757-43df-a666-da0566f44f25.webp",
-            "3a33de02-d052-4e00-a0b5-a0df121d4209.webp",
-            "3b6096f2-377c-4e81-a4ce-ce42be1690c4.webp",
-            "3ceebb27-34c3-4550-b1d9-059cf8a751d3.webp",
-            "3ec1f27b-051c-4848-b60f-e9426f53fdd3.webp",
-            "3ff1def3-4a16-4711-ab2d-1404932720fc.webp",
-            "41a8ee0e-1b6c-485a-929e-a3e09cdb1601.webp",
-            "4df71260-f448-4ad5-acb4-c4602e8ea85c.webp",
-            "4874cfa4-0d43-4455-a51b-a02f0d2b6505.webp",
-            "48da95ec-5eb0-44ac-9845-d33d4c9c4cef.webp",
-            "4f6a834a-c2a0-4783-9fd7-d124f25f4a88.webp",
-            "502977aa-82e1-4697-919e-a2321b8a461e.webp",
-            "566d6e59-052f-4745-abca-ce0a8f3ec970.webp",
-            "60999c15-57aa-49be-9d92-a9c87cac20eb.webp",
-            "631f63ec-1a0d-445a-bd29-b3b10427d726.webp",
-            "66ec2e51-c749-4692-8d81-2fd1245ed298.webp",
-            "677203a0-73b9-4d5d-8930-f528428c631b.webp",
-            "6790a4ca-8a83-43be-b19f-026488664b53.webp",
-            "684cdd93-350c-46a5-aff4-c30b6f0f0a83.webp",
-            "6fc16a01-2f75-4b39-952f-e15db7883ed6.webp",
-            "7041a9db-a348-4a9b-87aa-94db388766d4.webp",
-            "7259b73a-2a9d-42c2-87f8-80d3e5e95d0f.webp",
-            "8ca0fa01-3f9c-4d9e-ad52-4e4559f99695.webp",
-            "8ff32ffa-bb3a-42fc-97bc-b15d94196fdb.webp",
-            "9d02a2ea-f290-4ad6-b232-0d701ac8429a.webp",
-            "9d4de7a2-cee8-429d-996f-3f3ad504115a.webp"
-    );
-
     private final UserRepository userRepository;
     private final UserAddressRepository userAddressRepository;
     private final CategoryRepository categoryRepository;
@@ -514,33 +471,18 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         try {
-            jdbcTemplate.query(
-                    "SELECT id, image_url FROM product_images ORDER BY id ASC",
-                    rs -> {
-                        long id = rs.getLong("id");
-                        String url = rs.getString("image_url");
-                        if (isLegacyNonWebpUpload(url)) {
-                            int idx = (int) (Math.abs(id - 1) % CLEAN_WEBP_IMAGES.size());
-                            jdbcTemplate.update("UPDATE product_images SET image_url = ? WHERE id = ?",
-                                    CLEAN_WEBP_IMAGES.get(idx), id);
-                        }
-                    }
-            );
-
-            jdbcTemplate.query(
-                    "SELECT id, image_url FROM order_items ORDER BY id ASC",
-                    rs -> {
-                        long id = rs.getLong("id");
-                        String url = rs.getString("image_url");
-                        if (isLegacyNonWebpUpload(url)) {
-                            int idx = (int) (Math.abs(id - 1) % CLEAN_WEBP_IMAGES.size());
-                            jdbcTemplate.update("UPDATE order_items SET image_url = ? WHERE id = ?",
-                                    CLEAN_WEBP_IMAGES.get(idx), id);
-                        }
-                    }
+            jdbcTemplate.update("DELETE FROM product_images WHERE image_url NOT LIKE 'products/%' AND image_url NOT LIKE '/uploads/%' AND (image_url LIKE '%.webp' OR image_url LIKE '%-%-%-%-%.webp')");
+            jdbcTemplate.update(
+                    "UPDATE order_items oi SET image_url = (" +
+                    "  SELECT pi.image_url FROM product_images pi " +
+                    "  JOIN product_colors pc ON pc.id = pi.product_color_id " +
+                    "  JOIN product_variants pv ON pv.product_color_id = pc.id " +
+                    "  WHERE pv.id = oi.variant_id " +
+                    "  ORDER BY pi.display_order ASC LIMIT 1" +
+                    ") WHERE oi.image_url LIKE '%.webp' AND oi.image_url NOT LIKE 'products/%' AND oi.image_url NOT LIKE '/uploads/%'"
             );
         } catch (Exception e) {
-            log.warn("Notice in webp image cleanup: {}", e.getMessage());
+            log.warn("Notice in image cleanup: {}", e.getMessage());
         }
 
         // Dọn dẹp an toàn size M2 và L2: gộp tồn kho biến thể M2 -> M, L2 -> L và xóa size M2, L2
@@ -837,7 +779,8 @@ public class DataInitializer implements CommandLineRunner {
                 JsonNode colorsNode = pNode.path("colors");
                 if (colorsNode.isArray()) {
                     for (JsonNode cNode : colorsNode) {
-                        String colorName = cNode.path("name").asText("Mặc định").trim();
+                        String rawColor = cNode.path("name").asText("Mặc định").trim();
+                        final String colorName = rawColor.endsWith(".") ? rawColor.substring(0, rawColor.length() - 1).trim() : rawColor;
                         JsonNode imagesNode = cNode.path("images");
                         if (!imagesNode.isArray() || imagesNode.isEmpty()) continue;
 
@@ -848,20 +791,15 @@ public class DataInitializer implements CommandLineRunner {
                                 Long.class, productId, colorName, colorName + "%");
                         if (pcIds.isEmpty()) continue;
 
-                        Long pcId = pcIds.get(0);
-                        List<String> existingUrls = new ArrayList<>(jdbcTemplate.queryForList(
-                                "SELECT image_url FROM product_images WHERE product_color_id = ?",
-                                String.class, pcId));
-
-                        int sortOrder = existingUrls.size();
-                        for (JsonNode imgNode : imagesNode) {
-                            String imgUrl = imgNode.asText();
-                            if (!existingUrls.contains(imgUrl)) {
+                        for (Long pcId : pcIds) {
+                            jdbcTemplate.update("DELETE FROM product_images WHERE product_color_id = ?", pcId);
+                            int sortOrder = 0;
+                            for (JsonNode imgNode : imagesNode) {
+                                String imgUrl = imgNode.asText();
                                 jdbcTemplate.update(
                                         "INSERT INTO product_images (product_color_id, image_url, display_order, created_at, updated_at) " +
                                         "VALUES (?, ?, ?, NOW(), NOW())",
                                         pcId, imgUrl, sortOrder++);
-                                existingUrls.add(imgUrl);
                             }
                         }
                     }
@@ -990,17 +928,6 @@ public class DataInitializer implements CommandLineRunner {
             log.error("Failed to seed LUXE products from json", e);
             return List.of();
         }
-    }
-
-    private boolean isLegacyNonWebpUpload(String url) {
-        if (url == null || url.isBlank()) {
-            return false;
-        }
-        String lower = url.trim().toLowerCase(Locale.ROOT);
-        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("products/")) {
-            return false;
-        }
-        return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
     }
 
     private void seedHistoricalOrder(
