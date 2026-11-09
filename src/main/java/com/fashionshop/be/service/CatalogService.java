@@ -474,7 +474,7 @@ public class CatalogService {
         // 1. Thử tìm chính xác theo slug
         Optional<Product> productOpt = productRepository.findBySlug(clean);
 
-        // 2. Nếu slug có dạng [base-slug]-ms-[sku] (chuẩn IVY moda)
+        // 2. Nếu slug có dạng [base-slug]-ms-[sku] (chuẩn định dạng mã sản phẩm)
         if (productOpt.isEmpty() && clean.contains("-ms-")) {
             int msIdx = clean.lastIndexOf("-ms-");
             String baseSlug = clean.substring(0, msIdx);

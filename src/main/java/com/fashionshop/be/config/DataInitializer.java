@@ -207,7 +207,7 @@ public class DataInitializer implements CommandLineRunner {
                 .isDefault(true)
                 .build());
 
-        // 2. Seed Categories (Hierarchy 3 Cấp: Root (Nam/Nữ) -> Level 2 (Áo, Quần, Đầm, Chân váy) -> Level 3 (Chi tiết theo IVY moda))
+        // 2. Seed Categories (Hierarchy 3 Cấp: Root (Nam/Nữ) -> Level 2 (Áo, Quần, Đầm, Chân váy) -> Level 3 (Chi tiết theo LUXE))
         // --- LEVEL 1: ROOT ---
         Category catNu = categoryRepository.save(Category.builder()
                 .name("Thời trang Nữ")
@@ -285,7 +285,7 @@ public class DataInitializer implements CommandLineRunner {
         Size sXL = sizeRepository.save(Size.builder().name("XL").sortOrder(4).build());
         List<Size> standardSizes = List.of(sS, sM, sL, sXL);
 
-        // 4. Seed 41 Realistic Fashion Products across 12 Subcategories from IVY moda
+        // 4. Seed 41 Realistic Fashion Products across 12 Subcategories for LUXE Catalog
         Map<String, Category> catMap = Map.ofEntries(
                 Map.entry("ao-so-mi-nu", catSoMiNu),
                 Map.entry("ao-khoac-nu", catKhoacNu),
@@ -461,7 +461,7 @@ public class DataInitializer implements CommandLineRunner {
         bannerRepository.save(Banner.builder()
                 .title("ĐẦM")
                 .subtitle("BST Đầm thanh lịch, sang trọng")
-                .imageUrl("/uploads/ivy/002eab5bd95091694139ae9e8f046007.webp")
+                .imageUrl("/uploads/products/002eab5bd95091694139ae9e8f046007.webp")
                 .targetUrl("/danh-muc/dam-nu")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(1)
@@ -471,7 +471,7 @@ public class DataInitializer implements CommandLineRunner {
         bannerRepository.save(Banner.builder()
                 .title("ÁO NỮ")
                 .subtitle("Sơ mi & áo kiểu nữ tính, hiện đại")
-                .imageUrl("/uploads/ivy/f4a49449c18a61d9d49c0f976bc56606.webp")
+                .imageUrl("/uploads/products/f4a49449c18a61d9d49c0f976bc56606.webp")
                 .targetUrl("/danh-muc/ao-nu")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(2)
@@ -481,7 +481,7 @@ public class DataInitializer implements CommandLineRunner {
         bannerRepository.save(Banner.builder()
                 .title("ÁO NAM")
                 .subtitle("Polo, sơ mi chuẩn phom lịch lãm")
-                .imageUrl("/uploads/ivy/9278e16772c52fe0c41b035b775a2f9c.jpg")
+                .imageUrl("/uploads/products/9278e16772c52fe0c41b035b775a2f9c.jpg")
                 .targetUrl("/danh-muc/ao-nam")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(3)
@@ -491,7 +491,7 @@ public class DataInitializer implements CommandLineRunner {
         bannerRepository.save(Banner.builder()
                 .title("SẢN PHẨM SALE")
                 .subtitle("Ưu đãi đặc biệt giảm đến 50%")
-                .imageUrl("/uploads/ivy/0284007651a63e1aa34493daa2754ba1.webp")
+                .imageUrl("/uploads/products/0284007651a63e1aa34493daa2754ba1.webp")
                 .targetUrl("/danh-muc/sale")
                 .position(BannerPosition.FEATURED)
                 .sortOrder(4)
@@ -807,6 +807,16 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void syncIvyProductsData() {
+        try {
+            jdbcTemplate.update("UPDATE product_images SET image_url = REPLACE(image_url, '/uploads/ivy/', '/uploads/products/') WHERE image_url LIKE '%/uploads/ivy/%'");
+            jdbcTemplate.update("UPDATE product_images SET image_url = REPLACE(image_url, 'ivy/', 'products/') WHERE image_url LIKE '%ivy/%'");
+            jdbcTemplate.update("UPDATE products SET brand = 'LUXE' WHERE brand LIKE '%IVY%'");
+            jdbcTemplate.update("UPDATE banners SET image_url = REPLACE(image_url, '/uploads/ivy/', '/uploads/products/') WHERE image_url LIKE '%/uploads/ivy/%'");
+            jdbcTemplate.update("UPDATE banners SET image_url = REPLACE(image_url, 'ivy/', 'products/') WHERE image_url LIKE '%ivy/%'");
+        } catch (Exception e) {
+            log.warn("Notice updating legacy ivy paths: {}", e.getMessage());
+        }
+
         try (InputStream is = getClass().getResourceAsStream("/seed/ivy-products.json")) {
             if (is == null) return;
             JsonNode root = objectMapper.readTree(is);
@@ -903,7 +913,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name(name)
                         .slug(slug)
                         .skuPrefix(sku)
-                        .brand("IVY moda x LUXE")
+                        .brand("LUXE")
                         .basePrice(basePrice)
                         .discountPercent(discount)
                         .isNew(isNew)
@@ -987,7 +997,7 @@ public class DataInitializer implements CommandLineRunner {
             return false;
         }
         String lower = url.trim().toLowerCase(Locale.ROOT);
-        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("ivy/")) {
+        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("products/") || lower.startsWith("ivy/")) {
             return false;
         }
         return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
