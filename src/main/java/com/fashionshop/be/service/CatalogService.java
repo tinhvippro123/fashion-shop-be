@@ -719,6 +719,20 @@ public class CatalogService {
                 : baseSlug;
 
         boolean active = !"draft".equalsIgnoreCase(request.getStatus());
+
+        if (active) {
+            boolean hasImages = (request.getImages() != null && !request.getImages().isEmpty()) ||
+                    (request.getColorImages() != null && request.getColorImages().values().stream().anyMatch(list -> list != null && !list.isEmpty()));
+            if (!hasImages) {
+                throw new IllegalArgumentException("Sản phẩm đăng bán phải có ít nhất 1 hình ảnh. Nếu chưa có ảnh, vui lòng chọn 'Lưu nháp'.");
+            }
+
+            boolean hasVariants = (request.getVariants() != null && !request.getVariants().isEmpty());
+            if (!hasVariants) {
+                throw new IllegalArgumentException("Sản phẩm đăng bán phải có ít nhất 1 biến thể (Màu sắc / Kích cỡ). Nếu chưa thiết lập biến thể, vui lòng chọn 'Lưu nháp'.");
+            }
+        }
+
         int discountPercent = request.getDiscountPercent() == null
                 ? 0
                 : Math.min(100, Math.max(0, request.getDiscountPercent()));
@@ -773,7 +787,21 @@ public class CatalogService {
             product.setBestSeller(request.getIsBestSeller());
         }
         if (request.getStatus() != null) {
-            product.setActive(!"draft".equalsIgnoreCase(request.getStatus()));
+            boolean active = !"draft".equalsIgnoreCase(request.getStatus());
+            product.setActive(active);
+            if (active) {
+                boolean hasImgs = product.getProductColors().stream().anyMatch(pc -> !pc.getImages().isEmpty()) ||
+                        (request.getImages() != null && !request.getImages().isEmpty()) ||
+                        (request.getColorImages() != null && request.getColorImages().values().stream().anyMatch(list -> list != null && !list.isEmpty()));
+                if (!hasImgs) {
+                    throw new IllegalArgumentException("Sản phẩm đăng bán phải có ít nhất 1 hình ảnh. Nếu chưa có ảnh, vui lòng chọn 'Lưu nháp'.");
+                }
+                boolean hasVars = !product.getProductColors().isEmpty() && product.getProductColors().stream().anyMatch(pc -> !pc.getVariants().isEmpty());
+                boolean hasIncomingVars = request.getVariants() != null && !request.getVariants().isEmpty();
+                if (!hasVars && !hasIncomingVars) {
+                    throw new IllegalArgumentException("Sản phẩm đăng bán phải có ít nhất 1 biến thể (Màu sắc / Kích cỡ). Nếu chưa thiết lập biến thể, vui lòng chọn 'Lưu nháp'.");
+                }
+            }
         }
 
         if (request.getVariants() != null && !request.getVariants().isEmpty()) {
@@ -836,20 +864,20 @@ public class CatalogService {
                 : request.getImages();
 
         if (request.getVariants() == null || request.getVariants().isEmpty()) {
-            Color defaultColor = getOrCreateColor("Đen");
-            Size defaultSize = getOrCreateSize("M");
-            ProductColor pc = ProductColor.builder().color(defaultColor).isActive(true).build();
+            Color defaultColor = getOrCreateColor("Mặc định");
+            Size defaultSize = getOrCreateSize("Freesize");
+            ProductColor pc = ProductColor.builder().color(defaultColor).isActive(false).build();
             int order = 0;
             for (String img : fallbackImages) {
                 pc.addImage(ProductImage.builder().imageUrl(img).displayOrder(order++).build());
             }
-            String sku = ensureUniqueSku(product.getSkuPrefix() + "-BLK-M");
+            String sku = ensureUniqueSku(product.getSkuPrefix() + "-DRAFT");
             pc.addVariant(ProductVariant.builder()
                     .size(defaultSize)
                     .sku(sku)
                     .price(request.getPrice())
                     .costPrice(request.getPrice().multiply(new BigDecimal("0.55")))
-                    .stock(request.getStock() == null ? 10 : request.getStock())
+                    .stock(request.getStock() == null ? 0 : request.getStock())
                     .build());
             product.addProductColor(pc);
             return;
