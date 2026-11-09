@@ -300,16 +300,16 @@ public class DataInitializer implements CommandLineRunner {
                 Map.entry("quan-dai-nam", catQuanDaiNam),
                 Map.entry("quan-short-nam", catQuanShortNam)
         );
-        List<Product> ivyProducts = seedProductsFromIvyJson(catMap, standardSizes);
+        List<Product> luxeProducts = seedProductsFromLuxeJson(catMap, standardSizes);
 
-        Product p1 = ivyProducts.get(0);
-        Product p2 = ivyProducts.size() > 1 ? ivyProducts.get(1) : p1;
-        Product p3 = ivyProducts.size() > 2 ? ivyProducts.get(2) : p1;
-        Product p7 = ivyProducts.stream()
+        Product p1 = luxeProducts.get(0);
+        Product p2 = luxeProducts.size() > 1 ? luxeProducts.get(1) : p1;
+        Product p3 = luxeProducts.size() > 2 ? luxeProducts.get(2) : p1;
+        Product p7 = luxeProducts.stream()
                 .filter(p -> p.getCategory() != null && "ao-so-mi-nam".equals(p.getCategory().getSlug()))
                 .findFirst()
                 .orElse(p1);
-        Product p9 = ivyProducts.stream()
+        Product p9 = luxeProducts.stream()
                 .filter(p -> p.getCategory() != null && "ao-khoac-nam".equals(p.getCategory().getSlug()))
                 .findFirst()
                 .orElse(p7);
@@ -587,11 +587,11 @@ public class DataInitializer implements CommandLineRunner {
             log.warn("Notice in colorFixes: {}", e.getMessage());
         }
 
-        // Đồng bộ toàn bộ mô tả HTML và hình ảnh đầy đủ từ ivy-products.json
+        // Đồng bộ toàn bộ mô tả HTML và hình ảnh đầy đủ từ luxe-products.json
         try {
-            syncIvyProductsData();
+            syncLuxeProductsData();
         } catch (Exception e) {
-            log.warn("Notice in syncIvyProductsData: {}", e.getMessage());
+            log.warn("Notice in syncLuxeProductsData: {}", e.getMessage());
         }
 
         try {
@@ -600,11 +600,11 @@ public class DataInitializer implements CommandLineRunner {
                 categoryRepository.findAll().forEach(c -> map.put(c.getSlug(), c));
                 if (!map.isEmpty()) {
                     List<Size> standardSizes = sizeRepository.findAllByOrderBySortOrderAscIdAsc();
-                    seedProductsFromIvyJson(map, standardSizes);
+                    seedProductsFromLuxeJson(map, standardSizes);
                 }
             }
         } catch (Exception e) {
-            log.warn("Notice in seedProductsFromIvyJson: {}", e.getMessage());
+            log.warn("Notice in seedProductsFromLuxeJson: {}", e.getMessage());
         }
 
         // Tạo phiếu nhập kho toàn diện cho tất cả các sản phẩm chưa có chứng từ nhập kho
@@ -806,7 +806,7 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    private void syncIvyProductsData() {
+    private void syncLuxeProductsData() {
         try {
             jdbcTemplate.update("UPDATE product_images SET image_url = REPLACE(image_url, '/uploads/ivy/', '/uploads/products/') WHERE image_url LIKE '%/uploads/ivy/%'");
             jdbcTemplate.update("UPDATE product_images SET image_url = REPLACE(image_url, 'ivy/', 'products/') WHERE image_url LIKE '%ivy/%'");
@@ -814,10 +814,10 @@ public class DataInitializer implements CommandLineRunner {
             jdbcTemplate.update("UPDATE banners SET image_url = REPLACE(image_url, '/uploads/ivy/', '/uploads/products/') WHERE image_url LIKE '%/uploads/ivy/%'");
             jdbcTemplate.update("UPDATE banners SET image_url = REPLACE(image_url, 'ivy/', 'products/') WHERE image_url LIKE '%ivy/%'");
         } catch (Exception e) {
-            log.warn("Notice updating legacy ivy paths: {}", e.getMessage());
+            log.warn("Notice updating legacy image paths: {}", e.getMessage());
         }
 
-        try (InputStream is = getClass().getResourceAsStream("/seed/ivy-products.json")) {
+        try (InputStream is = getClass().getResourceAsStream("/seed/luxe-products.json")) {
             if (is == null) return;
             JsonNode root = objectMapper.readTree(is);
             if (!root.isArray() || root.isEmpty()) return;
@@ -867,19 +867,19 @@ public class DataInitializer implements CommandLineRunner {
                     }
                 }
             }
-            log.info("Synchronized descriptions and all images from ivy-products.json into database via JDBC.");
+            log.info("Synchronized descriptions and all images from luxe-products.json into database via JDBC.");
         } catch (Exception e) {
-            log.warn("Notice in syncIvyProductsData: {}", e.getMessage(), e);
+            log.warn("Notice in syncLuxeProductsData: {}", e.getMessage(), e);
         }
     }
 
-    private List<Product> seedProductsFromIvyJson(
+    private List<Product> seedProductsFromLuxeJson(
             Map<String, Category> catMap,
             List<Size> defaultSizes
     ) {
-        try (InputStream is = getClass().getResourceAsStream("/seed/ivy-products.json")) {
+        try (InputStream is = getClass().getResourceAsStream("/seed/luxe-products.json")) {
             if (is == null) {
-                log.info("ivy-products.json not found on classpath, skipping IVY seed.");
+                log.info("luxe-products.json not found on classpath, skipping seed.");
                 return List.of();
             }
             JsonNode root = objectMapper.readTree(is);
@@ -955,7 +955,7 @@ public class DataInitializer implements CommandLineRunner {
                             int stock = sNode.path("stock").asInt(10);
                             final String finalSizeName = sName;
                             Size size = sizeRepository.findByNameIgnoreCase(finalSizeName)
-                                    .orElseGet(() -> sizeRepository.save(Size.builder().name(finalSizeName).sortOrder(5).build()));
+                                     .orElseGet(() -> sizeRepository.save(Size.builder().name(finalSizeName).sortOrder(5).build()));
 
                             pc.addVariant(ProductVariant.builder()
                                     .size(size)
@@ -984,10 +984,10 @@ public class DataInitializer implements CommandLineRunner {
                 seeded.add(productRepository.save(product));
             }
 
-            log.info("Successfully seeded {} IVY moda products into catalog.", seeded.size());
+            log.info("Successfully seeded {} LUXE products into catalog.", seeded.size());
             return seeded;
         } catch (Exception e) {
-            log.error("Failed to seed IVY moda products from json", e);
+            log.error("Failed to seed LUXE products from json", e);
             return List.of();
         }
     }
@@ -997,7 +997,7 @@ public class DataInitializer implements CommandLineRunner {
             return false;
         }
         String lower = url.trim().toLowerCase(Locale.ROOT);
-        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("products/") || lower.startsWith("ivy/")) {
+        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("products/")) {
             return false;
         }
         return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
