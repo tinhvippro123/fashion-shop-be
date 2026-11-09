@@ -832,7 +832,7 @@ public class CatalogService {
 
     private void populateColorsAndVariants(Product product, CatalogDtos.AdminProductUpsertRequest request) {
         List<String> fallbackImages = (request.getImages() == null || request.getImages().isEmpty())
-                ? List.of("03321697-61dc-4f30-8da7-d25085a78741.webp", "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp")
+                ? List.of()
                 : request.getImages();
 
         if (request.getVariants() == null || request.getVariants().isEmpty()) {
@@ -915,7 +915,7 @@ public class CatalogService {
 
     private void mergeColorsAndVariantsOnUpdate(Product product, CatalogDtos.AdminProductUpsertRequest request) {
         List<String> fallbackImages = (request.getImages() == null || request.getImages().isEmpty())
-                ? List.of("03321697-61dc-4f30-8da7-d25085a78741.webp", "121a23af-e7f7-4e5a-8e96-65f25b8a4a3f.webp")
+                ? List.of()
                 : request.getImages();
 
         Map<String, ProductColor> existingColorsByLowerName = new LinkedHashMap<>();
