@@ -22,14 +22,29 @@ import java.util.stream.Collectors;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final EmailService emailService;
 
     @Transactional
     public void createOrderNotification(Order order, OrderStatus newStatus) {
-        if (order == null || order.getUser() == null) {
+        if (order == null) {
             return;
         }
 
         String orderCode = order.getOrderCode() != null ? order.getOrderCode() : ("#" + order.getId());
+
+        // Gửi email thông báo khi đơn giao thành công (cho cả khách có tài khoản lẫn khách vãng lai nếu có email)
+        if (newStatus == OrderStatus.COMPLETED) {
+            try {
+                emailService.sendOrderCompletedEmail(order);
+            } catch (Exception ex) {
+                log.error("[NOTIFICATION] Lỗi khi kích hoạt gửi email đơn {}: {}", orderCode, ex.getMessage());
+            }
+        }
+
+        if (order.getUser() == null) {
+            return;
+        }
+
         String title;
         String message;
 
