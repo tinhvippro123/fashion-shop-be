@@ -139,6 +139,7 @@ public class OrderDtos {
         private BigDecimal costPrice;
         private int quantity;
         private BigDecimal totalPrice;
+        private boolean isReviewed;
     }
 
     @Data
@@ -187,6 +188,7 @@ public class OrderDtos {
         private String customerPhone;
         private String date;
         private String createdAt;
+        private String updatedAt;
         private String status;
         private String paymentStatus;
         private String paymentMethod;

@@ -13,6 +13,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     long countByProductIdAndIsVisibleTrue(Long productId);
     boolean existsByUserIdAndProductId(Long userId, Long productId);
 
+    @Query("SELECT r.product.id FROM Review r WHERE r.user.id = :userId")
+    List<Long> findReviewedProductIdsByUserId(@Param("userId") Long userId);
+
     @Query("SELECT r.product.id, COUNT(r.id), AVG(r.rating) FROM Review r WHERE r.isVisible = true GROUP BY r.product.id")
     List<Object[]> findReviewStatsGrouped();
 

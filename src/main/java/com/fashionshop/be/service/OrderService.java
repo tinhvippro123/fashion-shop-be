@@ -22,6 +22,7 @@ import com.fashionshop.be.repository.CartRepository;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.ProductRepository;
 import com.fashionshop.be.repository.ProductVariantRepository;
+import com.fashionshop.be.repository.ReviewRepository;
 import com.fashionshop.be.repository.UserAddressRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.repository.VoucherRepository;
@@ -54,6 +55,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final UserAddressRepository userAddressRepository;
     private final NotificationService notificationService;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public OrderDtos.OrderResponseDto createOrder(OrderDtos.CreateOrderRequest request) {
@@ -327,6 +329,12 @@ public class OrderService {
             case UNPAID -> "bg-amber-500/10 text-amber-600";
         };
 
+        java.util.Set<Long> reviewedProductIds = java.util.Collections.emptySet();
+        if (order.getUser() != null) {
+            reviewedProductIds = new java.util.HashSet<>(reviewRepository.findReviewedProductIdsByUserId(order.getUser().getId()));
+        }
+        final java.util.Set<Long> finalReviewedIds = reviewedProductIds;
+
         List<OrderDtos.OrderItemDto> items = order.getItems().stream()
                 .map(i -> OrderDtos.OrderItemDto.builder()
                         .id(String.valueOf(i.getId()))
@@ -343,6 +351,7 @@ public class OrderService {
                         .costPrice(i.getCostPrice())
                         .quantity(i.getQuantity())
                         .totalPrice(i.getTotalPrice())
+                        .isReviewed(i.getProductId() != null && finalReviewedIds.contains(i.getProductId()))
                         .build())
                 .toList();
 
@@ -365,6 +374,7 @@ public class OrderService {
                 .customerPhone(order.getRecipientPhone())
                 .date(SlugUtils.formatDate(order.getCreatedAt()))
                 .createdAt(SlugUtils.formatDateTime(order.getCreatedAt()))
+                .updatedAt(order.getUpdatedAt() != null ? SlugUtils.formatDateTime(order.getUpdatedAt()) : SlugUtils.formatDateTime(order.getCreatedAt()))
                 .status(order.getStatus().name())
                 .paymentStatus(order.getPaymentStatus().name())
                 .paymentMethod(order.getPaymentMethod().name())
