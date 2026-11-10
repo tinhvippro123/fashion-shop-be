@@ -1,7 +1,6 @@
 package com.fashionshop.be;
 
 import com.fashionshop.be.domain.entity.ProductVariant;
-import com.fashionshop.be.domain.enums.OrderStatus;
 import com.fashionshop.be.dto.AdminDtos;
 import com.fashionshop.be.dto.AuthDtos;
 import com.fashionshop.be.dto.CatalogDtos;

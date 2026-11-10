@@ -10,7 +10,6 @@ import com.fashionshop.be.domain.enums.UserStatus;
 import com.fashionshop.be.repository.OrderRepository;
 import com.fashionshop.be.repository.UserRepository;
 import com.fashionshop.be.service.NotificationService;
-import com.fashionshop.be.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,9 +34,6 @@ public class NotificationIntegrationTest {
 
     @Autowired
     private NotificationService notificationService;
-
-    @Autowired
-    private OrderService orderService;
 
     @Test
     @Transactional
