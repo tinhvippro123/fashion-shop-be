@@ -1,0 +1,11 @@
+.gradle/
+build/
+data/
+bin/
+.git/
+.idea/
+.vscode/
+.settings/
+*.mv.db
+*.trace.db
+.env

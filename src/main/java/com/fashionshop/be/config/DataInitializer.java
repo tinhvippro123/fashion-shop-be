@@ -471,7 +471,7 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         try {
-            jdbcTemplate.update("DELETE FROM product_images WHERE image_url NOT LIKE 'products/%' AND image_url NOT LIKE '/uploads/%' AND (image_url LIKE '%.webp' OR image_url LIKE '%-%-%-%-%.webp')");
+            jdbcTemplate.update("DELETE FROM product_images WHERE image_url NOT LIKE 'products/%' AND image_url NOT LIKE '/uploads/%' AND image_url NOT LIKE 'http%' AND (image_url LIKE '%.webp' OR image_url LIKE '%-%-%-%-%.webp')");
             jdbcTemplate.update(
                     "UPDATE order_items oi SET image_url = (" +
                     "  SELECT pi.image_url FROM product_images pi " +
@@ -479,7 +479,7 @@ public class DataInitializer implements CommandLineRunner {
                     "  JOIN product_variants pv ON pv.product_color_id = pc.id " +
                     "  WHERE pv.id = oi.variant_id " +
                     "  ORDER BY pi.display_order ASC LIMIT 1" +
-                    ") WHERE oi.image_url LIKE '%.webp' AND oi.image_url NOT LIKE 'products/%' AND oi.image_url NOT LIKE '/uploads/%'"
+                    ") WHERE oi.image_url LIKE '%.webp' AND oi.image_url NOT LIKE 'products/%' AND oi.image_url NOT LIKE '/uploads/%' AND oi.image_url NOT LIKE 'http%'"
             );
         } catch (Exception e) {
             log.warn("Notice in image cleanup: {}", e.getMessage());
@@ -773,7 +773,7 @@ public class DataInitializer implements CommandLineRunner {
                 Long productId = productIds.get(0);
 
                 if (desc != null && !desc.isBlank()) {
-                    jdbcTemplate.update("UPDATE products SET description = ? WHERE id = ?", desc, productId);
+                    jdbcTemplate.update("UPDATE products SET description = ? WHERE id = ? AND (description IS NULL OR TRIM(description) = '')", desc, productId);
                 }
 
                 JsonNode colorsNode = pNode.path("colors");
@@ -792,7 +792,9 @@ public class DataInitializer implements CommandLineRunner {
                         if (pcIds.isEmpty()) continue;
 
                         for (Long pcId : pcIds) {
-                            jdbcTemplate.update("DELETE FROM product_images WHERE product_color_id = ?", pcId);
+                            Integer imgCount = jdbcTemplate.queryForObject(
+                                    "SELECT COUNT(*) FROM product_images WHERE product_color_id = ?", Integer.class, pcId);
+                            if (imgCount != null && imgCount > 0) continue;
                             int sortOrder = 0;
                             for (JsonNode imgNode : imagesNode) {
                                 String imgUrl = imgNode.asText();
